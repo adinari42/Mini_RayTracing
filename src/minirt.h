@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:47:18 by adinari           #+#    #+#             */
-/*   Updated: 2023/01/09 02:51:21 by adinari          ###   ########.fr       */
+/*   Updated: 2023/01/10 05:49:42 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <ctype.h>
 # include <errno.h>
 # include <math.h>
-# include "../codam_MLX/include/MLX42/MLX42.h"
+# include "../../codam_MLX/include/MLX42/MLX42.h"
 # include "gnl/get_next_line.h"
 # include "libft/libft.h"
 
@@ -97,6 +97,7 @@ typedef struct s_cylindre
 {
 	t_point	point;
 	t_color	color;
+	t_normal	normal;
 	double		height;
 	double		diameter;
 }				t_cylindre;
@@ -117,6 +118,7 @@ typedef struct s_plane
 
 
 int main(int argc, char **argv);
+int	str_isdigit(char *str);
 /*utils.c*/
 void	init_data(t_data *data, char **argv);
 void	free_split(char **splitret);
@@ -128,4 +130,11 @@ bool	ft_isfloat(char *str);
 double	ft_atof(const char *str);
 // double	ft_atodoubl(const char *str, char **endptr);
 
+/**parse.c***/
+void	parse_light(t_objects *obj_list, t_data *data, int i);
+void	parse_amb_light(t_objects *obj_list, t_data *data, int i);
+void	parse_camera(t_objects *obj_list, t_data *data, int i);
+void	parse_cylindre(t_objects *obj_list, t_data *data, int i);
+void	parse_sphere(t_objects *obj_list, t_data *data, int i);
+void	parse_plane(t_objects *obj_list, t_data *data, int i);
 #endif

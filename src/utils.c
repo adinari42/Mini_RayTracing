@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 02:04:37 by adinari           #+#    #+#             */
-/*   Updated: 2023/01/10 00:02:12 by adinari          ###   ########.fr       */
+/*   Updated: 2023/01/10 05:46:10 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,16 +74,57 @@ void	print_obj_list(t_objects *obj_list, t_data *data)
 	i = 0;
 	while (i < data->list_size)
 	{
-		printf("obj_list[%d]->str = %s >type = %d\n", i , obj_list[i].str, obj_list[i].type);
+		printf("\033[1;31mobj_list[%d]->str = %s >type = %d\033[0m\n", i , obj_list[i].str, obj_list[i].type);
 		if (obj_list[i].type == AMB_LIGHT)
 		{
 			printf("ratio = %f\ncolors = %d, %d, %d\n", ((t_amb_light *)obj_list[i].object)->ratio,
-			((t_amb_light *)obj_list[i].object)->color.red, ((t_amb_light *)obj_list[i].object)->color.green, ((t_amb_light *)obj_list[i].object)->color.blue);
+			((t_amb_light *)obj_list[i].object)->color.red, ((t_amb_light *)obj_list[i].object)->color.green,
+			((t_amb_light *)obj_list[i].object)->color.blue);
 		}
 		if (obj_list[i].type == LIGHT)
 		{
 			printf("ratio = %f\ncolors = %d, %d, %d\n", ((t_light *)obj_list[i].object)->ratio,
-			((t_light *)obj_list[i].object)->color.red, ((t_light *)obj_list[i].object)->color.green, ((t_light *)obj_list[i].object)->color.blue);
+			((t_light *)obj_list[i].object)->color.red, ((t_light *)obj_list[i].object)->color.green,
+			((t_light *)obj_list[i].object)->color.blue);
+			printf("point[x] = %f, [y] = %f, [z] = %f\n", ((t_light *)obj_list[i].object)->point.x
+			, ((t_light *)obj_list[i].object)->point.y, ((t_light *)obj_list[i].object)->point.z);
+		}
+		if (obj_list[i].type == CAMERA)
+		{
+			printf("fov = %f\nnormal = %f, %f, %f\n", ((t_camera *)obj_list[i].object)->fov,
+			((t_camera *)obj_list[i].object)->normal.x, ((t_camera *)obj_list[i].object)->normal.y,
+			((t_camera *)obj_list[i].object)->normal.z);
+			printf("point[x] = %f, [y] = %f, [z] = %f\n", ((t_camera *)obj_list[i].object)->point.x
+			, ((t_camera *)obj_list[i].object)->point.y, ((t_camera *)obj_list[i].object)->point.z);
+		}
+		if (obj_list[i].type == CYLINDRE)
+		{
+			printf("height = %f, diameter = %f\nnormal = %f, %f, %f\n", ((t_cylindre *)obj_list[i].object)->height,
+			((t_cylindre *)obj_list[i].object)->diameter,
+			((t_cylindre *)obj_list[i].object)->normal.x, ((t_cylindre *)obj_list[i].object)->normal.y,
+			((t_cylindre *)obj_list[i].object)->normal.z);
+			printf("point[x] = %f, [y] = %f, [z] = %f\ncolors = %d, %d, %d\n", ((t_cylindre *)obj_list[i].object)->point.x
+			, ((t_cylindre *)obj_list[i].object)->point.y, ((t_cylindre *)obj_list[i].object)->point.z,
+			((t_cylindre *)obj_list[i].object)->color.red, ((t_cylindre *)obj_list[i].object)->color.green,
+			((t_cylindre *)obj_list[i].object)->color.blue);
+		}
+		if (obj_list[i].type == SPHERE)
+		{
+			printf("diameter = %f\n",((t_sphere *)obj_list[i].object)->diameter);
+			printf("point[x] = %f, [y] = %f, [z] = %f\ncolors = %d, %d, %d\n", ((t_sphere *)obj_list[i].object)->point.x
+			, ((t_sphere *)obj_list[i].object)->point.y, ((t_sphere *)obj_list[i].object)->point.z,
+			((t_sphere *)obj_list[i].object)->color.red, ((t_sphere *)obj_list[i].object)->color.green,
+			((t_sphere *)obj_list[i].object)->color.blue);
+		}
+		if (obj_list[i].type == PLANE)
+		{
+			printf("normal = %f, %f, %f\n",
+			((t_plane *)obj_list[i].object)->normal.x, ((t_plane *)obj_list[i].object)->normal.y,
+			((t_plane *)obj_list[i].object)->normal.z);
+			printf("point[x] = %f, [y] = %f, [z] = %f\ncolors = %d, %d, %d\n", ((t_plane *)obj_list[i].object)->point.x
+			, ((t_plane *)obj_list[i].object)->point.y, ((t_plane *)obj_list[i].object)->point.z,
+			((t_plane *)obj_list[i].object)->color.red, ((t_plane *)obj_list[i].object)->color.green,
+			((t_plane *)obj_list[i].object)->color.blue);
 		}
 		i++;
 	}
@@ -100,4 +141,3 @@ void	free_obj_list(t_objects *obj_list, t_data *data)
 		i++;
 	}
 }
-
