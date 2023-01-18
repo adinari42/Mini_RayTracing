@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:47:18 by adinari           #+#    #+#             */
-/*   Updated: 2023/01/18 13:37:09 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/01/18 13:51:52 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,20 +70,10 @@ typedef struct s_amb_light
 //linked list of shapes/objects
 typedef struct	s_objects
 {
-	char				*str;
-	void				*object;
-	int					type;
+	char		*str;
+	void		*object;
+	int			type;
 }				t_objects;
-
-typedef struct	s_data
-{
-	int	list_size;
-	int	amb_light;
-	int	light;
-	int	camera;
-	int	scene;
-	char 				**infos;
-}				t_data;
 
 enum obj_type
 {
@@ -118,6 +108,17 @@ typedef struct s_plane
 	t_point		point;
 	t_color		color;
 }				t_plane;
+
+typedef struct s_data
+{
+	t_objects	objs;
+	int			w;
+	int			h;
+	int			list_size;
+	int			fd;
+	char		**infos;
+}				t_data;
+
 
 
 int main(int argc, char **argv);

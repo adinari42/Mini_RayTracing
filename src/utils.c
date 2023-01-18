@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 02:04:37 by adinari           #+#    #+#             */
-/*   Updated: 2023/01/18 12:38:28 by adinari          ###   ########.fr       */
+/*   Updated: 2023/01/18 13:53:00 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,16 @@ void	init_data(t_data *data, char **argv)
 	char 		*str1;
 
 	data->list_size = 0;
-	data->camera = 0;
-	data->light = 0;
-	data->amb_light = 0;
-	data->scene = open(argv[1], O_RDONLY);
+	data->fd = open(argv[1], O_RDONLY);
 	str1 = "";
 	while(str1){
-		str1 = get_next_line(data->scene);
+		str1 = get_next_line(data->fd);
 		if (str1 && first_occur(str1))
 			data->list_size++;
 		free(str1);
 	}
 	printf("data->list_size = %d\n", data->list_size);
-	close(data->scene);
+	close(data->fd);
 }
 
 int	first_occur(char *str)

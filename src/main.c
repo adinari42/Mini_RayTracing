@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:39:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/01/10 05:39:41 by adinari          ###   ########.fr       */
+/*   Updated: 2023/01/18 13:52:36 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,39 +48,15 @@
 // 	return (sign * (exponent + significand));
 // }
 
-int	is_obj(char *str, t_data *data)
+int	is_obj(char *str)
 {
 
 	if (!ft_strncmp(str, "A", ft_strlen(str)))
-	{
-		if (data->amb_light == 0)
-		{
-			data->amb_light = 1;
-			return (AMB_LIGHT);
-		}
-		else
-			return (NONE);
-	}
+		return (AMB_LIGHT);
 	if (!ft_strncmp(str, "C", ft_strlen(str)))
-	{
-		if (data->camera == 0)
-		{
-			data->camera = 1;
-			return (CAMERA);
-		}
-		else
-			return (NONE);
-	}
+		return (CAMERA);
 	if (!ft_strncmp(str, "L", ft_strlen(str)))
-	{
-		if (data->light == 0)
-		{
-			data->light = 1;
-			return (LIGHT);
-		}
-		else
-			return (NONE);
-	}
+		return (LIGHT);
 	if (!ft_strncmp(str, "pl", ft_strlen(str)))
 		return (PLANE);
 	if (!ft_strncmp(str, "sp", ft_strlen(str)))
@@ -173,23 +149,22 @@ void	save_info(t_objects *obj_list, t_data *data)
 	int	i;
 
 	i = 0;
-	data->scene = open("scene.rt", O_RDONLY);
+	data->fd = open("scene.rt", O_RDONLY);
 	while (i < data->list_size)
 	{
-		obj_list[i].str = get_next_line(data->scene);
+		obj_list[i].str = get_next_line(data->fd);
 		if (obj_list[i].str && first_occur(obj_list[i].str))
 		{
 			if (i < data->list_size - 1)
 				ft_strlcpy(obj_list[i].str, obj_list[i].str, ft_strlen(obj_list[i].str));
 			data->infos = ft_split(obj_list[i].str, ' ');
-			obj_list[i].type = is_obj(data->infos[0], data);
+			obj_list[i].type = is_obj(data->infos[0]);
 			if (obj_list[i].type == NONE)
 			{
 				write(2, "Error: incorrect information\n", 30);
 				free_split(data->infos);
 				free(data);
 				free_obj_list(obj_list, data);
-				// system("leaks MiniRT");//
 				exit(1);
 			}
 			parse_info(obj_list, data, i);
@@ -219,5 +194,5 @@ int	main(int argc, char **argv)
 	free_obj_list(obj_list, data);
 	free(obj_list);
 	free(data);
-	system("leaks MiniRT");
+	// system("leaks MiniRT");
 }
