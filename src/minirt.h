@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:47:18 by adinari           #+#    #+#             */
-/*   Updated: 2023/01/18 13:23:29 by adinari          ###   ########.fr       */
+/*   Updated: 2023/01/18 13:37:09 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <ctype.h>
 # include <errno.h>
 # include <math.h>
-# include "../codam_MLX/include/MLX42/MLX42.h"
 # include "gnl/get_next_line.h"
 # include "libft/libft.h"
 
