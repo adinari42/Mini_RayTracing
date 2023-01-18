@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 02:04:37 by adinari           #+#    #+#             */
-/*   Updated: 2023/01/10 05:46:10 by adinari          ###   ########.fr       */
+/*   Updated: 2023/01/18 12:38:28 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,12 @@ void	free_split(char **splitret)
 
 void	print_obj_list(t_objects *obj_list, t_data *data)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	while (i < data->list_size)
 	{
+
 		printf("\033[1;31mobj_list[%d]->str = %s >type = %d\033[0m\n", i , obj_list[i].str, obj_list[i].type);
 		if (obj_list[i].type == AMB_LIGHT)
 		{
@@ -141,3 +142,4 @@ void	free_obj_list(t_objects *obj_list, t_data *data)
 		i++;
 	}
 }
+

@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:47:18 by adinari           #+#    #+#             */
-/*   Updated: 2023/01/10 05:49:42 by adinari          ###   ########.fr       */
+/*   Updated: 2023/01/18 13:23:29 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <ctype.h>
 # include <errno.h>
 # include <math.h>
-# include "../../codam_MLX/include/MLX42/MLX42.h"
+# include "../codam_MLX/include/MLX42/MLX42.h"
 # include "gnl/get_next_line.h"
 # include "libft/libft.h"
 
@@ -42,6 +42,7 @@ typedef struct s_color
 	int	red;
 	int	green;
 	int	blue;
+	int	alpha;
 }				t_color;
 
 typedef struct s_camera
@@ -49,6 +50,9 @@ typedef struct s_camera
 	t_point		point;
 	t_normal	normal;
 	double		fov;
+	double		fov_len;
+	double		height;
+	double		width;
 }				t_camera;
 
 typedef struct s_light
@@ -125,8 +129,7 @@ void	free_split(char **splitret);
 void	print_obj_list(t_objects *obj_list, t_data *data);
 void	free_obj_list(t_objects *obj_list, t_data *data);
 int		first_occur(char *str);
-
-bool	ft_isfloat(char *str);
+int		ft_isfloat(char *str);
 double	ft_atof(const char *str);
 // double	ft_atodoubl(const char *str, char **endptr);
 

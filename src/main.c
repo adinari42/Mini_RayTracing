@@ -6,11 +6,47 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:39:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/01/10 05:47:23 by adinari          ###   ########.fr       */
+/*   Updated: 2023/01/10 05:39:41 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+// float get_significand(float significand, const char *str, int index, int power) {
+//     while (isdigit(str[index])) {
+//         significand = significand * 10 + (str[index] - '0');
+//         power--;
+//         index++;
+//     }
+//     return significand * pow(10, power);
+// }
+
+// float	ft_atof(char *str)
+// {
+// 	float	exponent;
+// 	float	significand;
+// 	float	sign;
+// 	int		power;
+// 	int		i;
+
+// 	exponent = 0.0;
+// 	significand = 0.0;
+// 	sign = 1.0;
+// 	power = -1;
+// 	i = 0;
+// 	if (str[i] == '-') 
+// 	{
+// 		sign *= -1.0;
+// 		i++;
+// 	}
+// 	while (ft_isdigit(str[i]))
+// 	{
+// 		exponent = exponent * 10 + (str[i] - '0');
+// 		i++;
+// 	}
+// 	significand = get_significand(significand, str, i, power);
+// 	return (sign * (exponent + significand));
+// }
 
 int	is_obj(char *str, t_data *data)
 {

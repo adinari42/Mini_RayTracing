@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 04:06:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/01/10 05:22:16 by adinari          ###   ########.fr       */
+/*   Updated: 2023/01/18 13:33:50 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,7 @@ void	parse_camera(t_objects *obj_list, t_data *data, int i)
 	//	error
 	free_split(point);//<< is causing segfault , need another function for freeing char **
 	/*********-normal[-1;1]-**********/
-	// printf("infos[2]=%s.\n", data->infos[2]);
 	normal = ft_split(data->infos[2], ',');
-	// printf("normal[0]=%s. normal[1]=%s. normal[2]=%s.\n", normal[0], normal[1], normal[2]);
-
 	// if (ft_isfloat(normal[0]) && ft_isfloat(normal[1]) && ft_isfloat(normal[2]))//need to test if the elements are floats
 	// {
 		((t_camera *)obj)->normal.x= ft_atof(normal[0]);
@@ -221,7 +218,7 @@ void	parse_plane(t_objects *obj_list, t_data *data, int i)
 	char		**colors;
 	char		**point;
 
-	obj = malloc(sizeof(t_plane)); 
+	obj = malloc(sizeof(t_plane));
 	obj_list[i].object = obj;
 	/*********-point-**********/
 	point = ft_split(data->infos[1], ',');
