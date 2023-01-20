@@ -6,7 +6,7 @@
 #    By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 21:40:31 by adinari           #+#    #+#              #
-#    Updated: 2023/01/18 13:37:16 by miahmadi         ###   ########.fr        #
+#    Updated: 2023/01/18 16:18:22 by miahmadi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,9 @@ FILES = src/main.c\
 		src/gnl/get_next_line_utils.c\
 		src/parse_utils.c\
 		src/utils.c\
-		src/parse.c
+		src/parse.c\
+		src/intersect.c\
+		src/vector_op.c\
 
 OBJECTS = $(FILES:.c=.o)
 

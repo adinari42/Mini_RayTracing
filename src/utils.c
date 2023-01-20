@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 02:04:37 by adinari           #+#    #+#             */
-/*   Updated: 2023/01/18 13:53:00 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/01/18 15:09:39 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,11 @@ void	init_data(t_data *data, char **argv)
 	char 		*str1;
 
 	data->list_size = 0;
+	data->obj_size = 0;
+	data->w = 800;
+	data->h = 450;
 	data->fd = open(argv[1], O_RDONLY);
+	data->img = ft_calloc(data->h * data->w, sizeof(t_color));
 	str1 = "";
 	while(str1){
 		str1 = get_next_line(data->fd);

@@ -6,47 +6,11 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:39:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/01/18 13:52:36 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/01/18 16:17:41 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-// float get_significand(float significand, const char *str, int index, int power) {
-//     while (isdigit(str[index])) {
-//         significand = significand * 10 + (str[index] - '0');
-//         power--;
-//         index++;
-//     }
-//     return significand * pow(10, power);
-// }
-
-// float	ft_atof(char *str)
-// {
-// 	float	exponent;
-// 	float	significand;
-// 	float	sign;
-// 	int		power;
-// 	int		i;
-
-// 	exponent = 0.0;
-// 	significand = 0.0;
-// 	sign = 1.0;
-// 	power = -1;
-// 	i = 0;
-// 	if (str[i] == '-') 
-// 	{
-// 		sign *= -1.0;
-// 		i++;
-// 	}
-// 	while (ft_isdigit(str[i]))
-// 	{
-// 		exponent = exponent * 10 + (str[i] - '0');
-// 		i++;
-// 	}
-// 	significand = get_significand(significand, str, i, power);
-// 	return (sign * (exponent + significand));
-// }
 
 int	is_obj(char *str)
 {
@@ -108,23 +72,6 @@ int	str_isdigit(char *str)
 	}
 	return (1);
 }
-// int	str_isfloat(char *str)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (str[i])
-// 	{
-// 		if (!ft_isfloat(str[i]))
-// 			return (0);
-// 		i++;
-// 	}
-// 	return (1);
-// }
-
-
-
-
 
 void	parse_info(t_objects *obj_list, t_data *data, int i)
 {
@@ -176,6 +123,97 @@ void	save_info(t_objects *obj_list, t_data *data)
 	}
 }
 
+void	make_pic(t_data data)
+{
+	FILE* fp = fopen("image.ppm", "wb");
+	fprintf(fp, "P6\n%d %d\n255\n", data.w, data.h);
+	for (int i = 0; i < data.w * data.h; i++) {
+		fputc((int)(data.img[i].red), fp);
+		fputc((int)(data.img[i].green), fp);
+		fputc((int)(data.img[i].blue), fp);
+	}
+	fclose(fp);
+}
+
+t_color	create_color(int	r, int g, int b)
+{
+	t_color color;
+
+	color.red = r;
+	color.green = g;
+	color.blue = b;
+	color.alpha = 255;
+	return (color);
+}
+
+t_color traceRay(t_ray ray, t_data *data, int depth) {
+	int			i;
+	t_objects	*objs;
+	// t_objects	obj;
+
+	if (depth > 5) 
+		return (create_color(0, 0, 0));
+	i = -1;
+	double t = INFINITY;
+	int intersectedObjectIndex = -1;
+	objs = data->objs;
+	while (++i < data->obj_size)
+	{
+		double t0 = 0;
+		if (objs[i].type == SPHERE)
+			t0 = intersect_s(ray, *(t_sphere*)objs[i].object);
+		else if ((char)objs[i].type == 'c')
+			t0 = intersect_c(ray, *(t_cylindre*)objs[i].object);
+		else if ((char)objs[i].type == 'p')
+			t0 = intersect_p(ray, *(t_plane*)objs[i].object);
+		if (t0 > 0 && t0 < t) {
+			t = t0;
+			intersectedObjectIndex = i;
+		}
+	}
+	if (intersectedObjectIndex == -1)
+		return (create_color(0, 0, 0));
+	return (create_color(255, 255, 255));
+}
+
+t_ray	create_ray(t_point p, t_vector v)
+{
+	t_ray ray;
+
+	ray.p = p;
+	ray.v = v;
+	return (ray);	
+}
+
+void	trace(t_data *data)
+{
+	int			i;
+	int			j;
+	double		v;
+	double		u;
+	t_vector	d;
+	t_ray		ray;
+	t_color		color;
+
+	i = -1;
+	while (++i < data->h)
+	{
+		j = -1;
+		while (++j < data->w)
+		{
+			v = j - data->w / 2;
+			u = i - data->h / 2;
+			d.x = v;
+			d.y = u;
+			d.z = data->camera->flen;
+			d = vectorNormalize(d);
+			ray = create_ray(data->camera->point, d);
+			color = traceRay(ray, data, 2);
+			data->img[i * j] = color;
+		}
+	}
+}
+
 int	main(int argc, char **argv)
 {
 	t_data		*data;
@@ -192,6 +230,7 @@ int	main(int argc, char **argv)
 	save_info(obj_list, data);
 	print_obj_list(obj_list, data);
 	free_obj_list(obj_list, data);
+	make_pic(*data);
 	free(obj_list);
 	free(data);
 	// system("leaks MiniRT");

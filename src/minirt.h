@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:47:18 by adinari           #+#    #+#             */
-/*   Updated: 2023/01/18 13:51:52 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/01/18 16:23:05 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,7 @@
 # include "gnl/get_next_line.h"
 # include "libft/libft.h"
 
-typedef struct s_point
-{
-	double	x;
-	double	y;
-	double	z;
-}				t_point;
+# define PI 3.14159
 
 typedef struct s_normal
 {
@@ -35,6 +30,13 @@ typedef struct s_normal
 	double	y;
 	double	z;
 }				t_normal;
+
+typedef struct s_vector
+{
+	double	x;
+	double	y;
+	double	z;
+}			t_vector;
 
 typedef struct s_color
 {
@@ -46,19 +48,19 @@ typedef struct s_color
 
 typedef struct s_camera
 {
-	t_point		point;
-	t_normal	normal;
+	t_vector	point;
+	t_vector	normal;
 	double		fov;
-	double		fov_len;
-	double		height;
-	double		width;
+	double		flen;
+	double		h;
+	double		w;
 }				t_camera;
 
 typedef struct s_light
 {
-	t_point	point;
-	double	ratio;
-	t_color	color;
+	t_vector	point;
+	double		ratio;
+	t_color		color;
 }				t_light;
 
 typedef struct s_amb_light
@@ -75,6 +77,12 @@ typedef struct	s_objects
 	int			type;
 }				t_objects;
 
+typedef struct s_ray
+{
+	t_vector	v;
+	t_vector	p;
+}				t_ray;
+
 enum obj_type
 {
 	AMB_LIGHT,
@@ -88,8 +96,8 @@ enum obj_type
 
 typedef struct s_cylindre
 {
-	t_point	point;
-	t_color	color;
+	t_vector	point;
+	t_color		color;
 	t_normal	normal;
 	double		height;
 	double		diameter;
@@ -98,24 +106,27 @@ typedef struct s_cylindre
 typedef struct s_sphere
 {
 	double	diameter;
-	t_point	point;
+	t_vector	point;
 	t_color	color;
 }				t_sphere;
 
 typedef struct s_plane
 {
 	t_normal	normal;
-	t_point		point;
+	t_vector	point;
 	t_color		color;
 }				t_plane;
 
 typedef struct s_data
 {
-	t_objects	objs;
+	t_objects	*objs;
 	int			w;
 	int			h;
 	int			list_size;
+	int			obj_size;
 	int			fd;
+	t_color		*img;
+	t_camera	*camera;
 	char		**infos;
 }				t_data;
 
@@ -140,4 +151,13 @@ void	parse_camera(t_objects *obj_list, t_data *data, int i);
 void	parse_cylindre(t_objects *obj_list, t_data *data, int i);
 void	parse_sphere(t_objects *obj_list, t_data *data, int i);
 void	parse_plane(t_objects *obj_list, t_data *data, int i);
+t_vector	vectorSubtract(t_vector v1, t_vector v2);
+t_vector	vectorAdd(t_vector v1, t_vector v2);
+t_vector	vectorScale(t_vector v, double s);
+t_vector	vectorNormalize(t_vector v);
+double vectorDotProduct(t_vector v1, t_vector v2);
+t_vector vectorProject(t_vector v1, t_vector v2);
+int	intersect_s(t_ray ray, t_sphere sphere);
+int	intersect_c(t_ray ray, t_cylindre sphere);
+int	intersect_p(t_ray ray, t_plane sphere);
 #endif
