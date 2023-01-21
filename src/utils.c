@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 02:04:37 by adinari           #+#    #+#             */
-/*   Updated: 2023/01/18 15:09:39 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/01/21 15:56:31 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	init_data(t_data *data, char **argv)
 
 	data->list_size = 0;
 	data->obj_size = 0;
-	data->w = 800;
-	data->h = 450;
+	data->w = WIDTH;
+	data->h = HEIGHT;
 	data->fd = open(argv[1], O_RDONLY);
 	data->img = ft_calloc(data->h * data->w, sizeof(t_color));
 	str1 = "";
@@ -29,7 +29,6 @@ void	init_data(t_data *data, char **argv)
 			data->list_size++;
 		free(str1);
 	}
-	printf("data->list_size = %d\n", data->list_size);
 	close(data->fd);
 }
 

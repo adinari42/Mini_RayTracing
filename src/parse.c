@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 04:06:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/01/18 16:06:16 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/01/21 15:42:51 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ void	parse_camera(t_objects *obj_list, t_data *data, int i)
 		exit(1);
 	}
 	obj->w = 1;
-	obj->h = data->h / data->w;
-	obj->flen = atan(obj->fov / 360 * PI);
+	obj->h = (double)data->h / (double)data->w;
+	obj->flen = atan(obj->fov / 360 * PI) * 0.5;
 	point = ft_split(data->infos[1], ',');
 	obj->point.x= ft_atof(point[0]);
 	obj->point.y = ft_atof(point[1]);
@@ -114,6 +114,7 @@ void	parse_cylindre(t_objects *obj_list, t_data *data, int i)
 	((t_cylindre *)obj)->normal.z = ft_atof(point[2]);
 	free_split(point);
 	colors = ft_split(data->infos[5], ',');
+	obj_list[i].color = create_color(ft_atoi(colors[0]), ft_atoi(colors[1]), ft_atoi(colors[2]));
 	if (str_isdigit(colors[0]) && str_isdigit(colors[1]) && str_isdigit(colors[2]))
 	{
 		((t_cylindre *)obj)->color.red = ft_atoi(colors[0]);
@@ -140,6 +141,7 @@ void	parse_sphere(t_objects *obj_list, t_data *data, int i)
 	((t_sphere *)obj)->point.z = ft_atof(point[2]);
 	free_split(point);
 	colors = ft_split(data->infos[3], ',');
+	obj_list[i].color = create_color(ft_atoi(colors[0]), ft_atoi(colors[1]), ft_atoi(colors[2]));
 	if (str_isdigit(colors[0]) && str_isdigit(colors[1]) && str_isdigit(colors[2]))
 	{
 		((t_sphere *)obj)->color.red = ft_atoi(colors[0]);
@@ -168,6 +170,7 @@ void	parse_plane(t_objects *obj_list, t_data *data, int i)
 	((t_plane *)obj)->normal.z = ft_atof(point[2]);
 	free_split(point);
 	colors = ft_split(data->infos[3], ',');
+	obj_list[i].color = create_color(ft_atoi(colors[0]), ft_atoi(colors[1]), ft_atoi(colors[2]));
 	if (str_isdigit(colors[0]) && str_isdigit(colors[1]) && str_isdigit(colors[2]))
 	{
 		((t_plane *)obj)->color.red = ft_atoi(colors[0]);

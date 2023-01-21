@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:39:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/01/18 16:17:41 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/01/21 15:56:41 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,34 +149,33 @@ t_color	create_color(int	r, int g, int b)
 t_color traceRay(t_ray ray, t_data *data, int depth) {
 	int			i;
 	t_objects	*objs;
-	// t_objects	obj;
+	double t0 = 0;
 
-	if (depth > 5) 
+	if (depth > 5)
 		return (create_color(0, 0, 0));
 	i = -1;
 	double t = INFINITY;
-	int intersectedObjectIndex = -1;
+	int intersected = -1;
 	objs = data->objs;
-	while (++i < data->obj_size)
+	while (++i < data->list_size)
 	{
-		double t0 = 0;
 		if (objs[i].type == SPHERE)
 			t0 = intersect_s(ray, *(t_sphere*)objs[i].object);
 		else if ((char)objs[i].type == 'c')
 			t0 = intersect_c(ray, *(t_cylindre*)objs[i].object);
-		else if ((char)objs[i].type == 'p')
+		else if ((char)objs[i].type == PLANE)
 			t0 = intersect_p(ray, *(t_plane*)objs[i].object);
 		if (t0 > 0 && t0 < t) {
 			t = t0;
-			intersectedObjectIndex = i;
+			intersected = i;
 		}
 	}
-	if (intersectedObjectIndex == -1)
+	if (intersected == -1)
 		return (create_color(0, 0, 0));
-	return (create_color(255, 255, 255));
+	return (objs[intersected].color);
 }
 
-t_ray	create_ray(t_point p, t_vector v)
+t_ray	create_ray(t_vector p, t_vector v)
 {
 	t_ray ray;
 
@@ -195,21 +194,23 @@ void	trace(t_data *data)
 	t_ray		ray;
 	t_color		color;
 
+	printf("camera h = %f\n", data->camera->h);
 	i = -1;
 	while (++i < data->h)
 	{
 		j = -1;
 		while (++j < data->w)
 		{
-			v = j - data->w / 2;
-			u = i - data->h / 2;
+			v = (double)j / WIDTH - data->camera->w / 2;
+			u = (double)i / WIDTH - data->camera->h / 2;
 			d.x = v;
 			d.y = u;
 			d.z = data->camera->flen;
+			printf("x  = %f, y = %f, z = %f\n", d.x, d.y, d.z);
 			d = vectorNormalize(d);
 			ray = create_ray(data->camera->point, d);
 			color = traceRay(ray, data, 2);
-			data->img[i * j] = color;
+			data->img[i * WIDTH + j] = color;
 		}
 	}
 }
@@ -228,8 +229,10 @@ int	main(int argc, char **argv)
 	init_data(data, argv);
 	obj_list = malloc((data->list_size) * sizeof(t_objects));
 	save_info(obj_list, data);
-	print_obj_list(obj_list, data);
-	free_obj_list(obj_list, data);
+	data->objs = obj_list;
+	// print_obj_list(obj_list, data);
+	// free_obj_list(obj_list, data);
+	trace(data);
 	make_pic(*data);
 	free(obj_list);
 	free(data);

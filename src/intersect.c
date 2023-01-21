@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:37:11 by miahmadi          #+#    #+#             */
-/*   Updated: 2023/01/18 16:27:14 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/01/21 15:30:46 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,13 @@ int	intersect_c(t_ray ray, t_cylindre cylindre)
 
 int	intersect_p(t_ray ray, t_plane plane)
 {
-	(void)ray;
-	(void)plane;
-	return (0);
+	double t = -1;
+	double d = vectorDotProduct(ray.v, plane.normal);
+	if (fabs(d) > EPSILON) {
+		t_vector p0l0 = vectorSubtract(plane.point, ray.p);
+			t = vectorDotProduct(p0l0, plane.normal) / d;
+		if (t < 0)
+			t = -1;
+	}
+	return (t);
 }

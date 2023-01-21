@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:47:18 by adinari           #+#    #+#             */
-/*   Updated: 2023/01/18 16:23:05 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/01/21 15:53:11 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@
 # include "libft/libft.h"
 
 # define PI 3.14159
+# define EPSILON 1e-6
+# define WIDTH 1600
+# define HEIGHT 900
 
 typedef struct s_normal
 {
@@ -75,6 +78,7 @@ typedef struct	s_objects
 	char		*str;
 	void		*object;
 	int			type;
+	t_color		color;
 }				t_objects;
 
 typedef struct s_ray
@@ -98,7 +102,7 @@ typedef struct s_cylindre
 {
 	t_vector	point;
 	t_color		color;
-	t_normal	normal;
+	t_vector	normal;
 	double		height;
 	double		diameter;
 }				t_cylindre;
@@ -112,7 +116,7 @@ typedef struct s_sphere
 
 typedef struct s_plane
 {
-	t_normal	normal;
+	t_vector	normal;
 	t_vector	point;
 	t_color		color;
 }				t_plane;
@@ -160,4 +164,5 @@ t_vector vectorProject(t_vector v1, t_vector v2);
 int	intersect_s(t_ray ray, t_sphere sphere);
 int	intersect_c(t_ray ray, t_cylindre sphere);
 int	intersect_p(t_ray ray, t_plane sphere);
+t_color	create_color(int	r, int g, int b);
 #endif
