@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:37:11 by miahmadi          #+#    #+#             */
-/*   Updated: 2023/01/21 15:30:46 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/01/21 16:33:15 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,50 @@ int	intersect_s(t_ray ray, t_sphere sphere)
 	return (t0);
 }
 
-int	intersect_c(t_ray ray, t_cylindre cylindre)
+int	intersect_c(t_ray ray, t_cylindre cylinder)
 {
-	(void)ray;
-	(void)cylindre;
-	return (0);
+	t_vector d = ray.v;
+	t_vector e = ray.p;
+	t_vector c = cylinder.point;
+	t_vector m = vectorSubtract(e, c);
+	double r = cylinder.diameter;
+	double h = cylinder.height;
+
+	printf("HERE\n");
+	double dd = vectorDotProduct(d, d);
+	double mm = vectorDotProduct(m, m);
+	double md = vectorDotProduct(m, d);
+
+	double a = dd - md * md / mm;
+	double b = 2 * (md * vectorDotProduct(m, d) / mm - vectorDotProduct(d, e) + vectorDotProduct(d, c));
+	double cc = mm - r * r - vectorDotProduct(m, c) * vectorDotProduct(m, c);
+
+	double dis = b * b - 4 * a * cc;
+	if (dis < 0) {
+		return -1;
+	}
+
+	double t1 = (-b - sqrt(dis)) / (2 * a);
+	double t2 = (-b + sqrt(dis)) / (2 * a);
+	double t = -1;
+	if (t1 > EPSILON && t2 > EPSILON) {
+		t = fmin(t1, t2);
+	} else if (t1 > EPSILON) {
+		t = t1;
+	} else if (t2 > EPSILON) {
+		t = t2;
+	}
+	if (t < 0) {
+		return (-1);
+	}
+
+	t_vector p = vectorAdd(e, vectorScale(d, t));
+	double y = vectorDotProduct(vectorSubtract(p, c), cylinder.normal);
+	if (y < 0 || y > h) {
+		return (-1);
+	}
+
+	return (t);
 }
 
 int	intersect_p(t_ray ray, t_plane plane)

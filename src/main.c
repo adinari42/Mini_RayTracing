@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:39:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/01/21 15:56:41 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/01/21 21:39:08 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ t_color traceRay(t_ray ray, t_data *data, int depth) {
 	{
 		if (objs[i].type == SPHERE)
 			t0 = intersect_s(ray, *(t_sphere*)objs[i].object);
-		else if ((char)objs[i].type == 'c')
+		else if ((char)objs[i].type == CYLINDRE)
 			t0 = intersect_c(ray, *(t_cylindre*)objs[i].object);
 		else if ((char)objs[i].type == PLANE)
 			t0 = intersect_p(ray, *(t_plane*)objs[i].object);
@@ -190,6 +190,7 @@ void	trace(t_data *data)
 	int			j;
 	double		v;
 	double		u;
+
 	t_vector	d;
 	t_ray		ray;
 	t_color		color;
@@ -206,7 +207,6 @@ void	trace(t_data *data)
 			d.x = v;
 			d.y = u;
 			d.z = data->camera->flen;
-			printf("x  = %f, y = %f, z = %f\n", d.x, d.y, d.z);
 			d = vectorNormalize(d);
 			ray = create_ray(data->camera->point, d);
 			color = traceRay(ray, data, 2);
@@ -236,5 +236,4 @@ int	main(int argc, char **argv)
 	make_pic(*data);
 	free(obj_list);
 	free(data);
-	// system("leaks MiniRT");
 }

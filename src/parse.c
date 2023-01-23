@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 04:06:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/01/21 15:42:51 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/01/21 21:40:48 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	parse_camera(t_objects *obj_list, t_data *data, int i)
 	}
 	obj->w = 1;
 	obj->h = (double)data->h / (double)data->w;
-	obj->flen = atan(obj->fov / 360 * PI) * 0.5;
+	obj->flen = 0.5 / tan(obj->fov / 360 * PI);
 	point = ft_split(data->infos[1], ',');
 	obj->point.x= ft_atof(point[0]);
 	obj->point.y = ft_atof(point[1]);
@@ -94,32 +94,32 @@ void	parse_amb_light(t_objects *obj_list, t_data *data, int i)
 
 void	parse_cylindre(t_objects *obj_list, t_data *data, int i)
 {
-	void		*obj;
+	t_cylindre		*obj;
 	char		**colors;
 	char		**point;
 
 
 	obj = malloc(sizeof(t_cylindre)); 
 	obj_list[i].object = obj;
-	((t_cylindre *)obj)->height = ft_atof(data->infos[4]);
-	((t_cylindre *)obj)->diameter = ft_atof(data->infos[3]);
+	obj->height = ft_atof(data->infos[4]);
+	obj->diameter = ft_atof(data->infos[3]);
 	point = ft_split(data->infos[1], ',');
-		((t_cylindre *)obj)->point.x= ft_atof(point[0]);
-		((t_cylindre *)obj)->point.y = ft_atof(point[1]);
-		((t_cylindre *)obj)->point.z = ft_atof(point[2]);
+	obj->point.x= ft_atof(point[0]);
+	obj->point.y = ft_atof(point[1]);
+	obj->point.z = ft_atof(point[2]);
 	free_split(point);
 	point = ft_split(data->infos[2], ',');
-	((t_cylindre *)obj)->normal.x= ft_atof(point[0]);
-	((t_cylindre *)obj)->normal.y = ft_atof(point[1]);
-	((t_cylindre *)obj)->normal.z = ft_atof(point[2]);
+	obj->normal.x= ft_atof(point[0]);
+	obj->normal.y = ft_atof(point[1]);
+	obj->normal.z = ft_atof(point[2]);
 	free_split(point);
 	colors = ft_split(data->infos[5], ',');
 	obj_list[i].color = create_color(ft_atoi(colors[0]), ft_atoi(colors[1]), ft_atoi(colors[2]));
 	if (str_isdigit(colors[0]) && str_isdigit(colors[1]) && str_isdigit(colors[2]))
 	{
-		((t_cylindre *)obj)->color.red = ft_atoi(colors[0]);
-		((t_cylindre *)obj)->color.green = ft_atoi(colors[1]);
-		((t_cylindre *)obj)->color.blue = ft_atoi(colors[2]);
+		obj->color.red = ft_atoi(colors[0]);
+		obj->color.green = ft_atoi(colors[1]);
+		obj->color.blue = ft_atoi(colors[2]);
 	}
 	free_split(colors);
 	data->obj_size++;
