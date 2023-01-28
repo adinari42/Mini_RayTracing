@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:44:19 by miahmadi          #+#    #+#             */
-/*   Updated: 2023/01/18 16:23:57 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/01/27 21:07:08 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,16 @@ t_vector	vectorNormalize(t_vector v)
 double vectorDotProduct(t_vector v1, t_vector v2)
 {
   return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
+}
+
+t_vector vectorCrossProduct(t_vector v1, t_vector v2)
+{
+	t_vector res;
+
+	res.x = (v1.z * v2.y) - (v2.z * v1.y);
+	res.y = (v1.x * v2.z) - (v2.x * v1.z);
+	res.z = (v1.y * v2.x) - (v2.y * v1.x);
+    return (res);
 }
 
 t_vector vectorProject(t_vector v1, t_vector v2)

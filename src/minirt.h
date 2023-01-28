@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:47:18 by adinari           #+#    #+#             */
-/*   Updated: 2023/01/21 15:53:11 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/01/27 21:52:33 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <errno.h>
 # include <math.h>
 # include "gnl/get_next_line.h"
+# include "matrix.h"
 # include "libft/libft.h"
 
 # define PI 3.14159
@@ -53,6 +54,8 @@ typedef struct s_camera
 {
 	t_vector	point;
 	t_vector	normal;
+	t_matrix	trans;
+	t_matrix	trans_inv;
 	double		fov;
 	double		flen;
 	double		h;
@@ -105,6 +108,8 @@ typedef struct s_cylindre
 	t_vector	normal;
 	double		height;
 	double		diameter;
+	t_matrix	trans;
+	t_matrix	trans_inv;
 }				t_cylindre;
 
 typedef struct s_sphere
@@ -149,20 +154,22 @@ double	ft_atof(const char *str);
 // double	ft_atodoubl(const char *str, char **endptr);
 
 /**parse.c***/
-void	parse_light(t_objects *obj_list, t_data *data, int i);
-void	parse_amb_light(t_objects *obj_list, t_data *data, int i);
-void	parse_camera(t_objects *obj_list, t_data *data, int i);
-void	parse_cylindre(t_objects *obj_list, t_data *data, int i);
-void	parse_sphere(t_objects *obj_list, t_data *data, int i);
-void	parse_plane(t_objects *obj_list, t_data *data, int i);
+void		parse_light(t_objects *obj_list, t_data *data, int i);
+void		parse_amb_light(t_objects *obj_list, t_data *data, int i);
+void		parse_camera(t_objects *obj_list, t_data *data, int i);
+void		parse_cylindre(t_objects *obj_list, t_data *data, int i);
+void		parse_sphere(t_objects *obj_list, t_data *data, int i);
+void		parse_plane(t_objects *obj_list, t_data *data, int i);
 t_vector	vectorSubtract(t_vector v1, t_vector v2);
 t_vector	vectorAdd(t_vector v1, t_vector v2);
 t_vector	vectorScale(t_vector v, double s);
 t_vector	vectorNormalize(t_vector v);
-double vectorDotProduct(t_vector v1, t_vector v2);
-t_vector vectorProject(t_vector v1, t_vector v2);
-int	intersect_s(t_ray ray, t_sphere sphere);
-int	intersect_c(t_ray ray, t_cylindre sphere);
-int	intersect_p(t_ray ray, t_plane sphere);
-t_color	create_color(int	r, int g, int b);
+t_vector	vectorCrossProduct(t_vector v1, t_vector v2);
+double		vectorDotProduct(t_vector v1, t_vector v2);
+t_vector 	vectorProject(t_vector v1, t_vector v2);
+int			intersect_s(t_ray ray, t_sphere sphere);
+int			intersect_c(t_ray ray, t_cylindre c);
+int			intersect_p(t_ray ray, t_plane sphere);
+t_color		create_color(int	r, int g, int b);
+t_vector	transform(t_matrix trans, t_vector ray, int translate);
 #endif

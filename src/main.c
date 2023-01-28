@@ -6,11 +6,12 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:39:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/01/21 21:39:08 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/01/27 22:04:23 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+#include "matrix.h"
 
 int	is_obj(char *str)
 {
@@ -146,6 +147,24 @@ t_color	create_color(int	r, int g, int b)
 	return (color);
 }
 
+t_vector	transform(t_matrix trans, t_vector ray, int translate)
+{
+	t_matrix	ray_mat;
+	t_matrix	res_mat;
+	t_vector	res;
+
+	ray_mat = kc_matrix_init(4, 1);
+	ray_mat.elements[0] = ray.x;
+	ray_mat.elements[1] = ray.y;
+	ray_mat.elements[2] = ray.z;
+	ray_mat.elements[3] = translate;
+	res_mat = kc_matrix_multi(trans, ray_mat);
+	res.x = res_mat.elements[0];
+	res.y = res_mat.elements[1];
+	res.z = res_mat.elements[2];
+	return (res);
+}
+
 t_color traceRay(t_ray ray, t_data *data, int depth) {
 	int			i;
 	t_objects	*objs;
@@ -209,6 +228,11 @@ void	trace(t_data *data)
 			d.z = data->camera->flen;
 			d = vectorNormalize(d);
 			ray = create_ray(data->camera->point, d);
+			if ((i == 0 && j == 0) || (i == data->h - 1 && j == data->w - 1))
+			printf("BEFORE == \nx = %f, y = %f, z = %f\n", ray.v.x, ray.v.y, ray.v.z);
+			ray.v = transform(data->camera->trans, ray.v, 0);
+			if ((i == 0 && j == 0) || (i == data->h - 1 && j == data->w - 1))
+			printf("AFTER == \nx = %f, y = %f, z = %f\n", ray.v.x, ray.v.y, ray.v.z);
 			color = traceRay(ray, data, 2);
 			data->img[i * WIDTH + j] = color;
 		}
@@ -219,17 +243,26 @@ int	main(int argc, char **argv)
 {
 	t_data		*data;
 	t_objects	*obj_list;
+	t_ray		ray;
 
 	if (argc < 2)
 	{
 		write(2, "Error: no parameter found\nusage: ./MiniRT scene.rt\n", 52);
 		exit(1);
 	}
+	t_vector d;
+	d.x = 1;
+	d.y = 1;
+	d.z = 1;
 	data = malloc(sizeof(t_data));
 	init_data(data, argv);
 	obj_list = malloc((data->list_size) * sizeof(t_objects));
 	save_info(obj_list, data);
 	data->objs = obj_list;
+	ray = create_ray(data->camera->point, d);
+		printf("BEFORE == \nx = %f, y = %f, z = %f\n", ray.v.x, ray.v.y, ray.v.z);
+	ray.v = transform(data->camera->trans, ray.v, 0);
+			printf("AFTER == \nx = %f, y = %f, z = %f\n", ray.v.x, ray.v.y, ray.v.z);
 	// print_obj_list(obj_list, data);
 	// free_obj_list(obj_list, data);
 	trace(data);
