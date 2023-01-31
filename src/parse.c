@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 04:06:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/01/27 21:55:08 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/01/31 18:18:41 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,9 +148,18 @@ void	parse_cylindre(t_objects *obj_list, t_data *data, int i)
 	obj->normal.x= ft_atof(point[0]);
 	obj->normal.y = ft_atof(point[1]);
 	obj->normal.z = ft_atof(point[2]);
-	up.x = 0;
-	up.y = 1;
-	up.z = 1;
+	if (obj->normal.x == 0 && obj->normal.y == 1 && obj->normal.z == 0)
+	{
+		up.x = 1;
+		up.y = 0;
+		up.z = 0;
+	}
+	else
+	{
+		up.x = 0;
+		up.y = 1;
+		up.z = 0;
+	}
 	obj->normal = vectorNormalize(obj->normal);
 	dirX = vectorCrossProduct(up, obj->normal);
 	dirX = vectorNormalize(dirX);
@@ -160,20 +169,24 @@ void	parse_cylindre(t_objects *obj_list, t_data *data, int i)
 	obj->trans.elements[0] = dirX.x;
 	obj->trans.elements[1] = dirX.y;
 	obj->trans.elements[2] = dirX.z;
-	obj->trans.elements[3] = obj->point.x;
+	obj->trans.elements[3] = 0;
 	obj->trans.elements[4] = dirY.x;
 	obj->trans.elements[5] = dirY.y;
 	obj->trans.elements[6] = dirY.z;
-	obj->trans.elements[7] = obj->point.y;
+	obj->trans.elements[7] = 0;
 	obj->trans.elements[8] = obj->normal.x;
 	obj->trans.elements[9] = obj->normal.y;
 	obj->trans.elements[10] = obj->normal.z;
-	obj->trans.elements[11] = obj->point.z;
-	obj->trans.elements[12] = 0;
-	obj->trans.elements[13] = 0;
-	obj->trans.elements[14] = 0;
+	obj->trans.elements[11] = 0;
+	obj->trans.elements[12] = obj->point.x;
+	obj->trans.elements[13] = obj->point.y;
+	obj->trans.elements[14] = obj->point.z;
 	obj->trans.elements[15] = 1;
 	obj->trans_inv = kc_matrix_inverse(obj->trans);
+	printf("C TRANS\n");
+	kc_matrix_print(obj->trans);
+	printf("C TRANS INV\n");
+	kc_matrix_print(obj->trans_inv);
 	free_split(point);
 	colors = ft_split(data->infos[5], ',');
 	obj_list[i].color = create_color(ft_atoi(colors[0]), ft_atoi(colors[1]), ft_atoi(colors[2]));
