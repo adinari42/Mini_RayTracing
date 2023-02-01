@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:56:11 by miahmadi          #+#    #+#             */
-/*   Updated: 2023/01/27 21:03:26 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/02/01 21:54:55 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,7 @@ t_matrix	kc_matrix_inverse_4(t_matrix m)
 		j = -1;
 		while (++j < 4)
 		{
-			det = kc_matrix_get_det(i, j, m);
+			det = kc_matrix_get_det(j, i, m);
 			elm = pow(-1, i + j) * kc_matrix_det_3(det);
 			kc_matrix_set_elm(i, j, elm, &matrix);
 		}

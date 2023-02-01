@@ -6,13 +6,13 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:37:11 by miahmadi          #+#    #+#             */
-/*   Updated: 2023/01/30 00:53:56 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/02/01 22:47:34 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-int	intersect_s(t_ray ray, t_sphere sphere)
+double	intersect_s(t_ray ray, t_sphere sphere)
 {
 	t_vector	ls;
 	double		tca;
@@ -47,7 +47,7 @@ int	intersect_s(t_ray ray, t_sphere sphere)
 	return (t0);
 }
 
-int	intersect_c(t_ray ray, t_cylindre cylinder)
+double	intersect_c(t_ray ray, t_cylindre cylinder)
 {
 	t_ray	new_ray;
 	t_vector	point;
@@ -71,24 +71,24 @@ int	intersect_c(t_ray ray, t_cylindre cylinder)
 		if (t1 > 0)
 		{
 			point.z = new_ray.p.z + new_ray.v.z * t1;
-			// printf("Z = %f, t1 = %f, height = %f\n", point.z, t1, cylinder.height / 2);
+			printf("Point before(%f,%f,%f)\n", point.x, point.y, point.z);
+			point = transform(cylinder.trans, point, 1);
+			printf("Point after(%f,%f,%f)\n", point.x, point.y, point.z);
 			if (point.z < cylinder.height / 2 && point.z > -cylinder.height / 2)
-			{
-				// printf("Z = %f, t1 = %f, height = %f\n", point.z, t1, cylinder.height / 2);
-				return (1);
-			}
+				return (sqrt(pow(point.x - ray.p.x, 2) + pow(point.y - ray.p.y, 2) + pow(point.z - ray.p.z, 2)));
 		}
 		if (t2 > 0)
 		{
 			point.z = new_ray.p.z + new_ray.v.z * t2;
+			point = transform(cylinder.trans, point, 1);
 			if (point.z < cylinder.height / 2 && point.z > -cylinder.height / 2)
-				return (1);
+				return (sqrt(pow(point.x - ray.p.x, 2) + pow(point.y - ray.p.y, 2) + pow(point.z - ray.p.z, 2)));
 		}
 	}
 	return (0);
 }
 
-int	intersect_p(t_ray ray, t_plane plane)
+double	intersect_p(t_ray ray, t_plane plane)
 {
 	double t = -1;
 	double d = vectorDotProduct(ray.v, plane.normal);

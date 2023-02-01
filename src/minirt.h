@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:47:18 by adinari           #+#    #+#             */
-/*   Updated: 2023/01/27 21:52:33 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/02/01 21:17:35 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,9 +167,9 @@ t_vector	vectorNormalize(t_vector v);
 t_vector	vectorCrossProduct(t_vector v1, t_vector v2);
 double		vectorDotProduct(t_vector v1, t_vector v2);
 t_vector 	vectorProject(t_vector v1, t_vector v2);
-int			intersect_s(t_ray ray, t_sphere sphere);
-int			intersect_c(t_ray ray, t_cylindre c);
-int			intersect_p(t_ray ray, t_plane sphere);
+double		intersect_s(t_ray ray, t_sphere sphere);
+double		intersect_c(t_ray ray, t_cylindre c);
+double		intersect_p(t_ray ray, t_plane sphere);
 t_color		create_color(int	r, int g, int b);
 t_vector	transform(t_matrix trans, t_vector ray, int translate);
 #endif

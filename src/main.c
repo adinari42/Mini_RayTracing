@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:39:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/01/27 22:04:23 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/02/01 21:11:14 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,11 +228,7 @@ void	trace(t_data *data)
 			d.z = data->camera->flen;
 			d = vectorNormalize(d);
 			ray = create_ray(data->camera->point, d);
-			if ((i == 0 && j == 0) || (i == data->h - 1 && j == data->w - 1))
-			printf("BEFORE == \nx = %f, y = %f, z = %f\n", ray.v.x, ray.v.y, ray.v.z);
 			ray.v = transform(data->camera->trans, ray.v, 0);
-			if ((i == 0 && j == 0) || (i == data->h - 1 && j == data->w - 1))
-			printf("AFTER == \nx = %f, y = %f, z = %f\n", ray.v.x, ray.v.y, ray.v.z);
 			color = traceRay(ray, data, 2);
 			data->img[i * WIDTH + j] = color;
 		}
