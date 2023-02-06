@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:37:11 by miahmadi          #+#    #+#             */
-/*   Updated: 2023/02/01 22:47:34 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/02/02 19:16:44 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ double	intersect_c(t_ray ray, t_cylindre cylinder)
 
 	new_ray.p = transform(cylinder.trans_inv, ray.p, 1);
 	new_ray.v = transform(cylinder.trans_inv, ray.v, 0);
+	printf("Ray before(%f,%f,%f)\n", ray.p.x, ray.p.y, ray.p.z);
+	printf("Ray after(%f,%f,%f)\n", new_ray.p.x, new_ray.p.y, new_ray.p.z);
 	a = pow(new_ray.v.x, 2) + pow(new_ray.v.y, 2);
 	b = 2 * (new_ray.p.x * new_ray.v.x + new_ray.p.y * new_ray.v.y);
 	c = pow(new_ray.p.x, 2) + pow(new_ray.p.x, 2) - pow(cylinder.diameter, 2);
@@ -72,17 +74,21 @@ double	intersect_c(t_ray ray, t_cylindre cylinder)
 		{
 			point.z = new_ray.p.z + new_ray.v.z * t1;
 			printf("Point before(%f,%f,%f)\n", point.x, point.y, point.z);
-			point = transform(cylinder.trans, point, 1);
-			printf("Point after(%f,%f,%f)\n", point.x, point.y, point.z);
 			if (point.z < cylinder.height / 2 && point.z > -cylinder.height / 2)
+			{
+				point = transform(cylinder.trans, point, 1);
+				printf("Point after(%f,%f,%f)\n", point.x, point.y, point.z);
 				return (sqrt(pow(point.x - ray.p.x, 2) + pow(point.y - ray.p.y, 2) + pow(point.z - ray.p.z, 2)));
+			}
 		}
 		if (t2 > 0)
 		{
 			point.z = new_ray.p.z + new_ray.v.z * t2;
-			point = transform(cylinder.trans, point, 1);
 			if (point.z < cylinder.height / 2 && point.z > -cylinder.height / 2)
+			{
+				point = transform(cylinder.trans, point, 1);
 				return (sqrt(pow(point.x - ray.p.x, 2) + pow(point.y - ray.p.y, 2) + pow(point.z - ray.p.z, 2)));
+			}
 		}
 	}
 	return (0);

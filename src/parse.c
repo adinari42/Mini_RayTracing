@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 04:06:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/02/01 21:52:01 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/02/06 22:01:15 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ void	parse_camera(t_objects *obj_list, t_data *data, int i)
 	up.y = 1;
 	up.z = 0;
 	obj->normal = vectorNormalize(obj->normal);
-	dirX = vectorCrossProduct(up, obj->normal);
+	dirX = vectorCrossProduct(obj->normal, up);
 	dirX = vectorNormalize(dirX);
-	dirY = vectorCrossProduct(obj->normal, dirX);
+	dirY = vectorCrossProduct(dirX, obj->normal);
 	dirY = vectorNormalize(dirY);
 	obj->trans = kc_matrix_init(4, 4);
 	obj->trans.elements[0] = dirX.x;
@@ -150,9 +150,9 @@ void	parse_cylindre(t_objects *obj_list, t_data *data, int i)
 	obj->normal.z = ft_atof(point[2]);
 	if (obj->normal.x == 0 && obj->normal.y == 1 && obj->normal.z == 0)
 	{
-		up.x = 1;
+		up.x = 0;
 		up.y = 0;
-		up.z = 0;
+		up.z = -1;
 	}
 	else
 	{
@@ -161,9 +161,9 @@ void	parse_cylindre(t_objects *obj_list, t_data *data, int i)
 		up.z = 0;
 	}
 	obj->normal = vectorNormalize(obj->normal);
-	dirX = vectorCrossProduct(up, obj->normal);
+	dirX = vectorCrossProduct(obj->normal, up);
 	dirX = vectorNormalize(dirX);
-	dirY = vectorCrossProduct(obj->normal, dirX);
+	dirY = vectorCrossProduct(dirX, obj->normal);
 	dirY = vectorNormalize(dirY);
 	obj->trans = kc_matrix_init(4, 4);
 	obj->trans.elements[0] = dirX.x;
