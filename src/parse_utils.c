@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 01:21:14 by adinari           #+#    #+#             */
-/*   Updated: 2023/01/18 13:21:39 by adinari          ###   ########.fr       */
+/*   Updated: 2023/02/19 22:13:43 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ int	ft_isfloat(char *str)
 	dot_count = 0;
 	if ((str[i] < '0' || str[i] > '9') && str[i] != '-')
 		return (0);
-	// i++;
 	while (str[i] != '0')
 	{
 		if ((str[i] < '0' || str[i] > '9') && str[i] != '.')
@@ -107,7 +106,7 @@ int	ft_isfloat(char *str)
 		i++;
 	}
 	if (str[i - 1] == '.')
-		return (0);
+		return (1);
 	if (dot_count != 0 && dot_count != 1)
 		return (0);
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 02:04:37 by adinari           #+#    #+#             */
-/*   Updated: 2023/01/21 15:56:31 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/02/14 14:05:55 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,16 @@ void	init_data(t_data *data, char **argv)
 		free(str1);
 	}
 	close(data->fd);
+}
+
+t_vector	create_vector(double x, double y, double z)
+{
+	t_vector	v;
+
+	v.x = x;
+	v.y = y;
+	v.z = z;
+	return (v);
 }
 
 int	first_occur(char *str)

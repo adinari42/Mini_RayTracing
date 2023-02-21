@@ -6,7 +6,7 @@
 #    By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 21:40:31 by adinari           #+#    #+#              #
-#    Updated: 2023/01/26 13:18:23 by miahmadi         ###   ########.fr        #
+#    Updated: 2023/02/19 19:05:28 by miahmadi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ FILES = src/main.c\
 		src/intersect.c\
 		src/vector_op.c\
 		src/matrix.c\
+		src/lighting.c\
 
 OBJECTS = $(FILES:.c=.o)
 

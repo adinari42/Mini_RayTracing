@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:44:19 by miahmadi          #+#    #+#             */
-/*   Updated: 2023/01/27 21:07:08 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/02/19 21:43:27 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,20 @@ double vectorDotProduct(t_vector v1, t_vector v2)
   return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
 }
 
+double vectorDotProductPrint(t_vector v1, t_vector v2)
+{
+	vectorPrint("Light ->", v1);
+	vectorPrint("plane ->", v2);
+  return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
+}
+
 t_vector vectorCrossProduct(t_vector v1, t_vector v2)
 {
 	t_vector res;
 
-	res.x = (v1.z * v2.y) - (v2.z * v1.y);
-	res.y = (v1.x * v2.z) - (v2.x * v1.z);
-	res.z = (v1.y * v2.x) - (v2.y * v1.x);
+	res.x = (v1.y * v2.z) - (v2.y * v1.z);
+	res.y = (v1.z * v2.x) - (v2.z * v1.x);
+	res.z = (v1.x * v2.y) - (v2.x * v1.y);
     return (res);
 }
 
@@ -78,4 +85,9 @@ t_vector vectorProject(t_vector v1, t_vector v2)
   dot = vectorDotProduct(v1, v2);
   square = vectorDotProduct(v2, v2);
   return vectorScale(v2, dot / square);
+}
+
+void	vectorPrint(char *msg, t_vector v)
+{
+	printf("%s (%f, %f, %f)\n", msg, v.x, v.y, v.z);
 }

@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 04:06:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/02/06 22:01:15 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/02/19 21:59:39 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ void	parse_camera(t_objects *obj_list, t_data *data, int i)
 	up.y = 1;
 	up.z = 0;
 	obj->normal = vectorNormalize(obj->normal);
-	dirX = vectorCrossProduct(obj->normal, up);
+	dirX = vectorCrossProduct(up, obj->normal);
 	dirX = vectorNormalize(dirX);
-	dirY = vectorCrossProduct(dirX, obj->normal);
+	dirY = vectorCrossProduct(obj->normal, dirX);
 	dirY = vectorNormalize(dirY);
 	obj->trans = kc_matrix_init(4, 4);
 	obj->trans.elements[0] = dirX.x;
@@ -78,18 +78,20 @@ void	parse_camera(t_objects *obj_list, t_data *data, int i)
 
 void	parse_light(t_objects *obj_list, t_data *data, int i)
 {
-	void		*obj;
-	char		**colors;
-	char		**point;
+	t_light	*obj;
+	char	**colors;
+	char	**point;
 
 
 	obj = malloc(sizeof(t_light)); 
 	obj_list[i].object = obj;
+	printf("INFO => %s\n", data->infos[2]);
 	if (ft_isfloat(data->infos[2]))
 		((t_light *)obj)->ratio = ft_atof(data->infos[2]);
 	else
 	{
-		printf("isfloat error\n");
+
+		printf("isfloat error light intensity\n");
 		exit(1);
 	}
 	point = ft_split(data->infos[1], ',');
@@ -104,6 +106,7 @@ void	parse_light(t_objects *obj_list, t_data *data, int i)
 		((t_light *)obj)->color.green = ft_atoi(colors[1]);
 		((t_light *)obj)->color.blue = ft_atoi(colors[2]);
 	}
+	data->light = obj;
 	free_split(colors);
 }
 
@@ -161,9 +164,9 @@ void	parse_cylindre(t_objects *obj_list, t_data *data, int i)
 		up.z = 0;
 	}
 	obj->normal = vectorNormalize(obj->normal);
-	dirX = vectorCrossProduct(obj->normal, up);
+	dirX = vectorCrossProduct(up, obj->normal);
 	dirX = vectorNormalize(dirX);
-	dirY = vectorCrossProduct(dirX, obj->normal);
+	dirY = vectorCrossProduct(obj->normal, dirX);
 	dirY = vectorNormalize(dirY);
 	obj->trans = kc_matrix_init(4, 4);
 	obj->trans.elements[0] = dirX.x;
@@ -226,31 +229,34 @@ void	parse_sphere(t_objects *obj_list, t_data *data, int i)
 	free_split(colors);
 	data->obj_size++;
 }
+
 void	parse_plane(t_objects *obj_list, t_data *data, int i)
 {
-	void		*obj;
+	t_plane		*obj;
 	char		**colors;
 	char		**point;
 
 	obj = malloc(sizeof(t_plane));
 	obj_list[i].object = obj;
 	point = ft_split(data->infos[1], ',');
-	((t_plane *)obj)->point.x= ft_atof(point[0]);
-	((t_plane *)obj)->point.y = ft_atof(point[1]);
-	((t_plane *)obj)->point.z = ft_atof(point[2]);
+	obj->point.x= ft_atof(point[0]);
+	obj->point.y = ft_atof(point[1]);
+	obj->point.z = ft_atof(point[2]);
 	free_split(point);
 	point = ft_split(data->infos[2], ',');
-	((t_plane *)obj)->normal.x= ft_atof(point[0]);
-	((t_plane *)obj)->normal.y = ft_atof(point[1]);
-	((t_plane *)obj)->normal.z = ft_atof(point[2]);
+	obj->normal.x= ft_atof(point[0]);
+	obj->normal.y = ft_atof(point[1]);
+	obj->normal.z = ft_atof(point[2]);
+	obj->normal = vectorNormalize(obj->normal);
+	vectorPrint("MY PALNE => ", obj->normal);
 	free_split(point);
 	colors = ft_split(data->infos[3], ',');
 	obj_list[i].color = create_color(ft_atoi(colors[0]), ft_atoi(colors[1]), ft_atoi(colors[2]));
 	if (str_isdigit(colors[0]) && str_isdigit(colors[1]) && str_isdigit(colors[2]))
 	{
-		((t_plane *)obj)->color.red = ft_atoi(colors[0]);
-		((t_plane *)obj)->color.green = ft_atoi(colors[1]);
-		((t_plane *)obj)->color.blue = ft_atoi(colors[2]);
+		obj->color.red = ft_atoi(colors[0]);
+		obj->color.green = ft_atoi(colors[1]);
+		obj->color.blue = ft_atoi(colors[2]);
 	}
 	free_split(colors);
 	data->obj_size++;

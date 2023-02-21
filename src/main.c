@@ -6,12 +6,21 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:39:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/02/01 21:11:14 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/02/19 22:09:22 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #include "matrix.h"
+
+t_ray	create_ray(t_vector p, t_vector v)
+{
+	t_ray ray;
+
+	ray.p = p;
+	ray.v = v;
+	return (ray);	
+}
 
 int	is_obj(char *str)
 {
@@ -166,41 +175,48 @@ t_vector	transform(t_matrix trans, t_vector ray, int translate)
 }
 
 t_color traceRay(t_ray ray, t_data *data, int depth) {
+	t_color		res;
+	t_ray		light;
+	t_hitpoint	hit;
+	t_hitpoint	tmp_hit;
 	int			i;
 	t_objects	*objs;
-	double t0 = 0;
 
 	if (depth > 5)
 		return (create_color(0, 0, 0));
 	i = -1;
-	double t = INFINITY;
-	int intersected = -1;
+	hit.dist = INFINITY;
 	objs = data->objs;
 	while (++i < data->list_size)
 	{
 		if (objs[i].type == SPHERE)
-			t0 = intersect_s(ray, *(t_sphere*)objs[i].object);
-		else if ((char)objs[i].type == CYLINDRE)
-			t0 = intersect_c(ray, *(t_cylindre*)objs[i].object);
-		else if ((char)objs[i].type == PLANE)
-			t0 = intersect_p(ray, *(t_plane*)objs[i].object);
-		if (t0 > 0 && t0 < t) {
-			t = t0;
-			intersected = i;
+			tmp_hit = intersect_s(ray, (t_sphere*)objs[i].object);
+		else if (objs[i].type == CYLINDRE)
+			tmp_hit = intersect_c(ray, (t_cylindre*)objs[i].object);
+		else if (objs[i].type == PLANE)
+			tmp_hit = intersect_p(ray, (t_plane*)objs[i].object);
+		if (tmp_hit.dist > 0.000001 && tmp_hit.dist < hit.dist)
+		{
+			// double test = 0.0000000000000001;
+			// if (tmp_hit.dist != 0)
+			// 	printf("dist = %f, tmp_dist = %f, test = %f\n", hit.dist, tmp_hit.dist, test);
+			hit.dist = tmp_hit.dist;
+			hit.object = tmp_hit.object;
+			hit.point = tmp_hit.point;
 		}
 	}
-	if (intersected == -1)
+	if (hit.dist <= 0 || hit.dist == INFINITY)
 		return (create_color(0, 0, 0));
-	return (objs[intersected].color);
-}
-
-t_ray	create_ray(t_vector p, t_vector v)
-{
-	t_ray ray;
-
-	ray.p = p;
-	ray.v = v;
-	return (ray);	
+	if (hit.object.type == PLANE)
+	{
+		vectorPrint("light >>", data->light->point);
+		vectorPrint("hit >>", hit.point);
+		vectorPrint("diff >>", vectorSubtract(hit.point, data->light->point));
+		vectorPrint("norm >>", vectorNormalize(vectorSubtract(hit.point, data->light->point)));
+	}
+	light = create_ray(data->light->point, vectorNormalize(vectorSubtract(hit.point, data->light->point)));
+	res = compute_lighting(light, hit);
+	return (res);
 }
 
 void	trace(t_data *data)
@@ -219,10 +235,10 @@ void	trace(t_data *data)
 	while (++i < data->h)
 	{
 		j = -1;
+		u = (double)i / WIDTH - data->camera->h / 2;
 		while (++j < data->w)
 		{
 			v = (double)j / WIDTH - data->camera->w / 2;
-			u = (double)i / WIDTH - data->camera->h / 2;
 			d.x = v;
 			d.y = u;
 			d.z = data->camera->flen;

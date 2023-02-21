@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:47:18 by adinari           #+#    #+#             */
-/*   Updated: 2023/02/01 21:17:35 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/02/19 21:44:01 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,8 +136,17 @@ typedef struct s_data
 	int			fd;
 	t_color		*img;
 	t_camera	*camera;
+	t_light		*light;
 	char		**infos;
 }				t_data;
+
+typedef struct	s_hitpoint
+{
+	t_vector	point;
+	t_objects	object;
+	double		dist;
+}				t_hitpoint;
+
 
 
 
@@ -166,10 +175,15 @@ t_vector	vectorScale(t_vector v, double s);
 t_vector	vectorNormalize(t_vector v);
 t_vector	vectorCrossProduct(t_vector v1, t_vector v2);
 double		vectorDotProduct(t_vector v1, t_vector v2);
+double		vectorDotProductPrint(t_vector v1, t_vector v2);
 t_vector 	vectorProject(t_vector v1, t_vector v2);
-double		intersect_s(t_ray ray, t_sphere sphere);
-double		intersect_c(t_ray ray, t_cylindre c);
-double		intersect_p(t_ray ray, t_plane sphere);
+t_hitpoint	intersect_s(t_ray ray, t_sphere *sphere);
+t_hitpoint	intersect_c(t_ray ray, t_cylindre *c);
+t_hitpoint	intersect_p(t_ray ray, t_plane *plane);
 t_color		create_color(int	r, int g, int b);
 t_vector	transform(t_matrix trans, t_vector ray, int translate);
+t_vector	create_vector(double x, double y, double z);
+void		vectorPrint(char *msg, t_vector v);
+t_color		compute_lighting(t_ray light, t_hitpoint hit);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:56:11 by miahmadi          #+#    #+#             */
-/*   Updated: 2023/02/01 21:54:55 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/02/19 18:17:42 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	kc_matrix_print(t_matrix matrix)
 {
 	int	i;
 	int	j;
-
 	i = -1;
 	while (++i < matrix.rows)
 	{
