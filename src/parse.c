@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 04:06:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/02/19 21:59:39 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/02/25 18:34:58 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,6 @@ void	parse_camera(t_objects *obj_list, t_data *data, int i)
 	obj->trans.elements[14] = 0;
 	obj->trans.elements[15] = 1;
 	obj->trans_inv = kc_matrix_inverse(obj->trans);
-	printf("\nTransform: \n");
-	kc_matrix_print(obj->trans);
-	printf("\nTransform Inverse: \n");
-	kc_matrix_print(obj->trans_inv);
 	data->camera = obj;
 	free_split(normal);
 }
@@ -125,6 +121,7 @@ void	parse_amb_light(t_objects *obj_list, t_data *data, int i)
 		((t_amb_light *)obj)->color.green = ft_atoi(colors[1]);
 		((t_amb_light *)obj)->color.blue = ft_atoi(colors[2]);
 	}
+	data->amb_light = obj;
 	free_split(colors);
 }
 

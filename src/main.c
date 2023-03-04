@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:39:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/02/19 22:09:22 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/02/26 18:45:02 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,7 @@ t_color traceRay(t_ray ray, t_data *data, int depth) {
 	t_hitpoint	hit;
 	t_hitpoint	tmp_hit;
 	int			i;
+	int			idx;
 	t_objects	*objs;
 
 	if (depth > 5)
@@ -197,25 +198,19 @@ t_color traceRay(t_ray ray, t_data *data, int depth) {
 			tmp_hit = intersect_p(ray, (t_plane*)objs[i].object);
 		if (tmp_hit.dist > 0.000001 && tmp_hit.dist < hit.dist)
 		{
-			// double test = 0.0000000000000001;
-			// if (tmp_hit.dist != 0)
-			// 	printf("dist = %f, tmp_dist = %f, test = %f\n", hit.dist, tmp_hit.dist, test);
 			hit.dist = tmp_hit.dist;
 			hit.object = tmp_hit.object;
 			hit.point = tmp_hit.point;
+			idx = i;
 		}
 	}
 	if (hit.dist <= 0 || hit.dist == INFINITY)
 		return (create_color(0, 0, 0));
-	if (hit.object.type == PLANE)
-	{
-		vectorPrint("light >>", data->light->point);
-		vectorPrint("hit >>", hit.point);
-		vectorPrint("diff >>", vectorSubtract(hit.point, data->light->point));
-		vectorPrint("norm >>", vectorNormalize(vectorSubtract(hit.point, data->light->point)));
-	}
 	light = create_ray(data->light->point, vectorNormalize(vectorSubtract(hit.point, data->light->point)));
-	res = compute_lighting(light, hit);
+	res = compute_lighting(light, hit, data->light->ratio, ray);
+	if (is_shadow(light, data, hit, idx) == 1)
+		res = create_color(0, 0, 0);
+	res = add_ambient(res, data->amb_light);
 	return (res);
 }
 
@@ -230,7 +225,6 @@ void	trace(t_data *data)
 	t_ray		ray;
 	t_color		color;
 
-	printf("camera h = %f\n", data->camera->h);
 	i = -1;
 	while (++i < data->h)
 	{
@@ -272,11 +266,9 @@ int	main(int argc, char **argv)
 	save_info(obj_list, data);
 	data->objs = obj_list;
 	ray = create_ray(data->camera->point, d);
-		printf("BEFORE == \nx = %f, y = %f, z = %f\n", ray.v.x, ray.v.y, ray.v.z);
 	ray.v = transform(data->camera->trans, ray.v, 0);
-			printf("AFTER == \nx = %f, y = %f, z = %f\n", ray.v.x, ray.v.y, ray.v.z);
 	// print_obj_list(obj_list, data);
-	// free_obj_list(obj_list, data);
+	free_obj_list(obj_list, data);
 	trace(data);
 	make_pic(*data);
 	free(obj_list);

@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:47:18 by adinari           #+#    #+#             */
-/*   Updated: 2023/02/19 21:44:01 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/02/26 18:44:40 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 
 # define PI 3.14159
 # define EPSILON 1e-6
-# define WIDTH 1600
-# define HEIGHT 900
+# define WIDTH 2400
+# define HEIGHT 1350
 
 typedef struct s_normal
 {
@@ -98,6 +98,7 @@ enum obj_type
 	CYLINDRE,
 	PLANE,
 	SPHERE,
+	CPLANE,
 	NONE,
 };
 
@@ -137,6 +138,7 @@ typedef struct s_data
 	t_color		*img;
 	t_camera	*camera;
 	t_light		*light;
+	t_amb_light	*amb_light;
 	char		**infos;
 }				t_data;
 
@@ -184,6 +186,8 @@ t_color		create_color(int	r, int g, int b);
 t_vector	transform(t_matrix trans, t_vector ray, int translate);
 t_vector	create_vector(double x, double y, double z);
 void		vectorPrint(char *msg, t_vector v);
-t_color		compute_lighting(t_ray light, t_hitpoint hit);
+t_color		compute_lighting(t_ray light, t_hitpoint hit, double intense, t_ray ray);
+int			is_shadow(t_ray light, t_data *data, t_hitpoint hit, int idx);
+t_color		add_ambient(t_color color, t_amb_light *light);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:37:11 by miahmadi          #+#    #+#             */
-/*   Updated: 2023/02/19 22:15:36 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/02/26 18:50:28 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ t_hitpoint	intersect_s(t_ray ray, t_sphere *sphere)
 			return (hit);
 		}
 	}
+	// printf("t0 = %f\n", t0);
 	hit.dist = t0;
 	hit.point = vectorAdd(ray.p, vectorScale(ray.v, t0));
 	return (hit);
@@ -65,13 +66,11 @@ t_hitpoint	intersect_c(t_ray ray, t_cylindre *cylinder)
 	t_hitpoint	temp;
 	t_ray	new_ray;
 	t_vector	point1;
-	// t_vector	point2;
 	t_plane		plane;
 	double		a;
 	double		b;
 	double		c;
 	double		d;
-	double		t1;
 	double		t2;
 	double		dist;
 	double		tmp_t;
@@ -87,20 +86,11 @@ t_hitpoint	intersect_c(t_ray ray, t_cylindre *cylinder)
 	c = pow(new_ray.p.x, 2) + pow(new_ray.p.y, 2) - pow(cylinder->diameter, 2);
 	d = pow(b, 2) - 4 * a * c;
 	dist = -1;
-	if (d > 0)
+	if (d >= 0)
 	{
-		t1 = (-b + sqrt(d)) / (2 * a);
 		t2 = (-b - sqrt(d)) / (2 * a);
-		// point1 = vectorAdd(new_ray.p, vectorScale(new_ray.v, t1));
-		// if (point1.z < cylinder->height / 2 && point1.z > -cylinder->height / 2)
-		// {
-		// 	point1 = transform(cylinder->trans, point1, 1);
-		// 	tmp_t = sqrt(pow(point1.x - ray.p.x, 2) + pow(point1.y - ray.p.y, 2) + pow(point1.z - ray.p.z, 2));
-		// 	if (tmp_t > 0)
-		// 		dist = tmp_t;
-		// }
 		point1 = vectorAdd(new_ray.p, vectorScale(new_ray.v, t2));
-		if (point1.z < cylinder->height / 2 && point1.z > -cylinder->height / 2)
+		if (point1.z <= cylinder->height / 2 && point1.z >= -cylinder->height / 2)
 		{
 			point1 = transform(cylinder->trans, point1, 1);
 			tmp_t = sqrt(pow(point1.x - ray.p.x, 2) + pow(point1.y - ray.p.y, 2) + pow(point1.z - ray.p.z, 2));
@@ -108,44 +98,37 @@ t_hitpoint	intersect_c(t_ray ray, t_cylindre *cylinder)
 				dist = tmp_t;
 		}
 	}
-	plane.normal = cylinder->normal;
-	plane.normal.z *= -1;
+	plane.normal = vectorScale(transform(cylinder->trans, create_vector(0,0,1), 0), -1);
 	plane.point = transform(cylinder->trans, create_vector(0, 0, -cylinder->height / 2), 1);
-	// vectorPrint("P1 =>", plane.point);
 	plane.color = create_color(200,105,100);
 	temp = intersect_p(ray, &plane);
 	if (temp.dist > 0)
 	{
 		if ((dist > 0 && temp.dist < dist) || dist == -1)
 		{
-			// printf("Dist = %f, tmp = %f, d = %f\n", dist, temp.dist, d);
-			// printf("x = %f, y = %f, res = %f, r = %f\n", pow(new_ray.p.x + temp.dist * new_ray.v.x, 2), pow(new_ray.p.y + temp.dist * new_ray.v.y, 2), pow(new_ray.p.x + temp.dist * new_ray.v.x, 2) + pow(new_ray.p.y + temp.dist * new_ray.v.y, 2), pow(cylinder->diameter, 2));
 			if (pow(new_ray.p.x + temp.dist * new_ray.v.x, 2) + pow(new_ray.p.y + temp.dist * new_ray.v.y, 2) < pow(cylinder->diameter, 2))
 			{
 				dist = temp.dist;
-				hit.object.color = plane.color;
+				hit.object.color = cylinder->color;
 				hit.object.object = &plane;
 				hit.object.type = PLANE;
-				// printf("t1 = %f\n", dist);
 			}
 		}
 	}
 	plane.point = transform(cylinder->trans, create_vector(0, 0, cylinder->height / 2), 1);
 	plane.color = create_color(200,0,50);
-	// vectorPrint("P2 =>", plane.point);
 	temp = intersect_p(ray, &plane);
 	if (temp.dist > 0)
 	{
 		if ((dist > 0 && temp.dist < dist) || dist == -1)
 		{
-			// printf("x = %f, y = %f, res = %f, r = %f\n", pow(new_ray.p.x + temp.dist * new_ray.v.x, 2), pow(new_ray.p.y + temp.dist * new_ray.v.y, 2), pow(new_ray.p.x + temp.dist * new_ray.v.x, 2) + pow(new_ray.p.y + temp.dist * new_ray.v.y, 2), pow(cylinder->diameter, 2));
+			plane.normal = vectorScale(cylinder->normal, 1);
 			if (pow(new_ray.p.x + temp.dist * new_ray.v.x, 2) + pow(new_ray.p.y + temp.dist * new_ray.v.y, 2) < pow(cylinder->diameter, 2))
 			{
 				dist = temp.dist;
-				hit.object.color = plane.color;
+				hit.object.color = cylinder->color;
 				hit.object.object = &plane;
 				hit.object.type = PLANE;
-				// printf("t2 = %f\n", dist);
 			}
 		}
 	}
