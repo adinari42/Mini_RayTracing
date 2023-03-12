@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:47:18 by adinari           #+#    #+#             */
-/*   Updated: 2023/02/26 18:44:40 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/03/08 19:35:13 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ typedef struct s_amb_light
 }				t_amb_light;
 
 //linked list of shapes/objects
-typedef struct	s_objects
+typedef struct s_objects
 {
 	char		*str;
 	void		*object;
@@ -90,7 +90,7 @@ typedef struct s_ray
 	t_vector	p;
 }				t_ray;
 
-enum obj_type
+enum e_obj_type
 {
 	AMB_LIGHT,
 	LIGHT,
@@ -115,9 +115,9 @@ typedef struct s_cylindre
 
 typedef struct s_sphere
 {
-	double	diameter;
+	double		diameter;
 	t_vector	point;
-	t_color	color;
+	t_color		color;
 }				t_sphere;
 
 typedef struct s_plane
@@ -142,52 +142,162 @@ typedef struct s_data
 	char		**infos;
 }				t_data;
 
-typedef struct	s_hitpoint
+typedef struct s_hitpoint
 {
 	t_vector	point;
 	t_objects	object;
 	double		dist;
 }				t_hitpoint;
 
+typedef struct s_intersect_vars
+{
+	t_vector	ls;
+	double		tca;
+	double		d2;
+	double		thc;
+	double		t0;
+}				t_intersect_vars;
 
+typedef struct s_hitpoints
+{
+	t_hitpoint	hit;
+	t_hitpoint	temp;
+}				t_hitpoints;
 
+typedef struct s_doubles
+{
+	double		a;
+	double		b;
+	double		c;
+	double		d;
+	double		t2;
+	double		dist;
+	double		tmp_t;
+}				t_doubles;
 
-int main(int argc, char **argv);
-int	str_isdigit(char *str);
+typedef struct s_light_vectors
+{
+	t_vector	n;
+	t_vector	p;
+	t_vector	cen;
+}				t_light_vectors;
+
+typedef struct s_num_parse
+{
+	int		sign;
+	int		exponent;
+	int		exponent_sign;
+	int		base;
+	int		has_decimal_point;
+}				t_num_parse;
+
+typedef struct s_parse_vectors
+{
+	t_vector	up;
+	t_vector	dir_x;
+	t_vector	dir_y;
+}				t_parse_vectors;
+
+typedef struct s_trace
+{
+	double		v;
+	double		u;
+	t_vector	d;
+	t_ray		ray;
+	t_color		color;
+}				t_trace;
+
+int				main(int argc, char **argv);
+int				str_isdigit(char *str);
 /*utils.c*/
-void	init_data(t_data *data, char **argv);
-void	free_split(char **splitret);
-void	print_obj_list(t_objects *obj_list, t_data *data);
-void	free_obj_list(t_objects *obj_list, t_data *data);
-int		first_occur(char *str);
-int		ft_isfloat(char *str);
-double	ft_atof(const char *str);
+void			init_data(t_data *data, char **argv);
+void			free_split(char **splitret);
+void			print_obj_list(t_objects *obj_list, t_data *data);
+void			free_obj_list(t_objects *obj_list, t_data *data);
+int				first_occur(char *str);
+int				ft_isfloat(char *str);
+double			ft_atof(const char *str);
 // double	ft_atodoubl(const char *str, char **endptr);
 
 /**parse.c***/
-void		parse_light(t_objects *obj_list, t_data *data, int i);
-void		parse_amb_light(t_objects *obj_list, t_data *data, int i);
-void		parse_camera(t_objects *obj_list, t_data *data, int i);
-void		parse_cylindre(t_objects *obj_list, t_data *data, int i);
-void		parse_sphere(t_objects *obj_list, t_data *data, int i);
-void		parse_plane(t_objects *obj_list, t_data *data, int i);
-t_vector	vectorSubtract(t_vector v1, t_vector v2);
-t_vector	vectorAdd(t_vector v1, t_vector v2);
-t_vector	vectorScale(t_vector v, double s);
-t_vector	vectorNormalize(t_vector v);
-t_vector	vectorCrossProduct(t_vector v1, t_vector v2);
-double		vectorDotProduct(t_vector v1, t_vector v2);
-double		vectorDotProductPrint(t_vector v1, t_vector v2);
-t_vector 	vectorProject(t_vector v1, t_vector v2);
-t_hitpoint	intersect_s(t_ray ray, t_sphere *sphere);
-t_hitpoint	intersect_c(t_ray ray, t_cylindre *c);
-t_hitpoint	intersect_p(t_ray ray, t_plane *plane);
-t_color		create_color(int	r, int g, int b);
-t_vector	transform(t_matrix trans, t_vector ray, int translate);
-t_vector	create_vector(double x, double y, double z);
-void		vectorPrint(char *msg, t_vector v);
-t_color		compute_lighting(t_ray light, t_hitpoint hit, double intense, t_ray ray);
-int			is_shadow(t_ray light, t_data *data, t_hitpoint hit, int idx);
-t_color		add_ambient(t_color color, t_amb_light *light);
+void			parse_light(t_objects *obj_list, t_data *data, int i);
+void			parse_amb_light(t_objects *obj_list, t_data *data, int i);
+void			parse_camera(t_objects *obj_list, t_data *data, int i);
+void			parse_cylindre(t_objects *obj_list, t_data *data, int i);
+void			parse_sphere(t_objects *obj_list, t_data *data, int i);
+void			parse_plane(t_objects *obj_list, t_data *data, int i);
+t_vector		vector_subtract(t_vector v1, t_vector v2);
+t_vector		vector_add(t_vector v1, t_vector v2);
+t_vector		vector_scale(t_vector v, double s);
+t_vector		vector_normalize(t_vector v);
+double			vector_dot_product(t_vector v1, t_vector v2);
+/*vector_op_2.c*/
+t_vector		vector_cross_product(t_vector v1, t_vector v2);
+double			vector_dot_product_print(t_vector v1, t_vector v2);
+t_vector		vector_project(t_vector v1, t_vector v2);
+/*intersect.c*/
+t_hitpoint		intersect_s(t_ray ray, t_sphere *sphere);
+t_hitpoint		intersect_c(t_ray ray, t_cylindre *c);
+t_hitpoint		intersect_p(t_ray ray, t_plane *plane);
+t_color			create_color(int r, int g, int b);
+t_vector		transform(t_matrix trans, t_vector ray, int translate);
+t_vector		create_vector(double x, double y, double z);
+void			vector_print(char *msg, t_vector v);
+t_color			compute_lighting(t_ray light, t_hitpoint hit,
+					double intense, t_ray ray);
+int				is_shadow(t_ray light, t_data *data, t_hitpoint hit, int idx);
+t_color			add_ambient(t_color color, t_amb_light *light);
+/*intersect_utils.c*/
+t_hitpoints		init_cyl_hp(t_cylindre *cylinder);
+void			init_pl_hp(t_doubles dbl, t_hitpoints hp,
+					t_plane plane, t_cylindre *cylinder);
+t_doubles		init_doubles(t_ray	new_ray, t_cylindre *cylinder);
+t_doubles		calculate_dist(t_ray ray, t_cylindre *cylinder);
+void			update_hp(t_hitpoints hp, t_plane pl,
+					t_doubles	dbl, t_cylindre *cyl);
+/*intersect_utils_2.c*/
+int				cond_1(t_hitpoints hp, t_ray *new_ray, t_cylindre *cylinder);
+int				cond_2(t_hitpoints hp, t_ray *new_ray, t_cylindre *cylinder);
+void			init_structs(t_plane *plane, t_cylindre *cylinder,
+					t_hitpoints *hp, t_ray ray);
+void			update_pl(t_plane	*plane, t_cylindre *cylinder);
+/*lighting_utils.c*/
+double			set_plane_vectors(t_light_vectors	*vectors, t_hitpoint hit,
+					t_ray ray, t_ray light);
+double			set_sphere_vectors(t_light_vectors	*vectors, t_hitpoint hit,
+					t_ray ray, t_ray light);
+double			set_cylindre_vectors(t_light_vectors *vectors,
+					t_hitpoint hit, t_ray light);
+double			init_this_hit(t_hitpoint hit, t_ray light);
+/*parse_utils_t.c*/
+int				check_sign(const char *str);
+int				base_prefix(const char *str);
+int				parse_exponent(const char *str);
+int				update_exponent(const char *str);
+/*parse_utils_3.c*/
+void			cam_w_h_flen(t_camera *obj, t_data *data);
+void			cam_point_and_normal(t_camera *obj, t_data *data);
+t_parse_vectors	cam_up_and_dir(t_camera *obj);
+void			cam_transform(t_camera *obj, t_parse_vectors vectors);
+void			set_light_point(t_light *obj, t_data *data);
+/*parse_utils_4.c*/
+void			cyl_dim_point_normal(t_data *data,
+					t_objects *obj_list, t_cylindre *obj, int i);
+t_parse_vectors	cyl_up_and_dir(t_cylindre *obj);
+void			cyl_transform(t_cylindre *obj, t_parse_vectors vectors);
+void			plane_point_and_normal(t_plane *obj, t_data *data);
+/*trace_ray.c*/
+t_color			create_color(int r, int g, int b);
+t_vector		transform(t_matrix trans, t_vector ray, int translate);
+void			set_hp(t_ray ray, t_data *data,
+					t_count *count, t_hitpoints	*hp);
+t_color			trace_ray(t_ray ray, t_data *data, int depth);
+void			trace(t_data *data);
+/*main_utils.c*/
+t_ray			create_ray(t_vector p, t_vector v);
+int				is_obj(char *str);
+int				check_info_size(t_objects *obj_list, int j, t_data *data);
+void			free_and_exit(t_objects *obj_list, t_data *data);
+int				str_isdigit(char *str);
 
 #endif

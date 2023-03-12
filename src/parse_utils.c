@@ -3,90 +3,61 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 01:21:14 by adinari           #+#    #+#             */
-/*   Updated: 2023/02/19 22:13:43 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/03/06 20:28:46 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-double ft_atodoubl(const char *str, char **endptr)
+double	parse_number(const char *str, t_num_parse n_parse)
 {
-    double value = 0;
-    int sign = 1;
-    int exponent = 0;
-    int exponent_sign = 1;
-    int base = 10;
-    int has_decimal_point = 0;
+	double	value;
 
-    errno = 0;
-
-    // skip leading white space
-    while (isspace(*str)) str++;
-
-    // check for sign
-    if (*str == '+') {
-        str++;
-    } else if (*str == '-') {
-        sign = -1;
-        str++;
-    }
-
-    // check for base prefix
-    if (*str == '0') {
-        str++;
-        if (*str == 'x' || *str == 'X') {
-            base = 16;
-            str++;
-        } else {
-            base = 8;
-        }
-    }
-
-    // parse number
-    while (*str) {
-        if (isdigit(*str)) {
-            value = value * base + (*str - '0');
-        } else if (*str == '.') {
-            if (has_decimal_point) {
-                // second decimal point
-                break;
-            }
-            has_decimal_point = 1;
-        } else if (*str == 'e' || *str == 'E') {
-            // parse exponent
-            str++;
-            if (*str == '+') {
-                str++;
-            } else if (*str == '-') {
-                exponent_sign = -1;
-                str++;
-            }
-            while (isdigit(*str)) {
-                exponent = exponent * 10 + (*str - '0');
-                str++;
-            }
-            break;
-        } else {
-            // invalid character
-            break;
-        }
-        str++;
-    }
-
-    // apply sign and exponent
-    value = sign * value * pow(base, exponent_sign * exponent);
-
-    // set endptr
-    if (endptr) {
-        *endptr = (char *)str;
-    }
-
-    return value;
+	value = 0;
+	while (*str)
+	{
+		if (isdigit(*str))
+			value = value * n_parse.base + (*str - '0');
+		else if (*str == '.')
+		{
+			if (n_parse.has_decimal_point)
+				break ;
+			n_parse.has_decimal_point = 1;
+		}
+		else if (*str == 'e' || *str == 'E')
+		{
+			n_parse.exponent_sign = parse_exponent(str);
+			n_parse.exponent = update_exponent(str);
+			break ;
+		}
+		else
+			break ;
+		str++;
+	}
+	return (value);
 }
 
+double	ft_atodoubl(const char *str, char **endptr)
+{
+	double		value;
+	t_num_parse	n_parse;
+
+	n_parse.has_decimal_point = 0;
+	errno = 0;
+	while (isspace(*str))
+		str++;
+	n_parse.sign = check_sign(str);
+	n_parse.base = base_prefix(str);
+	value = parse_number(str, n_parse);
+	value = n_parse.sign * value
+		* pow(n_parse.base, n_parse.exponent_sign * n_parse.exponent);
+	if (endptr)
+		*endptr = (char *)str;
+	return (value);
+}
 
 int	ft_isfloat(char *str)
 {

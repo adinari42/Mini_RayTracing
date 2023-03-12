@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lighting.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 18:22:52 by miahmadi          #+#    #+#             */
-/*   Updated: 2023/02/26 20:42:11 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/03/08 18:36:53 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,19 @@
 
 t_color	compute_lighting(t_ray light, t_hitpoint hit, double intense, t_ray ray)
 {
-	t_color		res;
-	t_vector	n;
-	t_vector	p;
-	t_vector	cen;
-	double		i;
-	double		teta;
+	t_color			res;
+	t_light_vectors	vectors;
+	double			i;
+	double			teta;
 
 	i = 0;
 	teta = 0;
 	if (hit.object.type == PLANE)
-	{
-		n = (*(t_plane*)hit.object.object).normal;
-		if (vectorDotProduct(n, ray.v) < 0)
-			n = vectorScale(n, -1);
-		teta = acos(vectorDotProduct(light.v, n));
-	}
+		teta = set_plane_vectors(&vectors, hit, ray, light);
 	else if (hit.object.type == SPHERE)
-	{
-		n = vectorNormalize(vectorSubtract((*(t_sphere*)hit.object.object).point, hit.point));
-		if (vectorDotProduct(n, ray.v) < 0)
-			n = vectorScale(n, -1);
-		teta = acos(vectorDotProduct(light.v, n));
-	}
+		teta = set_sphere_vectors(&vectors, hit, ray, light);
 	else if (hit.object.type == CYLINDRE)
-	{
-		p = transform((*(t_cylindre*)hit.object.object).trans_inv, hit.point, 1);
-		cen = create_vector(0, 0, p.z);
-		n = vectorSubtract(cen, p);
-		n = vectorNormalize(transform((*(t_cylindre*)hit.object.object).trans, n, 0));
-		teta = acos(vectorDotProduct(light.v, n));		
-	}
+		teta = set_cylindre_vectors(&vectors, hit, light);
 	if (teta > PI / 2)
 		i = 0;
 	else
@@ -64,7 +46,7 @@ int	is_shadow(t_ray light, t_data *data, t_hitpoint hit, int idx)
 	int			j;
 
 	j = -1;
-	this_hit = sqrt(pow(hit.point.x - light.p.x, 2) + pow(hit.point.y - light.p.y, 2) + pow(hit.point.z - light.p.z, 2)) - 0.000001;
+	this_hit = init_this_hit(hit, light);
 	tmp_hit.dist = -1;
 	while (++j < data->list_size)
 	{
@@ -72,12 +54,13 @@ int	is_shadow(t_ray light, t_data *data, t_hitpoint hit, int idx)
 		{
 			obj = data->objs[j];
 			if (obj.type == PLANE)
-				tmp_hit = intersect_p(light, (t_plane*)obj.object);
+				tmp_hit = intersect_p(light, (t_plane *)obj.object);
 			else if (obj.type == SPHERE)
-				tmp_hit = intersect_s(light, (t_sphere*)obj.object);
+				tmp_hit = intersect_s(light, (t_sphere *)obj.object);
 			else if (obj.type == CYLINDRE)
-				tmp_hit = intersect_c(light, (t_cylindre*)obj.object);
-			if (tmp_hit.dist > 0.000001 && tmp_hit.dist < this_hit && tmp_hit.object.type)
+				tmp_hit = intersect_c(light, (t_cylindre *)obj.object);
+			if (tmp_hit.dist > 0.000001
+				&& tmp_hit.dist < this_hit && tmp_hit.object.type)
 				return (1);
 		}
 	}
@@ -95,5 +78,5 @@ t_color	add_ambient(t_color color, t_amb_light *light)
 		color.blue = 255;
 	if (color.red > 255)
 		color.red = 255;
-	return color;
+	return (color);
 }

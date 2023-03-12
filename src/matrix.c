@@ -3,128 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   matrix.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:56:11 by miahmadi          #+#    #+#             */
-/*   Updated: 2023/02/19 18:17:42 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/03/08 18:37:46 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "matrix.h"
-
-void	kc_matrix_set_elm(int row, int col, double val, t_matrix *matrix)
-{
-	matrix->elements[row * (matrix->cols) + col] = val;
-}
-
-void	kc_matrix_print_single_elm(int row, int col, t_matrix matrix)
-{
-	printf("%-8.3f ", matrix.elements[row * matrix.cols + col]);
-}
-
-void	kc_matrix_print(t_matrix matrix)
-{
-	int	i;
-	int	j;
-	i = -1;
-	while (++i < matrix.rows)
-	{
-		j = -1;
-		while (++j < matrix.cols)
-			kc_matrix_print_single_elm(i, j, matrix);
-		printf("\n");
-	}
-}
-
-t_matrix	kc_matrix_init(int rows, int cols)
-{
-	t_matrix	matrix;
-	int			i;
-	int			j;
-
-	matrix.elements = malloc(rows * cols * sizeof(double));
-	matrix.rows = rows;
-	matrix.cols = cols;
-	i = -1;
-	while (++i < rows)
-	{
-		j = -1;
-		while (++j < cols)
-			kc_matrix_set_elm(i, j, 0, &matrix);
-	}
-	return (matrix);
-}
-
-void	kc_matrix_scale(double s, t_matrix *matrix)
-{
-	int	i;
-	int	j;
-
-	i = -1;
-	while (++i < matrix->rows)
-	{
-		j = -1;
-		while (++j < matrix->cols)
-			kc_matrix_set_elm(i, j, matrix->elements[i * matrix->cols + j] * s, matrix);
-	}
-}
-
-t_matrix	kc_matrix_sum(t_matrix a, t_matrix b)
-{
-	t_matrix	matrix;
-	int			i;
-	int			j;
-
-	matrix = kc_matrix_init(a.rows, a.cols);
-	if (a.cols != b.cols || a.rows != b.rows)
-	{
-		printf("Error: matrices must be the same size\n");
-		return (matrix);
-	}
-	i = -1;
-	while (++i < a.rows)
-	{
-		j = -1;
-		while (++j < a.cols)
-			kc_matrix_set_elm(i, j, a.elements[i * a.cols + j] + b.elements[i * a.cols + j], &matrix);
-	}
-	return (matrix);
-}
-
-t_matrix	kc_matrix_multi(t_matrix a, t_matrix b)
-{
-	int			i;
-	int			j;
-	int			k;
-	double		elm;
-	t_matrix	matrix;
-
-	matrix = kc_matrix_init(a.rows, b.cols);
-	if (a.cols != b.rows)
-	{
-		printf("Error: Wrong matrix size\n");
-		return (matrix);
-	}
-	i = -1;
-	while (++i < a.rows)
-	{
-		j = -1;
-		while (++j < b.cols)
-		{
-			elm = 0;
-			k = -1;
-			while (++k < a.cols)
-				elm += a.elements[i * a.cols + k] * b.elements[(j + k) * b.cols + j];
-			kc_matrix_set_elm(i, j, elm, &matrix);
-		}
-	}
-	return (matrix);
-}
-
-double	g_e(int i, int j, t_matrix matrix)
-{
-	return (matrix.elements[i * matrix.cols + j]);
-}
 
 double	kc_matrix_det_3(t_matrix m)
 {
@@ -168,30 +54,28 @@ double	kc_matrix_det_4(t_matrix m)
 
 t_matrix	kc_matrix_get_det(int u, int v, t_matrix m)
 {
-	int			i;
-	int			j;
-	int			x;
-	int			y;
+	t_count		count;
 	t_matrix	matrix;
 
 	matrix = kc_matrix_init(3, 3);
-	i = -1;
-	x = 0;
-	while (++i < 4)
+	count.i = -1;
+	count.x = 0;
+	while (++count.i < 4)
 	{
-		if (i != u)
+		if (count.i != u)
 		{
-			j = -1;
-			y = 0;
-			while (++j < 4)
+			count.j = -1;
+			count.y = 0;
+			while (++count.j < 4)
 			{
-				if (j != v)
+				if (count.j != v)
 				{
-					kc_matrix_set_elm(x, y, g_e(i, j, m), &matrix);
-					y++;
+					kc_matrix_set_elm
+						(count.x, count.y, g_e(count.i, count.j, m), &matrix);
+					count.y++;
 				}
 			}
-			x++;
+			count.x++;
 		}
 	}
 	return (matrix);
@@ -201,21 +85,20 @@ t_matrix	kc_matrix_inverse_4(t_matrix m)
 {
 	t_matrix	matrix;
 	t_matrix	det;
-	int			i;
-	int			j;
+	t_count		count;
 	double		elm;
 	double		t;
 
 	matrix = kc_matrix_init(4, 4);
-	i = -1;
-	while (++i < 4)
+	count.i = -1;
+	while (++count.i < 4)
 	{
-		j = -1;
-		while (++j < 4)
+		count.j = -1;
+		while (++count.j < 4)
 		{
-			det = kc_matrix_get_det(j, i, m);
-			elm = pow(-1, i + j) * kc_matrix_det_3(det);
-			kc_matrix_set_elm(i, j, elm, &matrix);
+			det = kc_matrix_get_det(count.j, count.i, m);
+			elm = pow(-1, count.i + count.j) * kc_matrix_det_3(det);
+			kc_matrix_set_elm(count.i, count.j, elm, &matrix);
 		}
 	}
 	t = kc_matrix_det_4(m);
@@ -226,7 +109,7 @@ t_matrix	kc_matrix_inverse_4(t_matrix m)
 
 t_matrix	kc_matrix_inverse(t_matrix m)
 {
-	t_matrix matrix;
+	t_matrix	matrix;
 
 	if (m.cols != m.rows)
 	{

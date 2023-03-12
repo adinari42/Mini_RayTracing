@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+         #
+#    By: adinari <adinari@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 21:40:31 by adinari           #+#    #+#              #
-#    Updated: 2023/02/19 19:05:28 by miahmadi         ###   ########.fr        #
+#    Updated: 2023/03/08 19:27:52 by adinari          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,17 @@ FILES = src/main.c\
 		src/vector_op.c\
 		src/matrix.c\
 		src/lighting.c\
+		src/intersect_utils.c\
+		src/intersect_utils_2.c\
+		src/lighting_utils.c\
+		src/matrix_utils.c\
+		src/matrix_utils_2.c\
+		src/parse_utils_2.c\
+		src/parse_utils_3.c\
+		src/parse_utils_4.c\
+		src/vector_op_2.c\
+		src/trace_ray.c\
+		src/main_utils.c\
 
 OBJECTS = $(FILES:.c=.o)
 

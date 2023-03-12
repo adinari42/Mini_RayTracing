@@ -3,91 +3,60 @@
 /*                                                        :::      ::::::::   */
 /*   vector_op.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:44:19 by miahmadi          #+#    #+#             */
-/*   Updated: 2023/02/19 21:43:27 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/03/06 16:35:35 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_vector	vectorSubtract(t_vector v1, t_vector v2)
+t_vector	vector_subtract(t_vector v1, t_vector v2)
 {
-  t_vector	res;
+	t_vector	res;
 
-  res.x = v1.x - v2.x;
-  res.y = v1.y - v2.y;
-  res.z = v1.z - v2.z;
-  return (res);
+	res.x = v1.x - v2.x;
+	res.y = v1.y - v2.y;
+	res.z = v1.z - v2.z;
+	return (res);
 }
 
-t_vector	vectorAdd(t_vector v1, t_vector v2)
+t_vector	vector_add(t_vector v1, t_vector v2)
 {
-  t_vector	res;
+	t_vector	res;
 
-  res.x = v1.x + v2.x;
-  res.y = v1.y + v2.y;
-  res.z = v1.z + v2.z;
-  return (res);
+	res.x = v1.x + v2.x;
+	res.y = v1.y + v2.y;
+	res.z = v1.z + v2.z;
+	return (res);
 }
 
-t_vector	vectorScale(t_vector v, double s)
+t_vector	vector_scale(t_vector v, double s)
 {
-  t_vector	res;
+	t_vector	res;
 
-  res.x = v.x * s;
-  res.y = v.y * s;
-  res.z = v.z * s;
-  return (res);
+	res.x = v.x * s;
+	res.y = v.y * s;
+	res.z = v.z * s;
+	return (res);
 }
 
-t_vector	vectorNormalize(t_vector v)
+t_vector	vector_normalize(t_vector v)
 {
-  double length;
+	double	length;
 
-  length = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
-  if (length > 0) {
-    v.x /= length;
-    v.y /= length;
-    v.z /= length;
-  }
-  return (v);
+	length = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+	if (length > 0)
+	{
+		v.x /= length;
+		v.y /= length;
+		v.z /= length;
+	}
+	return (v);
 }
 
-double vectorDotProduct(t_vector v1, t_vector v2)
+double	vector_dot_product(t_vector v1, t_vector v2)
 {
-  return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
-}
-
-double vectorDotProductPrint(t_vector v1, t_vector v2)
-{
-	vectorPrint("Light ->", v1);
-	vectorPrint("plane ->", v2);
-  return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
-}
-
-t_vector vectorCrossProduct(t_vector v1, t_vector v2)
-{
-	t_vector res;
-
-	res.x = (v1.y * v2.z) - (v2.y * v1.z);
-	res.y = (v1.z * v2.x) - (v2.z * v1.x);
-	res.z = (v1.x * v2.y) - (v2.x * v1.y);
-    return (res);
-}
-
-t_vector vectorProject(t_vector v1, t_vector v2)
-{
-  double	dot;
-  double	square;
-
-  dot = vectorDotProduct(v1, v2);
-  square = vectorDotProduct(v2, v2);
-  return vectorScale(v2, dot / square);
-}
-
-void	vectorPrint(char *msg, t_vector v)
-{
-	printf("%s (%f, %f, %f)\n", msg, v.x, v.y, v.z);
+	return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
 }
