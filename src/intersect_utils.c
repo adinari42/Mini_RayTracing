@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersect_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 16:50:15 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/06 16:28:03 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/12 19:19:51 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,6 @@ t_hitpoints	init_cyl_hp(t_cylindre *cylinder)
 	return (hp);
 }
 
-void	init_pl_hp(t_doubles dbl, t_hitpoints hp,
-		t_plane plane, t_cylindre *cylinder)
-{
-	dbl.dist = hp.temp.dist;
-	hp.hit.object.color = cylinder->color;
-	hp.hit.object.object = &plane;
-	hp.hit.object.type = PLANE;
-}
-
 t_doubles	init_doubles(t_ray	new_ray, t_cylindre *cylinder)
 {
 	t_doubles	dbl;
@@ -45,39 +36,3 @@ t_doubles	init_doubles(t_ray	new_ray, t_cylindre *cylinder)
 	return (dbl);
 }
 
-t_doubles	calculate_dist(t_ray ray, t_cylindre *cylinder)
-{
-	t_vector	point1;
-	t_ray		new_ray;
-	t_doubles	dbl;
-
-	new_ray.p = transform(cylinder->trans_inv, ray.p, 1);
-	new_ray.v = transform(cylinder->trans_inv, ray.v, 0);
-	dbl = init_doubles(new_ray, cylinder);
-	if (dbl.d >= 0)
-	{
-		dbl.t2 = (-dbl.b - sqrt(dbl.d)) / (2 * dbl.a);
-		point1 = vector_add(new_ray.p, vector_scale(new_ray.v, dbl.t2));
-		if (point1.z <= cylinder->height / 2
-			&& point1.z >= -cylinder->height / 2)
-		{
-			point1 = transform(cylinder->trans, point1, 1);
-			dbl.tmp_t = sqrt(pow(point1.x - ray.p.x, 2)
-					+ pow(point1.y - ray.p.y, 2)
-					+ pow(point1.z - ray.p.z, 2));
-			if (dbl.tmp_t > 0 && dbl.tmp_t < dbl.dist)
-			{
-				dbl.dist = dbl.tmp_t;
-			}
-		}
-	}
-	return (dbl);
-}
-
-void	update_hp(t_hitpoints hp, t_plane pl, t_doubles	dbl, t_cylindre *cyl)
-{
-		dbl.dist = hp.temp.dist;
-		hp.hit.object.color = cyl->color;
-		hp.hit.object.object = &pl;
-		hp.hit.object.type = PLANE;
-}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:47:18 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/08 19:35:13 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/12 19:20:20 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,7 @@ typedef struct s_hitpoints
 {
 	t_hitpoint	hit;
 	t_hitpoint	temp;
+	int			index;
 }				t_hitpoints;
 
 typedef struct s_doubles
@@ -249,18 +250,8 @@ int				is_shadow(t_ray light, t_data *data, t_hitpoint hit, int idx);
 t_color			add_ambient(t_color color, t_amb_light *light);
 /*intersect_utils.c*/
 t_hitpoints		init_cyl_hp(t_cylindre *cylinder);
-void			init_pl_hp(t_doubles dbl, t_hitpoints hp,
-					t_plane plane, t_cylindre *cylinder);
 t_doubles		init_doubles(t_ray	new_ray, t_cylindre *cylinder);
-t_doubles		calculate_dist(t_ray ray, t_cylindre *cylinder);
-void			update_hp(t_hitpoints hp, t_plane pl,
-					t_doubles	dbl, t_cylindre *cyl);
 /*intersect_utils_2.c*/
-int				cond_1(t_hitpoints hp, t_ray *new_ray, t_cylindre *cylinder);
-int				cond_2(t_hitpoints hp, t_ray *new_ray, t_cylindre *cylinder);
-void			init_structs(t_plane *plane, t_cylindre *cylinder,
-					t_hitpoints *hp, t_ray ray);
-void			update_pl(t_plane	*plane, t_cylindre *cylinder);
 /*lighting_utils.c*/
 double			set_plane_vectors(t_light_vectors	*vectors, t_hitpoint hit,
 					t_ray ray, t_ray light);
@@ -289,8 +280,7 @@ void			plane_point_and_normal(t_plane *obj, t_data *data);
 /*trace_ray.c*/
 t_color			create_color(int r, int g, int b);
 t_vector		transform(t_matrix trans, t_vector ray, int translate);
-void			set_hp(t_ray ray, t_data *data,
-					t_count *count, t_hitpoints	*hp);
+void			set_hp(t_ray ray, t_data *data, t_hitpoints	*hp);
 t_color			trace_ray(t_ray ray, t_data *data, int depth);
 void			trace(t_data *data);
 /*main_utils.c*/

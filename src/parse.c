@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 04:06:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/08 18:36:14 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/13 17:12:39 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,15 +96,8 @@ void	parse_cylindre(t_objects *obj_list, t_data *data, int i)
 	printf("C TRANS INV\n");
 	kc_matrix_print(obj->trans_inv);
 	colors = ft_split(data->infos[5], ',');
-	obj_list[i].color = create_color(ft_atoi(colors[0]),
-			ft_atoi(colors[1]), ft_atoi(colors[2]));
-	if (str_isdigit(colors[0]) && str_isdigit(colors[1])
-		&& str_isdigit(colors[2]))
-	{
-		obj->color.red = ft_atoi(colors[0]);
-		obj->color.green = ft_atoi(colors[1]);
-		obj->color.blue = ft_atoi(colors[2]);
-	}
+	obj_list[i].color = create_color(ft_atoi(colors[0]), ft_atoi(colors[1]), ft_atoi(colors[2]));
+	obj->color = create_color(ft_atoi(colors[0]), ft_atoi(colors[1]), ft_atoi(colors[2]));
 	free_split(colors);
 	data->obj_size++;
 }

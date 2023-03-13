@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   trace_ray.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 19:19:47 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/08 19:32:08 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/12 18:58:30 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,26 +41,27 @@ t_vector	transform(t_matrix trans, t_vector ray, int translate)
 	return (res);
 }
 
-void	set_hp(t_ray ray, t_data *data,
-		t_count *count, t_hitpoints	*hp)
+void	set_hp(t_ray ray, t_data *data, t_hitpoints	*hp)
 {
 	t_objects	*objs;
+	int			i;
 
+	i = -1;
 	objs = data->objs;
-	while (++count->i < data->list_size)
+	while (++i < data->list_size)
 	{
-		if (objs[count->i].type == SPHERE)
-			hp->temp = intersect_s(ray, (t_sphere *)objs[count->i].object);
-		else if (objs[count->i].type == CYLINDRE)
-			hp->temp = intersect_c(ray, (t_cylindre *)objs[count->i].object);
-		else if (objs[count->i].type == PLANE)
-			hp->temp = intersect_p(ray, (t_plane *)objs[count->i].object);
+		if (objs[i].type == SPHERE)
+			hp->temp = intersect_s(ray, (t_sphere *)objs[i].object);
+		else if (objs[i].type == CYLINDRE)
+			hp->temp = intersect_c(ray, (t_cylindre *)objs[i].object);
+		else if (objs[i].type == PLANE)
+			hp->temp = intersect_p(ray, (t_plane *)objs[i].object);
 		if (hp->temp.dist > 0.000001 && hp->temp.dist < hp->hit.dist)
 		{
 			hp->hit.dist = hp->temp.dist;
 			hp->hit.object = hp->temp.object;
 			hp->hit.point = hp->temp.point;
-			count->j = count->i;
+			hp->index = i;
 		}
 	}
 }
@@ -70,19 +71,17 @@ t_color	trace_ray(t_ray ray, t_data *data, int depth)
 	t_color		res;
 	t_ray		light;
 	t_hitpoints	hp;
-	t_count		count;
 
 	if (depth > 5)
 		return (create_color(0, 0, 0));
-	count.i = -1;
 	hp.hit.dist = INFINITY;
-	set_hp(ray, data, &count, &hp);
+	set_hp(ray, data, &hp);
 	if (hp.hit.dist <= 0 || hp.hit.dist == INFINITY)
 		return (create_color(0, 0, 0));
 	light = create_ray(data->light->point, vector_normalize
 			(vector_subtract(hp.hit.point, data->light->point)));
 	res = compute_lighting(light, hp.hit, data->light->ratio, ray);
-	if (is_shadow(light, data, hp.hit, count.j) == 1)
+	if (is_shadow(light, data, hp.hit, hp.index) == 1)
 		res = create_color(0, 0, 0);
 	res = add_ambient(res, data->amb_light);
 	return (res);
