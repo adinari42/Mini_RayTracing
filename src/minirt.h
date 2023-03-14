@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:47:18 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/12 19:20:20 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/03/14 18:20:11 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,6 +208,17 @@ typedef struct s_trace
 	t_color		color;
 }				t_trace;
 
+typedef struct s_intrsc_dbl
+{
+	double		a;
+	double		b;
+	double		c;
+	double		d;
+	double		t2;
+	double		dist;
+	double		tmp_t;
+}				t_intrsc_dbl;
+
 int				main(int argc, char **argv);
 int				str_isdigit(char *str);
 /*utils.c*/
@@ -251,7 +262,26 @@ t_color			add_ambient(t_color color, t_amb_light *light);
 /*intersect_utils.c*/
 t_hitpoints		init_cyl_hp(t_cylindre *cylinder);
 t_doubles		init_doubles(t_ray	new_ray, t_cylindre *cylinder);
+t_hitpoint		update_hit(t_cylindre *cylinder, t_plane *plane);
+void			update_2(t_cylindre *cylinder, t_plane *plane,
+					t_ray *ray, t_hitpoint *hit_1);
+void			update_point_doubles(t_intrsc_dbl *doubles,
+					t_ray *new_ray, t_vector *point1);
 /*intersect_utils_2.c*/
+void			init_hit(t_cylindre *cylinder, t_hitpoint *hit_0);
+void			intersect_init(t_cylindre *cylinder,
+					t_ray *new_ray, t_intrsc_dbl *doubles, t_ray *ray);
+void			cond_1(t_cylindre *cylinder,
+					t_vector *point1, t_intrsc_dbl *doubles, t_ray *ray);
+void			init_plane(t_ray *ray, t_cylindre *cylinder,
+					t_hitpoint *hit_1, t_plane *plane);
+int				update_hit_cond(t_cylindre *cylinder,
+					t_ray *new_ray, t_intrsc_dbl *doubles, t_hitpoint *hit_1);
+/*intersect_utils_3.c*/
+int				calculate_dist_from_cyl(t_ray new_ray,
+					t_hitpoint hit, double dia);
+t_hitpoint		create_cylndr_plane(t_color color,
+					t_plane *p, t_intrsc_dbl *dbs, double dist);
 /*lighting_utils.c*/
 double			set_plane_vectors(t_light_vectors	*vectors, t_hitpoint hit,
 					t_ray ray, t_ray light);

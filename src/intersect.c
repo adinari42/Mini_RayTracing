@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersect.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:37:11 by miahmadi          #+#    #+#             */
-/*   Updated: 2023/03/13 17:13:43 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/03/14 18:21:17 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,79 +38,47 @@ t_hitpoint	intersect_s(t_ray ray, t_sphere *sphere)
 	return (hit);
 }
 
+int	update_hit_cond_2(t_cylindre *cylinder, t_plane *plane,
+		t_intrsc_dbl *doubles, t_hitpoint *hit_1)
+{
+	if (hit_1->dist > 0)
+	{
+		if ((doubles->dist > 0
+				&& hit_1->dist < doubles->dist) || doubles->dist == -1)
+		{
+			plane->normal = vector_scale(cylinder->normal, 1);
+			return (1);
+		}
+	}
+	return (0);
+}
+
 t_hitpoint	intersect_c(t_ray ray, t_cylindre *cylinder)
 {
-	t_hitpoint	hit[2];
-	t_ray	new_ray;
-	t_vector	point1;
-	t_plane		plane;
-	double		a;
-	double		b;
-	double		c;
-	double		d;
-	double		t2;
-	double		dist;
-	double		tmp_t;
+	t_hitpoint		hit[2];
+	t_ray			new_ray;
+	t_vector		point1;
+	t_plane			plane;
+	t_intrsc_dbl	doubles;
 
-	hit[0].object.color = cylinder->color;
-	hit[0].object.object = cylinder;
-	hit[0].object.type = CYLINDRE;
-	hit[0].dist = -1;
-	new_ray.p = transform(cylinder->trans_inv, ray.p, 1);
-	new_ray.v = transform(cylinder->trans_inv, ray.v, 0);
-	a = pow(new_ray.v.x, 2) + pow(new_ray.v.y, 2);
-	b = 2 * (new_ray.p.x * new_ray.v.x + new_ray.p.y * new_ray.v.y);
-	c = pow(new_ray.p.x, 2) + pow(new_ray.p.y, 2) - pow(cylinder->diameter, 2);
-	d = pow(b, 2) - 4 * a * c;
-	dist = -1;
-	if (d >= 0)
+	init_hit(cylinder, &hit[0]);
+	intersect_init(cylinder, &new_ray, &doubles, &ray);
+	if (doubles.d >= 0)
 	{
-		t2 = (-b - sqrt(d)) / (2 * a);
-		point1 = vector_add(new_ray.p, vector_scale(new_ray.v, t2));
-		if (point1.z <= cylinder->height / 2 && point1.z >= -cylinder->height / 2)
-		{
-			point1 = transform(cylinder->trans, point1, 1);
-			tmp_t = sqrt(pow(point1.x - ray.p.x, 2) + pow(point1.y - ray.p.y, 2) + pow(point1.z - ray.p.z, 2));
-			if ((tmp_t > 0 && tmp_t < dist) || dist == -1)
-				dist = tmp_t;
-		}
+		update_point_doubles(&doubles, &new_ray, &point1);
+		cond_1(cylinder, &point1, &doubles, &ray);
 	}
-	plane.normal = vector_scale(transform(cylinder->trans, create_vector(0,0,1), 0), -1);
-	plane.point = transform(cylinder->trans, create_vector(0, 0, -cylinder->height / 2), 1);
-	plane.color = create_color(200,105,100);
-	hit[1] = intersect_p(ray, &plane);
-	if (hit[1].dist > 0)
-	{
-		if ((dist > 0 && hit[1].dist < dist) || dist == -1)
-		{
-			if (pow(new_ray.p.x + hit[1].dist * new_ray.v.x, 2) + pow(new_ray.p.y + hit[1].dist * new_ray.v.y, 2) < pow(cylinder->diameter, 2))
-			{
-				dist = hit[1].dist;
-				hit[0].object.color = cylinder->color;
-				hit[0].object.object = &plane;
-				hit[0].object.type = PLANE;
-			}
-		}
-	}
-	plane.point = transform(cylinder->trans, create_vector(0, 0, cylinder->height / 2), 1);
-	plane.color = create_color(200,0,50);
-	hit[1] = intersect_p(ray, &plane);
-	if (hit[1].dist > 0)
-	{
-		if ((dist > 0 && hit[1].dist < dist) || dist == -1)
-		{
-			plane.normal = vector_scale(cylinder->normal, 1);
-			if (pow(new_ray.p.x + hit[1].dist * new_ray.v.x, 2) + pow(new_ray.p.y + hit[1].dist * new_ray.v.y, 2) < pow(cylinder->diameter, 2))
-			{
-				dist = hit[1].dist;
-				hit[0].object.color = cylinder->color;
-				hit[0].object.object = &plane;
-				hit[0].object.type = PLANE;
-			}
-		}
-	}
-	hit[0].dist = dist;
-	hit[0].point = vector_add(ray.p, vector_scale(ray.v, dist));
+	init_plane(&ray, cylinder, &hit[1], &plane);
+	if (update_hit_cond(cylinder, &new_ray, &doubles, &hit[1]))
+		hit[0] = create_cylndr_plane(cylinder->color, \
+					&plane, &doubles, hit[1].dist);
+	update_2(cylinder, &plane, &ray, &hit[1]);
+	if (update_hit_cond_2(cylinder, &plane, &doubles, &hit[1]) \
+				&& calculate_dist_from_cyl(new_ray, hit[1], cylinder->diameter))
+			hit[0] = create_cylndr_plane(cylinder->color, \
+						&plane, &doubles, hit[1].dist);
+	hit[0].dist = doubles.dist;
+	hit[0].point = vector_add(ray.p, vector_scale(ray.v, doubles.dist));
 	return (hit[0]);
 }
 

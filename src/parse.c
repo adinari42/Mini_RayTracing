@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 04:06:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/13 17:12:39 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/03/13 22:00:24 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,9 @@ void	parse_light(t_objects *obj_list, t_data *data, int i)
 	}
 	set_light_point(obj, data);
 	colors = ft_split(data->infos[3], ',');
-	if (str_isdigit(colors[0])
-		&& str_isdigit(colors[1]) && str_isdigit(colors[2]))
-	{
-		((t_light *)obj)->color.red = ft_atoi(colors[0]);
-		((t_light *)obj)->color.green = ft_atoi(colors[1]);
-		((t_light *)obj)->color.blue = ft_atoi(colors[2]);
-	}
+	((t_light *)obj)->color.red = ft_atoi(colors[0]);
+	((t_light *)obj)->color.green = ft_atoi(colors[1]);
+	((t_light *)obj)->color.blue = ft_atoi(colors[2]);
 	data->light = obj;
 	free_split(colors);
 }
@@ -96,8 +92,10 @@ void	parse_cylindre(t_objects *obj_list, t_data *data, int i)
 	printf("C TRANS INV\n");
 	kc_matrix_print(obj->trans_inv);
 	colors = ft_split(data->infos[5], ',');
-	obj_list[i].color = create_color(ft_atoi(colors[0]), ft_atoi(colors[1]), ft_atoi(colors[2]));
-	obj->color = create_color(ft_atoi(colors[0]), ft_atoi(colors[1]), ft_atoi(colors[2]));
+	obj_list[i].color = create_color(ft_atoi(colors[0]),
+			ft_atoi(colors[1]), ft_atoi(colors[2]));
+	obj->color = create_color(ft_atoi(colors[0]), ft_atoi(colors[1]),
+			ft_atoi(colors[2]));
 	free_split(colors);
 	data->obj_size++;
 }
@@ -119,13 +117,9 @@ void	parse_sphere(t_objects *obj_list, t_data *data, int i)
 	colors = ft_split(data->infos[3], ',');
 	obj_list[i].color = create_color(ft_atoi(colors[0]),
 			ft_atoi(colors[1]), ft_atoi(colors[2]));
-	if (str_isdigit(colors[0]) && str_isdigit(colors[1])
-		&& str_isdigit(colors[2]))
-	{
-		((t_sphere *)obj)->color.red = ft_atoi(colors[0]);
-		((t_sphere *)obj)->color.green = ft_atoi(colors[1]);
-		((t_sphere *)obj)->color.blue = ft_atoi(colors[2]);
-	}
+	((t_sphere *)obj)->color.red = ft_atoi(colors[0]);
+	((t_sphere *)obj)->color.green = ft_atoi(colors[1]);
+	((t_sphere *)obj)->color.blue = ft_atoi(colors[2]);
 	free_split(colors);
 	data->obj_size++;
 }

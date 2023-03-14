@@ -6,7 +6,7 @@
 #    By: adinari <adinari@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 21:40:31 by adinari           #+#    #+#              #
-#    Updated: 2023/03/08 19:27:52 by adinari          ###   ########.fr        #
+#    Updated: 2023/03/14 18:20:27 by adinari          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ FILES = src/main.c\
 		src/lighting.c\
 		src/intersect_utils.c\
 		src/intersect_utils_2.c\
+		src/intersect_utils_3.c\
 		src/lighting_utils.c\
 		src/matrix_utils.c\
 		src/matrix_utils_2.c\
