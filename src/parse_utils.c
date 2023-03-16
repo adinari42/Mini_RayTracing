@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 01:21:14 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/06 20:28:46 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/16 19:20:26 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,11 @@ int	ft_isfloat(char *str)
 	i = 0;
 	dot_count = 0;
 	if ((str[i] < '0' || str[i] > '9') && str[i] != '-')
-		return (0);
-	while (str[i] != '0')
+		return (1);
+	while (str[i] != '0' && i < ft_strlen(str))
 	{
 		if ((str[i] < '0' || str[i] > '9') && str[i] != '.')
-			return (0);
+			return (1);
 		if (str[i] == '.')
 			dot_count++;
 		i++;
@@ -79,8 +79,8 @@ int	ft_isfloat(char *str)
 	if (str[i - 1] == '.')
 		return (1);
 	if (dot_count != 0 && dot_count != 1)
-		return (0);
-	return (1);
+		return (1);
+	return (0);
 }
 
 const char	*get_start(const char *str, int *sign)
