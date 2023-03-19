@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:39:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/08 19:30:46 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/18 20:01:30 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,26 @@ void	type_error(t_objects *obj_list, t_data *data, int i)
 	if (obj_list[i].type == NONE)
 	{
 		write(2, "Error: incorrect information\n", 30);
+		int j = 0;
+		while(j <= i)
+		{
+			printf("freeing objlist[%d]=%s\n", j, obj_list[j].str);
+			printf("obj_list[%d] adress %p\n", j, &obj_list[j]);
+			free(obj_list[j].str);
+			j++;
+		}
+		free(obj_list);
+		printf("freeing data.infos:%s\n", data->infos[0]);
 		free_split(data->infos);
+		free(data->img);
 		free(data);
-		free_obj_list(obj_list, data);
+	
+	
+		// // free_split(data->infos);
+		// free_obj_list(obj_list, data);
+		// free(data->img);
+		// free(data);
+		// system("leaks MiniRT");
 		exit(1);
 	}
 }
@@ -54,6 +71,8 @@ void	save_info(t_objects *obj_list, t_data *data)
 		obj_list[i].str = get_next_line(data->fd);
 		if (obj_list[i].str && first_occur(obj_list[i].str))
 		{
+			printf("<<<< i = %d<<<<\n", i);
+			system("leaks MiniRT");
 			if (i < data->list_size - 1)
 				ft_strlcpy(obj_list[i].str,
 					obj_list[i].str, ft_strlen(obj_list[i].str));
@@ -103,8 +122,12 @@ int	main(int argc, char **argv)
 	d.y = 1;
 	d.z = 1;
 	data = malloc(sizeof(t_data));
+	printf("data adress: %p\n", data);
 	init_data(data, argv);
 	obj_list = malloc((data->list_size) * sizeof(t_objects));
+	//0 leaks here
+	// system("leaks MiniRT");
+	printf("obj_list adress: %p\n", obj_list);
 	save_info(obj_list, data);
 	data->objs = obj_list;
 	ray = create_ray(data->camera->point, d);
@@ -115,3 +138,12 @@ int	main(int argc, char **argv)
 	free(obj_list);
 	free(data);
 }
+/*
+main
+data = malloc(sizeof(t_data));
+obj_list = malloc((data->list_size) * sizeof(t_objects));
+
+init_data
+data->img = ft_calloc(data->h * data->w, sizeof(t_color));
+
+*/

@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 01:21:14 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/16 19:20:26 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/17 17:08:08 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ int	ft_isfloat(char *str)
 	dot_count = 0;
 	if ((str[i] < '0' || str[i] > '9') && str[i] != '-')
 		return (1);
-	while (str[i] != '0' && i < ft_strlen(str))
+	i++;
+	while (str[i] && i < ft_strlen(str))
 	{
 		if ((str[i] < '0' || str[i] > '9') && str[i] != '.')
 			return (1);
@@ -91,6 +92,7 @@ const char	*get_start(const char *str, int *sign)
 	if (*str == '-')
 	{
 		*sign = -1;
+		// printf("negative sign %d\n", *sign);
 		str++;
 	}
 	else if (*str == '+')
@@ -122,6 +124,7 @@ double	ft_atof(const char *str)
 			number = number * 10.0 + (*str - '0');
 		str++;
 	}
+	// printf("atof sign = %d\n", sign);
 	number *= (double) sign;
 	return (number);
 }

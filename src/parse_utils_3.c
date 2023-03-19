@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 20:17:23 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/08 18:37:07 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/18 03:39:18 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,35 @@ void	cam_point_and_normal(t_camera *obj, t_data *data)
 	char			**point;
 
 	point = ft_split(data->infos[1], ',');
-	obj->point.x = ft_atof(point[0]);
-	obj->point.y = ft_atof(point[1]);
-	obj->point.z = ft_atof(point[2]);
+	if (!ft_isfloat(point[0]) && !ft_isfloat(point[1]) && !ft_isfloat(point[2]))
+	{
+		obj->point.x = ft_atof(point[0]);
+		obj->point.y = ft_atof(point[1]);
+		obj->point.z = ft_atof(point[2]);
+	}
+	else
+	{
+		printf("CAMERA POINT ERROR!");
+		free_split(point);
+		exit(1);
+	}
 	free_split(point);
 	normal = ft_split(data->infos[2], ',');
-	obj->normal.x = ft_atof(normal[0]);
-	obj->normal.y = ft_atof(normal[1]);
-	obj->normal.z = ft_atof(normal[2]);
+	if (!ft_isfloat(normal[0]) && !ft_isfloat(normal[1]) && !ft_isfloat(normal[2])
+		&& ft_atof(normal[0]) <= 1 && ft_atof(normal[1]) <= 1 && ft_atof(normal[2]) <= 1
+		&& ft_atof(normal[0]) >= -1 && ft_atof(normal[1]) >= -1 && ft_atof(normal[2]) >= -1)
+	{
+		obj->normal.x = ft_atof(normal[0]);
+		obj->normal.y = ft_atof(normal[1]);
+		obj->normal.z = ft_atof(normal[2]);
+	}
+	else
+	{
+		printf("CAMERA NORMAL ERROR!");
+		free_split(point);
+		free_split(normal);
+		exit(1);
+	}
 	obj->normal = vector_normalize(obj->normal);
 	free_split(normal);
 }
@@ -78,8 +99,17 @@ void	set_light_point(t_light *obj, t_data *data)
 	char	**point;
 
 	point = ft_split(data->infos[1], ',');
-	((t_light *)obj)->point.x = ft_atof(point[0]);
-	((t_light *)obj)->point.y = ft_atof(point[1]);
-	((t_light *)obj)->point.z = ft_atof(point[2]);
+	if (!ft_isfloat(point[0]) && !ft_isfloat(point[1]) && !ft_isfloat(point[2]))
+	{
+		((t_light *)obj)->point.x = ft_atof(point[0]);
+		((t_light *)obj)->point.y = ft_atof(point[1]);
+		((t_light *)obj)->point.z = ft_atof(point[2]);
+	}
+	else
+	{
+		printf("LIGHT COORDINATIONS ERROR!\n");
+		free_split(point);
+		exit(1);
+	}
 	free_split(point);
 }

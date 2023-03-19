@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 20:22:09 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/08 18:25:28 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/18 04:13:39 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,52 @@
 void	cyl_dim_point_normal(t_data *data,
 	t_objects *obj_list, t_cylindre *obj, int i)
 {
-	char			**point;
+	char	**point;
 
 	obj_list[i].object = obj;
-	obj->height = ft_atof(data->infos[4]);
-	obj->diameter = ft_atof(data->infos[3]);
+	if (!ft_isfloat(data->infos[4]))
+		obj->height = ft_atof(data->infos[4]);
+	else
+	{
+		printf("CYLINDER HEIGHT ERROR!");
+		exit(4);
+	}
+	if (!ft_isfloat(data->infos[3]))
+		obj->diameter = ft_atof(data->infos[3]);
+	else
+	{
+		printf("CYLINDER DIAMETER ERROR!");
+		exit(3);
+	}
 	point = ft_split(data->infos[1], ',');
-	obj->point.x = ft_atof(point[0]);
-	obj->point.y = ft_atof(point[1]);
-	obj->point.z = ft_atof(point[2]);
+	if (!ft_isfloat(point[0]) && !ft_isfloat(point[1]) && !ft_isfloat(point[2]))
+	{
+		obj->point.x = ft_atof(point[0]);
+		obj->point.y = ft_atof(point[1]);
+		obj->point.z = ft_atof(point[2]);
+	}
+	else
+	{
+		printf("CYLINDER POINT ERROR!");
+		free_split(point);
+		exit(1);
+	}
 	free_split(point);
 	point = ft_split(data->infos[2], ',');
-	obj->normal.x = ft_atof(point[0]);
-	obj->normal.y = ft_atof(point[1]);
-	obj->normal.z = ft_atof(point[2]);
+	if (!ft_isfloat(point[0]) && !ft_isfloat(point[1]) && !ft_isfloat(point[2])
+		&& ft_atof(point[0]) <= 1 && ft_atof(point[1]) <= 1 && ft_atof(point[2]) <= 1
+		&& ft_atof(point[0]) >= -1 && ft_atof(point[1]) >= -1 && ft_atof(point[2]) >= -1)
+	{
+		obj->normal.x = ft_atof(point[0]);
+		obj->normal.y = ft_atof(point[1]);
+		obj->normal.z = ft_atof(point[2]);
+	}
+	else
+	{
+		printf("CYLINDER NORMAL ERROR!");
+		free_split(point);
+		exit(2);
+	}
 	free_split(point);
 }
 
@@ -83,15 +115,35 @@ void	plane_point_and_normal(t_plane *obj, t_data *data)
 	char	**point;
 
 	point = ft_split(data->infos[1], ',');
-	obj->point.x = ft_atof(point[0]);
-	obj->point.y = ft_atof(point[1]);
-	obj->point.z = ft_atof(point[2]);
+	if (!ft_isfloat(point[0]) && !ft_isfloat(point[1]) && !ft_isfloat(point[2]))
+	{
+		obj->point.x = ft_atof(point[0]);
+		obj->point.y = ft_atof(point[1]);
+		obj->point.z = ft_atof(point[2]);
+	}
+	else
+	{
+		printf("PLANE POINT ERROR!");
+		free_split(point);
+		exit(1);
+	}
 	free_split(point);
 	point = ft_split(data->infos[2], ',');
-	obj->normal.x = ft_atof(point[0]);
-	obj->normal.y = ft_atof(point[1]);
-	obj->normal.z = ft_atof(point[2]);
-	obj->normal = vector_normalize(obj->normal);
+	if (!ft_isfloat(point[0]) && !ft_isfloat(point[1]) && !ft_isfloat(point[2])
+		&& ft_atof(point[0]) <= 1 && ft_atof(point[1]) <= 1 && ft_atof(point[2]) <= 1
+		&& ft_atof(point[0]) >= -1 && ft_atof(point[1]) >= -1 && ft_atof(point[2]) >= -1)
+	{
+		obj->normal.x = ft_atof(point[0]);
+		obj->normal.y = ft_atof(point[1]);
+		obj->normal.z = ft_atof(point[2]);
+		obj->normal = vector_normalize(obj->normal);
+	}
+	else
+	{
+		printf("PLANE NORMAL ERROR!");
+		free_split(point);
+		exit(2);
+	}
 	vector_print("MY PLANE => ", obj->normal);
 	free_split(point);
 }

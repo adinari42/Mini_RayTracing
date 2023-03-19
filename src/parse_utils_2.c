@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 16:13:13 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/08 18:26:25 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/18 19:30:24 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,14 +84,24 @@ void	parse_plane(t_objects *obj_list, t_data *data, int i)
 	obj_list[i].object = obj;
 	plane_point_and_normal(obj, data);
 	colors = ft_split(data->infos[3], ',');
-	obj_list[i].color = create_color(ft_atoi(colors[0]),
-			ft_atoi(colors[1]), ft_atoi(colors[2]));
-	if (str_isdigit(colors[0])
-		&& str_isdigit(colors[1]) && str_isdigit(colors[2]))
+	if (!ft_isfloat(colors[0]) && !ft_isfloat(colors[1]) && !ft_isfloat(colors[2])
+		&& ft_atof(colors[0]) <= 255 && ft_atof(colors[1]) <= 255 && ft_atof(colors[2]) <= 255
+		&& ft_atof(colors[0]) >= 0 && ft_atof(colors[1]) >= 0 && ft_atof(colors[2]) >= 0)
 	{
+		obj_list[i].color = create_color(ft_atoi(colors[0]),
+				ft_atoi(colors[1]), ft_atoi(colors[2]));
 		obj->color.red = ft_atoi(colors[0]);
 		obj->color.green = ft_atoi(colors[1]);
 		obj->color.blue = ft_atoi(colors[2]);
+	}
+	else
+	{
+		printf("PLANE COLORS ERROR!");
+		free(obj);
+		free_split(colors);
+		free_obj_list(obj_list, data);
+		// system("leaks MiniRT");
+		exit(3);
 	}
 	free_split(colors);
 	data->obj_size++;
