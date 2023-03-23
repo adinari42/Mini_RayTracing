@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 19:24:19 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/08 19:26:58 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/22 14:55:58 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ int	check_info_size(t_objects *obj_list, int j, t_data *data)
 void	free_and_exit(t_objects *obj_list, t_data *data)
 {
 	(void)obj_list;
-	free_obj_list(obj_list, data);
 	free_split(data->infos);
 	printf("Parse error: incorrect credentials");
+	system("leaks MiniRT");
 	exit(4);
 }
 

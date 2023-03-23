@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:39:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/18 20:01:30 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/22 14:27:44 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,31 +31,88 @@ void	parse_info(t_objects *obj_list, t_data *data, int i)
 		parse_plane(obj_list, data, i);
 }
 
+void	free_objs(t_objects *obj_list, t_data *data, int i)
+{
+	int 		j;
+	t_cylindre	*tmp;
+
+	j = 0;
+	while (j < i)
+	{
+		printf("obj_list[%d].type = %d\n", j, obj_list[j].type);
+		if (obj_list[j].type == CAMERA)
+		{
+			free(data->camera->trans.elements);
+			free(data->camera->trans_inv.elements);
+			free(data->camera);
+		}
+		else if (obj_list[j].type == CYLINDRE)
+		{
+			tmp = obj_list[j].object;
+			free(tmp->trans.elements);
+			free(tmp->trans_inv.elements);
+		}
+		else if (obj_list[j].type == LIGHT || obj_list[j].type == AMB_LIGHT)
+			free(obj_list[j].object);
+		else if (obj_list[j].type != NONE)
+			free(obj_list[j].object);
+		j++;
+	}
+}
+
+void	free_obj_str(t_objects *obj_list, int i)
+{
+	int j;
+
+	j = 0;
+	while(j <= i)
+	{
+		free(obj_list[j].str);
+		j++;
+	}
+	free(obj_list);
+}
+
+void	free_data(t_objects *obj_list, t_data *data, int i)
+{
+	free_split(data->infos);
+	free(data->img);
+	free_obj_str(obj_list, i);
+	free(data);
+}
+
 void	type_error(t_objects *obj_list, t_data *data, int i)
 {
+	int j;
+	
 	if (obj_list[i].type == NONE)
 	{
+		j = 0;
 		write(2, "Error: incorrect information\n", 30);
-		int j = 0;
-		while(j <= i)
+		while (j < i)
 		{
-			printf("freeing objlist[%d]=%s\n", j, obj_list[j].str);
-			printf("obj_list[%d] adress %p\n", j, &obj_list[j]);
-			free(obj_list[j].str);
+			printf("obj_list[%d].type = %d\n", j, obj_list[j].type);
+			if (obj_list[j].type == CAMERA)
+			{
+				free(data->camera->trans.elements);
+				free(data->camera->trans_inv.elements);
+				free(data->camera);
+			}
+			else if (obj_list[j].type == CYLINDRE)
+			{
+				t_cylindre *tmp;
+				tmp = obj_list[j].object;
+				free(tmp->trans.elements);
+				free(tmp->trans_inv.elements);
+			}
+			else if (obj_list[j].type == LIGHT || obj_list[j].type == AMB_LIGHT)
+				free(obj_list[j].object);
+			else if (obj_list[j].type != NONE)
+				free(obj_list[j].object);
 			j++;
 		}
-		free(obj_list);
-		printf("freeing data.infos:%s\n", data->infos[0]);
-		free_split(data->infos);
-		free(data->img);
-		free(data);
-	
-	
-		// // free_split(data->infos);
-		// free_obj_list(obj_list, data);
-		// free(data->img);
-		// free(data);
-		// system("leaks MiniRT");
+		free_data(obj_list, data, i);
+		system("leaks MiniRT");
 		exit(1);
 	}
 }
@@ -72,7 +129,6 @@ void	save_info(t_objects *obj_list, t_data *data)
 		if (obj_list[i].str && first_occur(obj_list[i].str))
 		{
 			printf("<<<< i = %d<<<<\n", i);
-			system("leaks MiniRT");
 			if (i < data->list_size - 1)
 				ft_strlcpy(obj_list[i].str,
 					obj_list[i].str, ft_strlen(obj_list[i].str));
@@ -106,6 +162,8 @@ void	make_pic(t_data data)
 	fclose(fp);
 }
 
+//terminal : arch, makefile: add -lm flag
+//valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --error-limit=no --tool=memcheck -s ./MiniRT scene.rt
 int	main(int argc, char **argv)
 {
 	t_data		*data;
@@ -126,7 +184,6 @@ int	main(int argc, char **argv)
 	init_data(data, argv);
 	obj_list = malloc((data->list_size) * sizeof(t_objects));
 	//0 leaks here
-	// system("leaks MiniRT");
 	printf("obj_list adress: %p\n", obj_list);
 	save_info(obj_list, data);
 	data->objs = obj_list;
@@ -138,12 +195,3 @@ int	main(int argc, char **argv)
 	free(obj_list);
 	free(data);
 }
-/*
-main
-data = malloc(sizeof(t_data));
-obj_list = malloc((data->list_size) * sizeof(t_objects));
-
-init_data
-data->img = ft_calloc(data->h * data->w, sizeof(t_color));
-
-*/

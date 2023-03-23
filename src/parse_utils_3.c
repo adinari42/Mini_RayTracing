@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 20:17:23 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/18 03:39:18 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/22 15:20:59 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	cam_point_and_normal(t_camera *obj, t_data *data)
 	{
 		printf("CAMERA POINT ERROR!");
 		free_split(point);
+		system("leaks MiniRT");
 		exit(1);
 	}
 	free_split(point);
@@ -50,12 +51,12 @@ void	cam_point_and_normal(t_camera *obj, t_data *data)
 	else
 	{
 		printf("CAMERA NORMAL ERROR!");
-		free_split(point);
 		free_split(normal);
+		system("leaks MiniRT");
 		exit(1);
 	}
-	obj->normal = vector_normalize(obj->normal);
 	free_split(normal);
+	obj->normal = vector_normalize(obj->normal);
 }
 
 t_parse_vectors	cam_up_and_dir(t_camera *obj)

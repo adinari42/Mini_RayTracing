@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 01:21:14 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/17 17:08:08 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/20 02:54:33 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ double	ft_atodoubl(const char *str, char **endptr)
 	double		value;
 	t_num_parse	n_parse;
 
-	n_parse.has_decimal_point = 0;
+	n_parse = (t_num_parse) {0};
 	errno = 0;
 	while (isspace(*str))
 		str++;

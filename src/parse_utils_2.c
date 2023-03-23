@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 16:13:13 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/18 19:30:24 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/21 03:03:02 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,5 +104,7 @@ void	parse_plane(t_objects *obj_list, t_data *data, int i)
 		exit(3);
 	}
 	free_split(colors);
+	// printf("obj_list[%d].object : %p\nobj : %p\n", i, obj_list[i].object, obj);
+	// free(obj);
 	data->obj_size++;
 }

@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 20:22:09 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/18 04:13:39 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/22 15:27:31 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	cyl_dim_point_normal(t_data *data,
 	{
 		printf("CYLINDER NORMAL ERROR!");
 		free_split(point);
+		system("leaks MiniRT");
 		exit(2);
 	}
 	free_split(point);
