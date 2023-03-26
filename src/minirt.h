@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:47:18 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/25 22:20:17 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/26 07:18:18 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -321,5 +321,12 @@ int				is_obj(char *str);
 int				check_info_size(t_objects *obj_list, int j, t_data *data);
 void			free_and_exit(t_objects *obj_list, t_data *data);
 int				str_isdigit(char *str);
+/*utils_2.c*/
+void			main_free(t_objects *obj_list, t_data *data);
+void			make_pic(t_data data);
+void			type_error(t_objects *obj_list, t_data *data, int i);
+void			free_obj_str(t_objects *obj_list, int i);
+void			free_data(t_objects *obj_list, t_data *data, int i);
+
 
 #endif
