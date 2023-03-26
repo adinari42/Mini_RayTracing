@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:47:18 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/14 18:20:11 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/25 22:20:17 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -301,6 +301,8 @@ void			cam_point_and_normal(t_camera *obj, t_data *data);
 t_parse_vectors	cam_up_and_dir(t_camera *obj);
 void			cam_transform(t_camera *obj, t_parse_vectors vectors);
 void			set_light_point(t_light *obj, t_data *data);
+void			set_cam_point(t_camera *obj, t_data *data);
+
 /*parse_utils_4.c*/
 void			cyl_dim_point_normal(t_data *data,
 					t_objects *obj_list, t_cylindre *obj, int i);

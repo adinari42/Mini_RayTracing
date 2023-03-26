@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 20:17:23 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/22 15:20:59 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/25 22:56:22 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,8 @@ void	cam_w_h_flen(t_camera *obj, t_data *data)
 void	cam_point_and_normal(t_camera *obj, t_data *data)
 {
 	char			**normal;
-	char			**point;
 
-	point = ft_split(data->infos[1], ',');
-	if (!ft_isfloat(point[0]) && !ft_isfloat(point[1]) && !ft_isfloat(point[2]))
-	{
-		obj->point.x = ft_atof(point[0]);
-		obj->point.y = ft_atof(point[1]);
-		obj->point.z = ft_atof(point[2]);
-	}
-	else
-	{
-		printf("CAMERA POINT ERROR!");
-		free_split(point);
-		system("leaks MiniRT");
-		exit(1);
-	}
-	free_split(point);
+	set_cam_point(obj, data);
 	normal = ft_split(data->infos[2], ',');
 	if (!ft_isfloat(normal[0]) && !ft_isfloat(normal[1]) && !ft_isfloat(normal[2])
 		&& ft_atof(normal[0]) <= 1 && ft_atof(normal[1]) <= 1 && ft_atof(normal[2]) <= 1
@@ -52,7 +37,6 @@ void	cam_point_and_normal(t_camera *obj, t_data *data)
 	{
 		printf("CAMERA NORMAL ERROR!");
 		free_split(normal);
-		system("leaks MiniRT");
 		exit(1);
 	}
 	free_split(normal);
@@ -95,20 +79,37 @@ void	cam_transform(t_camera *obj, t_parse_vectors vectors)
 	obj->trans_inv = kc_matrix_inverse(obj->trans);
 }
 
+void	set_cam_point(t_camera *obj, t_data *data)
+{
+	char	**point;
+	t_vector 	p;
+
+	point = ft_split(data->infos[1], ',');
+	p = create_vector(ft_atof(point[0]), ft_atof(point[1]), ft_atof(point[2]));
+	if (!ft_isfloat(point[0]) && !ft_isfloat(point[1]) && !ft_isfloat(point[2]))
+		((t_camera *)obj)->point = p;
+	else
+	{
+		printf("CAMERA POINT ERROR!\n");
+		free_split(point);
+		exit(1);
+	}
+	free_split(point);
+}
+
+
 void	set_light_point(t_light *obj, t_data *data)
 {
 	char	**point;
+	t_vector 	p;
 
 	point = ft_split(data->infos[1], ',');
+	p = create_vector(ft_atof(point[0]), ft_atof(point[1]), ft_atof(point[2]));
 	if (!ft_isfloat(point[0]) && !ft_isfloat(point[1]) && !ft_isfloat(point[2]))
-	{
-		((t_light *)obj)->point.x = ft_atof(point[0]);
-		((t_light *)obj)->point.y = ft_atof(point[1]);
-		((t_light *)obj)->point.z = ft_atof(point[2]);
-	}
+		((t_light *)obj)->point = p;
 	else
 	{
-		printf("LIGHT COORDINATIONS ERROR!\n");
+		printf("LIGHT POINT ERROR!\n");
 		free_split(point);
 		exit(1);
 	}

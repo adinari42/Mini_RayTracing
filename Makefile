@@ -6,7 +6,7 @@
 #    By: adinari <adinari@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 21:40:31 by adinari           #+#    #+#              #
-#    Updated: 2023/03/22 14:55:15 by adinari          ###   ########.fr        #
+#    Updated: 2023/03/26 06:19:54 by adinari          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,7 @@ LIBS =	src/libft/libft.a
 $(NAME): $(OBJECTS)
 	make -C src/libft
 	export LD_LIBRARY_PATH=/usr/lib/swift/
-	$(CC)  $(OBJECTS) $(LIBS) -o $(NAME)
+	$(CC)  $(OBJECTS) $(LIBS) -o $(NAME) 
 clean:
 	rm -rf $(OBJECTS)
 	make clean -C src/libft

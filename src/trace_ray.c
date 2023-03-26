@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   trace_ray.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 19:19:47 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/12 18:58:30 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/03/26 03:50:49 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,11 @@ t_vector	transform(t_matrix trans, t_vector ray, int translate)
 	ray_mat.elements[2] = ray.z;
 	ray_mat.elements[3] = translate;
 	res_mat = kc_matrix_multi(trans, ray_mat);
+	free(ray_mat.elements);
 	res.x = res_mat.elements[0];
 	res.y = res_mat.elements[1];
 	res.z = res_mat.elements[2];
+	free(res_mat.elements);
 	return (res);
 }
 

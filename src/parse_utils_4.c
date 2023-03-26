@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 20:22:09 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/22 15:27:31 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/23 17:32:17 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	cyl_dim_point_normal(t_data *data,
 	t_objects *obj_list, t_cylindre *obj, int i)
 {
 	char	**point;
+	t_vector 	p;
 
 	obj_list[i].object = obj;
 	if (!ft_isfloat(data->infos[4]))
@@ -33,12 +34,9 @@ void	cyl_dim_point_normal(t_data *data,
 		exit(3);
 	}
 	point = ft_split(data->infos[1], ',');
+	p = create_vector(ft_atof(point[0]), ft_atof(point[1]), ft_atof(point[2]));
 	if (!ft_isfloat(point[0]) && !ft_isfloat(point[1]) && !ft_isfloat(point[2]))
-	{
-		obj->point.x = ft_atof(point[0]);
-		obj->point.y = ft_atof(point[1]);
-		obj->point.z = ft_atof(point[2]);
-	}
+		obj->point = p;
 	else
 	{
 		printf("CYLINDER POINT ERROR!");

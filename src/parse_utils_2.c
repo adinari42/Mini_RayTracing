@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 16:13:13 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/21 03:03:02 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/25 23:03:17 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,20 +79,20 @@ void	parse_plane(t_objects *obj_list, t_data *data, int i)
 {
 	t_plane		*obj;
 	char		**colors;
+	t_color		c;
 
 	obj = malloc(sizeof(t_plane));
 	obj_list[i].object = obj;
 	plane_point_and_normal(obj, data);
 	colors = ft_split(data->infos[3], ',');
+	c = create_color(ft_atof(colors[0]), ft_atof(colors[1]), ft_atof(colors[2]));
 	if (!ft_isfloat(colors[0]) && !ft_isfloat(colors[1]) && !ft_isfloat(colors[2])
-		&& ft_atof(colors[0]) <= 255 && ft_atof(colors[1]) <= 255 && ft_atof(colors[2]) <= 255
-		&& ft_atof(colors[0]) >= 0 && ft_atof(colors[1]) >= 0 && ft_atof(colors[2]) >= 0)
+		&& c.red <= 255 && c.blue <= 255 && c.green <= 255
+		&& c.red >= 0 && c.blue >= 0 && c.green >= 0)
 	{
 		obj_list[i].color = create_color(ft_atoi(colors[0]),
 				ft_atoi(colors[1]), ft_atoi(colors[2]));
-		obj->color.red = ft_atoi(colors[0]);
-		obj->color.green = ft_atoi(colors[1]);
-		obj->color.blue = ft_atoi(colors[2]);
+		((t_plane *)obj)->color = c;
 	}
 	else
 	{
@@ -100,11 +100,8 @@ void	parse_plane(t_objects *obj_list, t_data *data, int i)
 		free(obj);
 		free_split(colors);
 		free_obj_list(obj_list, data);
-		// system("leaks MiniRT");
 		exit(3);
 	}
 	free_split(colors);
-	// printf("obj_list[%d].object : %p\nobj : %p\n", i, obj_list[i].object, obj);
-	// free(obj);
 	data->obj_size++;
 }

@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:39:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/22 14:27:44 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/26 07:06:19 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,45 @@ void	make_pic(t_data data)
 	fclose(fp);
 }
 
+void	end_free(t_objects *obj_list, t_data *data)
+{
+	int j;
+	
+
+		j = 0;
+		// write(2, "Error: incorrect information\n", 30);
+		while (j < data->list_size)
+		{
+			printf("obj_list[%d].type = %d\n", j, obj_list[j].type);
+			if (obj_list[j].type == CAMERA)
+			{
+				printf("freeing camera\n");
+				free(data->camera->trans.elements);
+				free(data->camera->trans_inv.elements);
+				free(data->camera);
+			}
+			else if (obj_list[j].type == CYLINDRE)
+			{
+				t_cylindre *tmp;
+				tmp = obj_list[j].object;
+				free(tmp->trans.elements);
+				free(tmp->trans_inv.elements);
+			}
+			else if (obj_list[j].type == LIGHT || obj_list[j].type == AMB_LIGHT)
+				free(obj_list[j].object);
+			else if (obj_list[j].type != NONE)
+				free(obj_list[j].object);
+			j++;
+		}
+		// free_split(data->infos);
+		free(data->img);
+		free(data);
+		// free_obj_str(obj_list, data->list_size + 1);
+		// free(data);
+		// free_data(obj_list, data, data->list_size);
+		// system("leaks MiniRT");
+}
+
 //terminal : arch, makefile: add -lm flag
 //valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --error-limit=no --tool=memcheck -s ./MiniRT scene.rt
 int	main(int argc, char **argv)
@@ -189,9 +228,9 @@ int	main(int argc, char **argv)
 	data->objs = obj_list;
 	ray = create_ray(data->camera->point, d);
 	ray.v = transform(data->camera->trans, ray.v, 0);
-	free_obj_list(obj_list, data);
 	trace(data);
-	make_pic(*data);
-	free(obj_list);
-	free(data);
+	make_pic(*data);	
+	end_free(obj_list, data);
+	system("leaks MiniRT");
+	exit(8);
 }
