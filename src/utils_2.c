@@ -6,26 +6,11 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 07:14:31 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/26 07:53:08 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/27 01:08:08 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-void	free_camera(t_data *data)
-{
-	free(data->camera->trans.elements);
-	free(data->camera->trans_inv.elements);
-	free(data->camera);
-}
-
-void	else_free(t_objects *obj_list, int j)
-{
-	if (obj_list[j].type == LIGHT || obj_list[j].type == AMB_LIGHT)
-		free(obj_list[j].object);
-	else if (obj_list[j].type != NONE)
-		free(obj_list[j].object);
-}
 
 void	main_free(t_objects *obj_list, t_data *data)
 {

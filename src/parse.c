@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 04:06:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/26 06:59:03 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/27 03:46:54 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,10 @@ void	parse_camera(t_objects *obj_list, t_data *data, int i)
 
 void	parse_light(t_objects *obj_list, t_data *data, int i)
 {
-	t_light	*obj;
-	char	**colors;
-	t_color		c;
+	t_light		*obj;
 
 	obj = malloc(sizeof(t_light));
 	obj_list[i].object = obj;
-
 	if (!ft_isfloat(data->infos[2])
 		&& ft_atof(data->infos[2]) <= 1 && ft_atof(data->infos[2]) >= 0)
 			((t_light *)obj)->ratio = ft_atof(data->infos[2]);
@@ -54,31 +51,13 @@ void	parse_light(t_objects *obj_list, t_data *data, int i)
 		exit(2);
 	}
 	set_light_point(obj, data);
-	colors = ft_split(data->infos[3], ',');
-	c = create_color(ft_atof(colors[0]), ft_atof(colors[1]), ft_atof(colors[2]));
-	if (!ft_isfloat(colors[0]) && !ft_isfloat(colors[1]) && !ft_isfloat(colors[2])
-		&& c.red <= 255 && c.blue <= 255 && c.green <= 255
-		&& c.red >= 0 && c.blue >= 0 && c.green >= 0)
-	{
-		obj_list[i].color = create_color(ft_atoi(colors[0]),
-				ft_atoi(colors[1]), ft_atoi(colors[2]));
-		((t_light *)obj)->color = c;
-	}
-	else
-	{
-		printf("error: light colors incorrect!");
-		free_split(colors);
-		exit(3);
-	}
+	create_light_color(data, obj, i, obj_list);
 	data->light = obj;
-	free_split(colors);
 }
 
 void	parse_amb_light(t_objects *obj_list, t_data *data, int i)
 {
 	void		*obj;
-	char		**colors;
-	t_color		c;
 
 	obj = malloc(sizeof(t_amb_light));
 	obj_list[i].object = obj;
@@ -90,67 +69,30 @@ void	parse_amb_light(t_objects *obj_list, t_data *data, int i)
 		printf("isfloat error amb light intensity\n");
 		exit(1);
 	}
-	colors = ft_split(data->infos[2], ',');
-	c = create_color(ft_atof(colors[0]), ft_atof(colors[1]), ft_atof(colors[2]));
-	if (!ft_isfloat(colors[0]) && !ft_isfloat(colors[1]) && !ft_isfloat(colors[2])
-		&& c.red <= 255 && c.blue <= 255 && c.green <= 255
-		&& c.red >= 0 && c.blue >= 0 && c.green >= 0)
-	{
-		obj_list[i].color = create_color(ft_atoi(colors[0]),
-				ft_atoi(colors[1]), ft_atoi(colors[2]));
-		((t_amb_light *)obj)->color = c;
-	}
-	else
-	{
-		printf("error: amb light colors incorrect!");
-		free_split(colors);
-		exit(2);
-	}
+	create_amblight_color(data, obj, i, obj_list);
 	data->amb_light = obj;
-	free_split(colors);
 }
 
 void	parse_cylindre(t_objects *obj_list, t_data *data, int i)
 {
 	t_cylindre		*obj;
-	char			**colors;
 	t_parse_vectors	vectors;
-	t_color 		c;
 
 	obj = malloc(sizeof(t_cylindre));
 	cyl_dim_point_normal(data, obj_list, obj, i);
 	vectors = cyl_up_and_dir(obj);
 	cyl_transform(obj, vectors);
-	printf("C TRANS\n");
 	kc_matrix_print(obj->trans);
-	printf("C TRANS INV\n");
 	kc_matrix_print(obj->trans_inv);
-	colors = ft_split(data->infos[5], ',');
-	c = create_color(ft_atof(colors[0]), ft_atof(colors[1]), ft_atof(colors[2]));
-	if (!ft_isfloat(colors[0]) && !ft_isfloat(colors[1]) && !ft_isfloat(colors[2])
-		&& c.red <= 255 && c.blue <= 255 && c.green <= 255
-		&& c.red >= 0 && c.blue >= 0 && c.green >= 0)
-	{
-		obj_list[i].color = create_color(ft_atoi(colors[0]),
-				ft_atoi(colors[1]), ft_atoi(colors[2]));
-		((t_cylindre *)obj)->color = c;
-	}
-	else
-	{
-		printf("CYLINDER COLORS INCORRECT!");
-		free_split(colors);
-		exit(5);
-	}
-	free_split(colors);
+	create_cylinder_color(data, obj, i, obj_list);
 	data->obj_size++;
 }
 
 void	parse_sphere(t_objects *obj_list, t_data *data, int i)
 {
 	void		*obj;
-	char		**colors;
 	char		**point;
-	t_vector 	p;
+	t_vector	p;
 
 	obj = malloc(sizeof(t_sphere));
 	obj_list[i].object = obj;
@@ -167,22 +109,6 @@ void	parse_sphere(t_objects *obj_list, t_data *data, int i)
 		exit(2);
 	}
 	free_split(point);
-	colors = ft_split(data->infos[3], ',');
-	t_color c = create_color(ft_atof(colors[0]), ft_atof(colors[1]), ft_atof(colors[2]));
-	if (!ft_isfloat(colors[0]) && !ft_isfloat(colors[1]) && !ft_isfloat(colors[2])
-		&& c.red <= 255 && c.blue <= 255 && c.green <= 255
-		&& c.red >= 0 && c.blue >= 0 && c.green >= 0)
-	{
-		obj_list[i].color = create_color(ft_atoi(colors[0]),
-				ft_atoi(colors[1]), ft_atoi(colors[2]));
-		((t_sphere *)obj)->color = c;
-	}
-	else
-	{
-		printf("SPHERE COLORS ERROR!");
-		free_split(colors);
-		exit(3);
-	}
-	free_split(colors);
+	create_sphere_color(data, obj, i, obj_list);
 	data->obj_size++;
 }

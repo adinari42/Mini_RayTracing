@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 20:17:23 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/25 22:56:22 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/27 04:09:43 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,11 @@ void	cam_point_and_normal(t_camera *obj, t_data *data)
 
 	set_cam_point(obj, data);
 	normal = ft_split(data->infos[2], ',');
-	if (!ft_isfloat(normal[0]) && !ft_isfloat(normal[1]) && !ft_isfloat(normal[2])
-		&& ft_atof(normal[0]) <= 1 && ft_atof(normal[1]) <= 1 && ft_atof(normal[2]) <= 1
-		&& ft_atof(normal[0]) >= -1 && ft_atof(normal[1]) >= -1 && ft_atof(normal[2]) >= -1)
+	if (!ft_isfloat(normal[0]) && !ft_isfloat(normal[1])
+		&& !ft_isfloat(normal[2]) && ft_atof(normal[0]) <= 1
+		&& ft_atof(normal[1]) <= 1 && ft_atof(normal[2]) <= 1
+		&& ft_atof(normal[0]) >= -1 && ft_atof(normal[1]) >= -1
+		&& ft_atof(normal[2]) >= -1)
 	{
 		obj->normal.x = ft_atof(normal[0]);
 		obj->normal.y = ft_atof(normal[1]);
@@ -81,8 +83,8 @@ void	cam_transform(t_camera *obj, t_parse_vectors vectors)
 
 void	set_cam_point(t_camera *obj, t_data *data)
 {
-	char	**point;
-	t_vector 	p;
+	char		**point;
+	t_vector	p;
 
 	point = ft_split(data->infos[1], ',');
 	p = create_vector(ft_atof(point[0]), ft_atof(point[1]), ft_atof(point[2]));
@@ -91,25 +93,6 @@ void	set_cam_point(t_camera *obj, t_data *data)
 	else
 	{
 		printf("CAMERA POINT ERROR!\n");
-		free_split(point);
-		exit(1);
-	}
-	free_split(point);
-}
-
-
-void	set_light_point(t_light *obj, t_data *data)
-{
-	char	**point;
-	t_vector 	p;
-
-	point = ft_split(data->infos[1], ',');
-	p = create_vector(ft_atof(point[0]), ft_atof(point[1]), ft_atof(point[2]));
-	if (!ft_isfloat(point[0]) && !ft_isfloat(point[1]) && !ft_isfloat(point[2]))
-		((t_light *)obj)->point = p;
-	else
-	{
-		printf("LIGHT POINT ERROR!\n");
 		free_split(point);
 		exit(1);
 	}

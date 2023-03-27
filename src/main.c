@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:39:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/26 07:39:21 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/27 01:10:35 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	parse_info(t_objects *obj_list, t_data *data, int i)
 
 void	free_objs(t_objects *obj_list, t_data *data, int i)
 {
-	int 		j;
+	int			j;
 	t_cylindre	*tmp;
 
 	j = 0;
@@ -88,7 +88,8 @@ void	save_info(t_objects *obj_list, t_data *data)
 }
 
 //terminal : arch, makefile: add -lm flag
-//valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --error-limit=no --tool=memcheck -s ./MiniRT scene.rt
+//valgrind --leak-check=full --show-leak-kinds=all
+//--track-origins=yes --error-limit=no --tool=memcheck -s ./MiniRT scene.rt
 int	main(int argc, char **argv)
 {
 	t_data		*data;
@@ -112,7 +113,7 @@ int	main(int argc, char **argv)
 	ray = create_ray(data->camera->point, d);
 	ray.v = transform(data->camera->trans, ray.v, 0);
 	trace(data);
-	make_pic(*data);	
+	make_pic(*data);
 	main_free(obj_list, data);
 	system("leaks MiniRT");
 	exit(8);

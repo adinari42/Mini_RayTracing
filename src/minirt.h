@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:47:18 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/26 07:18:18 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/27 07:34:30 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -327,6 +327,24 @@ void			make_pic(t_data data);
 void			type_error(t_objects *obj_list, t_data *data, int i);
 void			free_obj_str(t_objects *obj_list, int i);
 void			free_data(t_objects *obj_list, t_data *data, int i);
-
+/*utils_2.c*/
+void			free_camera(t_data *data);
+void			else_free(t_objects *obj_list, int j);
+void			create_light_color(t_data *data,
+					t_light *obj, int i, t_objects *obj_list);
+void			create_amblight_color(t_data *data,
+					void *obj, int i, t_objects *obj_list);
+void			create_cylinder_color(t_data *data,
+					t_cylindre *obj, int i, t_objects *obj_list);
+/*utils_3.c*/
+void			create_sphere_color(t_data *data,
+					void *obj, int i, t_objects *obj_list);
+void			create_plane_color(t_data *data,
+					t_plane *obj, int i, t_objects *obj_list);
+/*cyl_parse_utils.c*/
+void			cyl_height_and_diameter(t_data *data, t_cylindre *obj);
+void			cyl_normal(t_data *data, t_cylindre *obj);
+void			cyl_dim_point_normal(t_data *data,
+					t_objects *obj_list, t_cylindre *obj, int i);
 
 #endif

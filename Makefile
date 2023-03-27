@@ -6,7 +6,7 @@
 #    By: adinari <adinari@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 21:40:31 by adinari           #+#    #+#              #
-#    Updated: 2023/03/26 07:18:11 by adinari          ###   ########.fr        #
+#    Updated: 2023/03/27 07:35:19 by adinari          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,9 @@ FILES = src/main.c\
 		src/trace_ray.c\
 		src/main_utils.c\
 		src/utils_2.c\
+		src/utils_3.c\
+		src/utils_4.c\
+		src/cyl_parse_utils.c\
 
 OBJECTS = $(FILES:.c=.o)
 

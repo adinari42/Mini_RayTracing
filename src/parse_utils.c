@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 01:21:14 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/20 02:54:33 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/27 03:50:56 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ double	ft_atodoubl(const char *str, char **endptr)
 	double		value;
 	t_num_parse	n_parse;
 
-	n_parse = (t_num_parse) {0};
+	n_parse = (t_num_parse){0};
 	errno = 0;
 	while (isspace(*str))
 		str++;
@@ -92,7 +92,6 @@ const char	*get_start(const char *str, int *sign)
 	if (*str == '-')
 	{
 		*sign = -1;
-		// printf("negative sign %d\n", *sign);
 		str++;
 	}
 	else if (*str == '+')
@@ -124,7 +123,6 @@ double	ft_atof(const char *str)
 			number = number * 10.0 + (*str - '0');
 		str++;
 	}
-	// printf("atof sign = %d\n", sign);
 	number *= (double) sign;
 	return (number);
 }
