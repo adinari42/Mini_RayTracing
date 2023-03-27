@@ -3,14 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: adinari <adinari@student.42.fr>            +#+  +:+       +#+         #
+#    By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 21:40:31 by adinari           #+#    #+#              #
-#    Updated: 2023/03/26 07:18:11 by adinari          ###   ########.fr        #
+#    Updated: 2023/03/27 13:13:00 by miahmadi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = MiniRT
+MLX = ./mlx
 
 FILES = src/main.c\
 		src/gnl/get_next_line.c\
@@ -48,13 +49,19 @@ all: $(NAME)
 	$(CC) $(FLAGS) -c $< -o $@
 
 LIBS =	src/libft/libft.a
-$(NAME): $(OBJECTS)
+$(NAME): mlx
 	make -C src/libft
 	export LD_LIBRARY_PATH=/usr/lib/swift/
-	$(CC)  $(OBJECTS) $(LIBS) -o $(NAME) 
+	$(CC)  $(OBJECTS) $(LIBS)  -Lmlx -lmlx -framework OpenGL -framework AppKit -o $(NAME) 
 clean:
 	rm -rf $(OBJECTS)
 	make clean -C src/libft
+	@cd $(MLX) && $(MAKE) clean
+
+mlx: $(OBJECTS)
+	@make -C $(MLX)
+	@cp $(MLX)/libmlx.dylib .
+	@mv libmlx.dylib libmlx.dylib
 	
 fclean: clean
 	rm -rf $(NAME) *.o

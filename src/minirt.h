@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:47:18 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/26 07:18:18 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/27 20:09:52 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,25 @@
 # include <errno.h>
 # include <math.h>
 # include "gnl/get_next_line.h"
+# include "../mlx/mlx.h"
 # include "matrix.h"
 # include "libft/libft.h"
 
 # define PI 3.14159
 # define EPSILON 1e-6
-# define WIDTH 2400
-# define HEIGHT 1350
+# define WIDTH 800
+# define HEIGHT 600
+
+typedef struct s_mlx
+{
+	void	*mlx;
+	void	*img;
+	void	*mlx_win;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}				t_mlx;
 
 typedef struct s_normal
 {
@@ -135,6 +147,7 @@ typedef struct s_data
 	int			list_size;
 	int			obj_size;
 	int			fd;
+	t_mlx		*mlx;
 	t_color		*img;
 	t_camera	*camera;
 	t_light		*light;

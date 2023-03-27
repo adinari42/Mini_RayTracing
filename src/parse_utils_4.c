@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils_4.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 20:22:09 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/23 17:32:17 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/27 20:27:37 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	cyl_dim_point_normal(t_data *data,
 		exit(4);
 	}
 	if (!ft_isfloat(data->infos[3]))
-		obj->diameter = ft_atof(data->infos[3]);
+		obj->diameter = ft_atof(data->infos[3]) / 2.0f;
 	else
 	{
 		printf("CYLINDER DIAMETER ERROR!");
@@ -143,6 +143,5 @@ void	plane_point_and_normal(t_plane *obj, t_data *data)
 		free_split(point);
 		exit(2);
 	}
-	vector_print("MY PLANE => ", obj->normal);
 	free_split(point);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   matrix.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 12:56:11 by miahmadi          #+#    #+#             */
-/*   Updated: 2023/03/21 03:29:54 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/27 17:43:59 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ double	kc_matrix_det_4(t_matrix m)
 	det = kc_matrix_get_det(3, 0, m);
 	res -= g_e(3, 0, m) * kc_matrix_det_3(det);
 	free(det.elements);
-	printf("Res = %f\n", res);
 	return (res);
 }
 
@@ -107,7 +106,6 @@ t_matrix	kc_matrix_inverse_4(t_matrix m)
 		}
 	}
 	t = kc_matrix_det_4(m);
-	printf("T = %f\n", t);
 	kc_matrix_scale((double)1 / kc_matrix_det_4(m), &matrix);
 	return (matrix);
 }
