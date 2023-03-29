@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 20:17:23 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/27 04:09:43 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/29 08:08:34 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ t_parse_vectors	cam_up_and_dir(t_camera *obj)
 	vectors.up.z = 0;
 	vectors.dir_x = vector_cross_product(vectors.up, obj->normal);
 	vectors.dir_x = vector_normalize(vectors.dir_x);
-	vectors.dir_y = vector_cross_product(obj->normal, vectors.dir_x);
+	vectors.dir_y = vector_scale(vector_cross_product(obj->normal,
+				vectors.dir_x), -1);
 	vectors.dir_y = vector_normalize(vectors.dir_y);
 	return (vectors);
 }

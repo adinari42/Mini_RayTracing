@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 02:04:37 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/27 03:27:14 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/29 01:18:40 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	init_data(t_data *data, char **argv)
 			data->list_size++;
 		free(str1);
 	}
-	printf("list size = %d\n", data->list_size);
 	close(data->fd);
 }
 
@@ -87,7 +86,6 @@ void	free_obj_list(t_objects *obj_list, t_data *data)
 	i = 0;
 	while (i < data->list_size - 2)
 	{
-		printf("obj_list[%d]->str:%s\n", i, obj_list[i].str);
 		free(obj_list[i].str);
 		i++;
 	}

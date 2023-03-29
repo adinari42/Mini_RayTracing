@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 07:14:31 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/27 01:08:08 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/29 01:20:03 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	main_free(t_objects *obj_list, t_data *data)
 			else_free(obj_list, j);
 		j++;
 	}
+	free_obj_str(obj_list, data->list_size);
 	free(data->img);
 	free(data);
 }
@@ -78,7 +79,6 @@ void	type_error(t_objects *obj_list, t_data *data, int i)
 			j++;
 		}
 		free_data(obj_list, data, i);
-		system("leaks MiniRT");
 		exit(1);
 	}
 }

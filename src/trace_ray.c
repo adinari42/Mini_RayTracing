@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   trace_ray.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 19:19:47 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/26 03:50:49 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/27 17:24:02 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_color	create_color(int r, int g, int b)
 	color.red = r;
 	color.green = g;
 	color.blue = b;
-	color.alpha = 255;
+	color.alpha = 0;
 	return (color);
 }
 

@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:47:18 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/27 07:34:30 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/29 08:05:37 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,25 @@
 # include <errno.h>
 # include <math.h>
 # include "gnl/get_next_line.h"
+# include "../mlx/mlx.h"
 # include "matrix.h"
 # include "libft/libft.h"
 
 # define PI 3.14159
 # define EPSILON 1e-6
-# define WIDTH 2400
-# define HEIGHT 1350
+# define WIDTH 800
+# define HEIGHT 600
+
+typedef struct s_mlx
+{
+	void	*mlx;
+	void	*img;
+	void	*mlx_win;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}				t_mlx;
 
 typedef struct s_normal
 {
@@ -135,6 +147,7 @@ typedef struct s_data
 	int			list_size;
 	int			obj_size;
 	int			fd;
+	t_mlx		*mlx;
 	t_color		*img;
 	t_camera	*camera;
 	t_light		*light;
@@ -346,5 +359,14 @@ void			cyl_height_and_diameter(t_data *data, t_cylindre *obj);
 void			cyl_normal(t_data *data, t_cylindre *obj);
 void			cyl_dim_point_normal(t_data *data,
 					t_objects *obj_list, t_cylindre *obj, int i);
+/*main_utils_2.c*/
+int				cl_to_int(t_color cl);
+int				closing(t_data *data);
+int				render(t_data *data);
+int				print_key(int key, t_data *data);
+int				exit_error(char *msg, int l);
+/*main_utils_3.c*/
+void			my_mlx_pixel_put(t_mlx *mlx, int x, int y, int color);
+void			init_mlx_related(t_data *data);
 
 #endif

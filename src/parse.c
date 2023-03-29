@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 04:06:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/27 03:46:54 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/29 01:15:19 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	parse_camera(t_objects *obj_list, t_data *data, int i)
 
 	obj = malloc(sizeof(t_camera));
 	obj_list[i].object = obj;
-	printf("infos[3]: %s.\n", data->infos[3]);
 	if (!ft_isfloat(data->infos[3])
 		&& ft_atof(data->infos[3]) <= 180 && ft_atof(data->infos[3]) >= 0)
 		obj->fov = ft_atof(data->infos[3]);
@@ -97,7 +96,7 @@ void	parse_sphere(t_objects *obj_list, t_data *data, int i)
 	obj = malloc(sizeof(t_sphere));
 	obj_list[i].object = obj;
 	if (!ft_isfloat(data->infos[2]))
-		((t_sphere *)obj)->diameter = ft_atof(data->infos[2]);
+		((t_sphere *)obj)->diameter = ft_atof(data->infos[2]) / 2.0f;
 	point = ft_split(data->infos[1], ',');
 	p = create_vector(ft_atof(point[0]), ft_atof(point[1]), ft_atof(point[2]));
 	if (!ft_isfloat(point[0]) && !ft_isfloat(point[1]) && !ft_isfloat(point[2]))

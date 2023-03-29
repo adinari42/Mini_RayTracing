@@ -6,7 +6,7 @@
 /*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:39:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/27 01:10:35 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/29 08:09:03 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	free_objs(t_objects *obj_list, t_data *data, int i)
 	j = 0;
 	while (j < i)
 	{
-		printf("obj_list[%d].type = %d\n", j, obj_list[j].type);
 		if (obj_list[j].type == CAMERA)
 		{
 			free(data->camera->trans.elements);
@@ -60,18 +59,17 @@ void	free_objs(t_objects *obj_list, t_data *data, int i)
 	}
 }
 
-void	save_info(t_objects *obj_list, t_data *data)
+void	save_info(t_objects *obj_list, t_data *data, char *file)
 {
 	int	i;
 
 	i = 0;
-	data->fd = open("scene.rt", O_RDONLY);
+	data->fd = open(file, O_RDONLY);
 	while (i < data->list_size)
 	{
 		obj_list[i].str = get_next_line(data->fd);
 		if (obj_list[i].str && first_occur(obj_list[i].str))
 		{
-			printf("<<<< i = %d<<<<\n", i);
 			if (i < data->list_size - 1)
 				ft_strlcpy(obj_list[i].str,
 					obj_list[i].str, ft_strlen(obj_list[i].str));
@@ -85,11 +83,23 @@ void	save_info(t_objects *obj_list, t_data *data)
 		else
 			free(obj_list[i].str);
 	}
+	close(data->fd);
 }
 
-//terminal : arch, makefile: add -lm flag
-//valgrind --leak-check=full --show-leak-kinds=all
-//--track-origins=yes --error-limit=no --tool=memcheck -s ./MiniRT scene.rt
+void	clear_img(t_mlx *mlx)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (++i < WIDTH)
+	{
+		j = 0;
+		while (++j < HEIGHT)
+			my_mlx_pixel_put(mlx, i, j, 0x00000000);
+	}
+}
+
 int	main(int argc, char **argv)
 {
 	t_data		*data;
@@ -97,24 +107,22 @@ int	main(int argc, char **argv)
 	t_ray		ray;
 	t_vector	d;
 
-	if (argc < 2)
-	{
-		write(2, "Error: no parameter found\nusage: ./MiniRT scene.rt\n", 52);
-		exit(1);
-	}
+	if (argc != 2)
+		exit(exit_error("Error: no parameter found\nusage: ./MiniRT scene.rt\n",
+				52));
+	if (open(argv[1], O_RDONLY) == -1)
+		exit(exit_error("Error: file does not exists or is corrupted\n", 44));
 	d.x = 1;
 	d.y = 1;
 	d.z = 1;
 	data = malloc(sizeof(t_data));
 	init_data(data, argv);
 	obj_list = malloc((data->list_size) * sizeof(t_objects));
-	save_info(obj_list, data);
+	save_info(obj_list, data, argv[1]);
 	data->objs = obj_list;
 	ray = create_ray(data->camera->point, d);
 	ray.v = transform(data->camera->trans, ray.v, 0);
 	trace(data);
-	make_pic(*data);
-	main_free(obj_list, data);
-	system("leaks MiniRT");
-	exit(8);
+	init_mlx_related(data);
+	return (0);
 }
