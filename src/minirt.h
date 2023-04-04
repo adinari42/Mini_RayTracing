@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:47:18 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/29 08:05:37 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/31 22:33:54 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@
 
 # define PI 3.14159
 # define EPSILON 1e-6
-# define WIDTH 800
-# define HEIGHT 600
+# define WIDTH 1600
+# define HEIGHT 1000
 
 typedef struct s_mlx
 {

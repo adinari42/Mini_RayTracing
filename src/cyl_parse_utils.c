@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cyl_parse_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 07:33:47 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/27 07:34:51 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/31 22:12:30 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@ void	cyl_height_and_diameter(t_data *data, t_cylindre *obj)
 		obj->height = ft_atof(data->infos[4]);
 	else
 	{
-		printf("CYLINDER HEIGHT ERROR!");
-		exit(4);
+		printf("CYLINDER HEIGHT ERROR!\n");
+		exit(22);
 	}
 	if (!ft_isfloat(data->infos[3]))
-		obj->diameter = ft_atof(data->infos[3]);
+		obj->diameter = ft_atof(data->infos[3]) / 2.0f;
 	else
 	{
-		printf("CYLINDER DIAMETER ERROR!");
-		exit(3);
+		printf("CYLINDER DIAMETER ERROR!\n");
+		exit(22);
 	}
 }
 
@@ -47,9 +47,9 @@ void	cyl_normal(t_data *data, t_cylindre *obj)
 	}
 	else
 	{
-		printf("CYLINDER NORMAL ERROR!");
+		printf("CYLINDER NORMAL ERROR!\n");
 		free_split(normal);
-		exit(2);
+		exit(22);
 	}
 	free_split(normal);
 }
@@ -68,9 +68,9 @@ void	cyl_dim_point_normal(t_data *data,
 		obj->point = p;
 	else
 	{
-		printf("CYLINDER POINT ERROR!");
+		printf("CYLINDER POINT ERROR!\n");
 		free_split(point);
-		exit(1);
+		exit(22);
 	}
 	free_split(point);
 	cyl_normal(data, obj);

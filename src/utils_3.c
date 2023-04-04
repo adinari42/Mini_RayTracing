@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 01:06:54 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/27 03:45:59 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/31 22:14:50 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ void	create_light_color(t_data *data,
 	}
 	else
 	{
-		printf("error: light colors incorrect!");
+		printf("error: light colors incorrect!\n");
 		free_split(colors);
-		exit(3);
+		exit(22);
 	}
 	free_split(colors);
 }
@@ -74,9 +74,9 @@ void	create_amblight_color(t_data *data,
 	}
 	else
 	{
-		printf("error: amb light colors incorrect!");
+		printf("error: amb light colors incorrect!\n");
 		free_split(colors);
-		exit(2);
+		exit(22);
 	}
 	free_split(colors);
 }
@@ -101,9 +101,9 @@ void	create_cylinder_color(t_data *data,
 	}
 	else
 	{
-		printf("CYLINDER COLORS INCORRECT!");
+		printf("CYLINDER COLORS INCORRECT!\n");
 		free_split(colors);
-		exit(5);
+		exit(22);
 	}
 	free_split(colors);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersect_utils_2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 16:55:16 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/14 18:11:36 by adinari          ###   ########.fr       */
+/*   Updated: 2023/04/04 07:48:34 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	cond_1(t_cylindre *cylinder,
 {
 	if (point1->z <= cylinder->height / 2 && point1->z >= -cylinder->height / 2)
 	{
+		// vector_print("Poin1: ", *point1);
 		*point1 = transform(cylinder->trans, *point1, 1);
 		doubles->tmp_t = sqrt(pow(point1->x - ray->p.x, 2)
 				+ pow(point1->y - ray->p.y, 2) + pow(point1->z - ray->p.z, 2));

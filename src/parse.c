@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 04:06:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/29 01:15:19 by adinari          ###   ########.fr       */
+/*   Updated: 2023/04/04 07:51:07 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	parse_camera(t_objects *obj_list, t_data *data, int i)
 	else
 	{
 		printf("CAMERA FOV error\n");
-		system("leaks MiniRT");
 		exit(3);
 	}
 	cam_w_h_flen(obj, data);
@@ -47,7 +46,7 @@ void	parse_light(t_objects *obj_list, t_data *data, int i)
 	else
 	{
 		printf("isfloat error light intensity\n");
-		exit(2);
+		exit(22);
 	}
 	set_light_point(obj, data);
 	create_light_color(data, obj, i, obj_list);
@@ -66,7 +65,7 @@ void	parse_amb_light(t_objects *obj_list, t_data *data, int i)
 	else
 	{
 		printf("isfloat error amb light intensity\n");
-		exit(1);
+		exit(22);
 	}
 	create_amblight_color(data, obj, i, obj_list);
 	data->amb_light = obj;
@@ -81,9 +80,13 @@ void	parse_cylindre(t_objects *obj_list, t_data *data, int i)
 	cyl_dim_point_normal(data, obj_list, obj, i);
 	vectors = cyl_up_and_dir(obj);
 	cyl_transform(obj, vectors);
-	kc_matrix_print(obj->trans);
-	kc_matrix_print(obj->trans_inv);
 	create_cylinder_color(data, obj, i, obj_list);
+	// printf("***************\n");
+	// kc_matrix_print(obj->trans);
+	// printf("***************\n\n");
+	// printf("***************\n");
+	// kc_matrix_print(obj->trans_inv);
+	// printf("***************\n\n");
 	data->obj_size++;
 }
 
@@ -103,9 +106,9 @@ void	parse_sphere(t_objects *obj_list, t_data *data, int i)
 		((t_sphere *)obj)->point = p;
 	else
 	{
-		printf("SPHERE POINT ERROR!");
+		printf("SPHERE POINT ERROR!\n");
 		free_split(point);
-		exit(2);
+		exit(22);
 	}
 	free_split(point);
 	create_sphere_color(data, obj, i, obj_list);

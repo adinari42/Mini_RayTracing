@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 19:24:19 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/22 14:55:58 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/31 22:12:53 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,7 @@ void	free_and_exit(t_objects *obj_list, t_data *data)
 	(void)obj_list;
 	free_split(data->infos);
 	printf("Parse error: incorrect credentials");
-	system("leaks MiniRT");
-	exit(4);
+	exit(22);
 }
 
 int	str_isdigit(char *str)

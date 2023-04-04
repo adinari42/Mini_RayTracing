@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils_2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 07:50:15 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/29 08:07:49 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/31 22:10:11 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,12 @@ int	cl_to_int(t_color cl)
 	return (cl.alpha << 24 | cl.red << 16 | cl.green << 8 | cl.blue);
 }
 
-// main_free(data->objs, data); //needs to be added?
 int	closing(t_data *data)
 {
 	mlx_destroy_image(data->mlx->mlx, data->mlx->img);
-	system("leaks MiniRT");
 	exit(0);
 }
 
-// clear_img(data->mlx); //needs to be added?
 int	render(t_data *data)
 {
 	int	i;

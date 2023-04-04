@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils_3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 20:17:23 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/29 08:08:34 by adinari          ###   ########.fr       */
+/*   Updated: 2023/04/04 08:04:54 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,23 @@ t_parse_vectors	cam_up_and_dir(t_camera *obj)
 {
 	t_parse_vectors	vectors;
 
-	vectors.up.x = 0;
-	vectors.up.y = 1;
-	vectors.up.z = 0;
-	vectors.dir_x = vector_cross_product(vectors.up, obj->normal);
-	vectors.dir_x = vector_normalize(vectors.dir_x);
-	vectors.dir_y = vector_scale(vector_cross_product(obj->normal,
-				vectors.dir_x), -1);
-	vectors.dir_y = vector_normalize(vectors.dir_y);
+	obj->normal = vector_normalize(obj->normal);
+	obj->normal.y *= -1;
+	if (obj->normal.x == 0 && obj->normal.z == 0)
+	{
+		vector_print("Cam: ", obj->normal);
+		vectors.dir_x = create_vector(1, 0, 0);
+		vectors.dir_y = vector_cross_product(obj->normal, vectors.dir_x);
+		vectors.dir_y = vector_scale(vector_normalize(vectors.dir_y), -1);
+	}
+	else
+	{
+		vectors.up = create_vector(0, 1, 0);
+		vectors.dir_x = vector_cross_product(obj->normal, vectors.up);
+		vectors.dir_x = vector_normalize(vectors.dir_x);
+		vectors.dir_y = vector_cross_product(vectors.dir_x, obj->normal);
+		vectors.dir_y = vector_scale(vector_normalize(vectors.dir_y), -1);
+	}
 	return (vectors);
 }
 

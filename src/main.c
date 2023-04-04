@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:39:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/29 08:09:03 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/31 22:05:51 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,9 +112,7 @@ int	main(int argc, char **argv)
 				52));
 	if (open(argv[1], O_RDONLY) == -1)
 		exit(exit_error("Error: file does not exists or is corrupted\n", 44));
-	d.x = 1;
-	d.y = 1;
-	d.z = 1;
+	d = create_vector(1, 1, 1);
 	data = malloc(sizeof(t_data));
 	init_data(data, argv);
 	obj_list = malloc((data->list_size) * sizeof(t_objects));

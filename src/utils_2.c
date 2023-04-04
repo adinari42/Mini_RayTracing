@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 07:14:31 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/29 01:20:03 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/31 22:14:25 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	type_error(t_objects *obj_list, t_data *data, int i)
 			j++;
 		}
 		free_data(obj_list, data, i);
-		exit(1);
+		exit(22);
 	}
 }
 

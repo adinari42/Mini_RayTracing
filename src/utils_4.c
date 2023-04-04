@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_4.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 03:44:43 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/27 04:10:47 by adinari          ###   ########.fr       */
+/*   Updated: 2023/03/31 22:15:21 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ void	create_sphere_color(t_data *data,
 	}
 	else
 	{
-		printf("SPHERE COLORS ERROR!");
+		printf("SPHERE COLORS ERROR!\n");
 		free_split(colors);
-		exit(3);
+		exit(22);
 	}
 	free_split(colors);
 }
@@ -59,11 +59,11 @@ void	create_plane_color(t_data *data,
 	}
 	else
 	{
-		printf("PLANE COLORS ERROR!");
+		printf("PLANE COLORS ERROR!\n");
 		free(obj);
 		free_split(colors);
 		free_obj_list(obj_list, data);
-		exit(3);
+		exit(22);
 	}
 	free_split(colors);
 }
@@ -81,7 +81,7 @@ void	set_light_point(t_light *obj, t_data *data)
 	{
 		printf("LIGHT POINT ERROR!\n");
 		free_split(point);
-		exit(1);
+		exit(22);
 	}
 	free_split(point);
 }
