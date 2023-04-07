@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 04:06:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/04/04 07:51:07 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/04/04 08:32:45 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,16 +94,14 @@ void	parse_sphere(t_objects *obj_list, t_data *data, int i)
 {
 	void		*obj;
 	char		**point;
-	t_vector	p;
 
 	obj = malloc(sizeof(t_sphere));
 	obj_list[i].object = obj;
 	if (!ft_isfloat(data->infos[2]))
 		((t_sphere *)obj)->diameter = ft_atof(data->infos[2]) / 2.0f;
 	point = ft_split(data->infos[1], ',');
-	p = create_vector(ft_atof(point[0]), ft_atof(point[1]), ft_atof(point[2]));
 	if (!ft_isfloat(point[0]) && !ft_isfloat(point[1]) && !ft_isfloat(point[2]))
-		((t_sphere *)obj)->point = p;
+		((t_sphere *)obj)->point = create_vector(ft_atof(point[0]), ft_atof(point[1]), ft_atof(point[2]));
 	else
 	{
 		printf("SPHERE POINT ERROR!\n");

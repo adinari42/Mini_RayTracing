@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 01:06:54 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/31 22:14:50 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/04/04 09:27:34 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,24 +34,23 @@ void	create_light_color(t_data *data,
 	char		**colors;
 
 	colors = ft_split(data->infos[3], ',');
-	c = create_color(ft_atof(colors[0]),
-			ft_atof(colors[1]), ft_atof(colors[2]));
 	if (!ft_isfloat(colors[0])
-		&& !ft_isfloat(colors[1]) && !ft_isfloat(colors[2])
-		&& c.red <= 255 && c.blue <= 255 && c.green <= 255
+		&& !ft_isfloat(colors[1]) && !ft_isfloat(colors[2]))
+	{
+		c = create_color(ft_atof(colors[0]),
+			ft_atof(colors[1]), ft_atof(colors[2]));
+		if(c.red <= 255 && c.blue <= 255 && c.green <= 255
 		&& c.red >= 0 && c.blue >= 0 && c.green >= 0)
-	{
-		obj_list[i].color = create_color(ft_atoi(colors[0]),
-				ft_atoi(colors[1]), ft_atoi(colors[2]));
-		((t_light *)obj)->color = c;
+		{
+			obj_list[i].color = c;
+			((t_light *)obj)->color = c;
+			free_split(colors);
+			return ;
+		}
 	}
-	else
-	{
-		printf("error: light colors incorrect!\n");
-		free_split(colors);
-		exit(22);
-	}
+	printf("error: light colors incorrect!\n");
 	free_split(colors);
+	exit(22);
 }
 
 void	create_amblight_color(t_data *data,
@@ -61,24 +60,23 @@ void	create_amblight_color(t_data *data,
 	char		**colors;
 
 	colors = ft_split(data->infos[2], ',');
-	c = create_color(ft_atof(colors[0]),
-			ft_atof(colors[1]), ft_atof(colors[2]));
 	if (!ft_isfloat(colors[0])
-		&& !ft_isfloat(colors[1]) && !ft_isfloat(colors[2])
-		&& c.red <= 255 && c.blue <= 255 && c.green <= 255
-		&& c.red >= 0 && c.blue >= 0 && c.green >= 0)
+		&& !ft_isfloat(colors[1]) && !ft_isfloat(colors[2]))
 	{
-		obj_list[i].color = create_color(ft_atoi(colors[0]),
-				ft_atoi(colors[1]), ft_atoi(colors[2]));
-		((t_amb_light *)obj)->color = c;
+		c = create_color(ft_atof(colors[0]),
+			ft_atof(colors[1]), ft_atof(colors[2]));
+		if (c.red <= 255 && c.blue <= 255 && c.green <= 255
+			&& c.red >= 0 && c.blue >= 0 && c.green >= 0)
+		{
+			obj_list[i].color = c;
+			((t_amb_light *)obj)->color = c;
+			free_split(colors);
+			return ;
+		}
 	}
-	else
-	{
-		printf("error: amb light colors incorrect!\n");
-		free_split(colors);
-		exit(22);
-	}
+	printf("error: amb light colors incorrect!\n");
 	free_split(colors);
+	exit(22);
 }
 
 void	create_cylinder_color(t_data *data,
@@ -88,22 +86,21 @@ void	create_cylinder_color(t_data *data,
 	char		**colors;
 
 	colors = ft_split(data->infos[5], ',');
-	c = create_color(ft_atof(colors[0]),
-			ft_atof(colors[1]), ft_atof(colors[2]));
 	if (!ft_isfloat(colors[0])
-		&& !ft_isfloat(colors[1]) && !ft_isfloat(colors[2])
-		&& c.red <= 255 && c.blue <= 255 && c.green <= 255
-		&& c.red >= 0 && c.blue >= 0 && c.green >= 0)
+		&& !ft_isfloat(colors[1]) && !ft_isfloat(colors[2]))
 	{
-		obj_list[i].color = create_color(ft_atoi(colors[0]),
-				ft_atoi(colors[1]), ft_atoi(colors[2]));
-		((t_cylindre *)obj)->color = c;
+		c = create_color(ft_atof(colors[0]),
+			ft_atof(colors[1]), ft_atof(colors[2]));
+		if (c.red <= 255 && c.blue <= 255 && c.green <= 255
+			&& c.red >= 0 && c.blue >= 0 && c.green >= 0)
+		{
+			obj_list[i].color = c;
+			((t_cylindre *)obj)->color = c;
+			free_split(colors);
+			return ;
+		}
 	}
-	else
-	{
 		printf("CYLINDER COLORS INCORRECT!\n");
 		free_split(colors);
 		exit(22);
-	}
-	free_split(colors);
 }

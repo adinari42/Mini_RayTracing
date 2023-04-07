@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 20:17:23 by adinari           #+#    #+#             */
-/*   Updated: 2023/04/04 08:04:54 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/04/04 08:31:39 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,10 @@ void	cam_transform(t_camera *obj, t_parse_vectors vectors)
 void	set_cam_point(t_camera *obj, t_data *data)
 {
 	char		**point;
-	t_vector	p;
 
 	point = ft_split(data->infos[1], ',');
-	p = create_vector(ft_atof(point[0]), ft_atof(point[1]), ft_atof(point[2]));
 	if (!ft_isfloat(point[0]) && !ft_isfloat(point[1]) && !ft_isfloat(point[2]))
-		((t_camera *)obj)->point = p;
+		((t_camera *)obj)->point = create_vector(ft_atof(point[0]), ft_atof(point[1]), ft_atof(point[2]));
 	else
 	{
 		printf("CAMERA POINT ERROR!\n");

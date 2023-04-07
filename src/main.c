@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:39:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/31 22:05:51 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/04/04 09:24:41 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,14 @@ void	save_info(t_objects *obj_list, t_data *data, char *file)
 {
 	int	i;
 
-	i = 0;
+	i = -1;
 	data->fd = open(file, O_RDONLY);
-	while (i < data->list_size)
+	while (++i < data->list_size)
 	{
 		obj_list[i].str = get_next_line(data->fd);
 		if (obj_list[i].str && first_occur(obj_list[i].str))
 		{
-			if (i < data->list_size - 1)
+			if (obj_list[i].str[ft_strlen(obj_list[i].str) - 1] == '\n')
 				ft_strlcpy(obj_list[i].str,
 					obj_list[i].str, ft_strlen(obj_list[i].str));
 			data->infos = ft_split(obj_list[i].str, ' ');
@@ -78,7 +78,6 @@ void	save_info(t_objects *obj_list, t_data *data, char *file)
 			type_error(obj_list, data, i);
 			parse_info(obj_list, data, i);
 			free_split(data->infos);
-			i++;
 		}
 		else
 			free(obj_list[i].str);

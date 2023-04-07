@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 20:22:09 by adinari           #+#    #+#             */
-/*   Updated: 2023/04/04 08:05:21 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/04/04 08:35:23 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,9 @@ void	plane_point_and_normal(t_plane *obj, t_data *data)
 	}
 	else
 	{
-		printf("PLANE POINT ERROR!");
+		printf("PLANE POINT ERROR!\n");
 		free_split(point);
-		exit(1);
+		exit(22);
 	}
 	free_split(point);
 	create_plane_normal(obj, data);
