@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 19:19:47 by adinari           #+#    #+#             */
-/*   Updated: 2023/03/27 17:24:02 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/04/18 19:53:40 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,13 @@ void	trace(t_data *data)
 			trace.d.y = trace.u;
 			trace.d.z = data->camera->flen;
 			trace.d = vector_normalize(trace.d);
-			trace.ray = create_ray(data->camera->point, trace.d);
-			trace.ray.v = transform(data->camera->trans, trace.ray.v, 0);
+			trace.ray = create_ray(create_vector(0, 0, 0), trace.d);
+			if (count.i == data->h / 2 && count.j == data->w / 2)
+				vector_print("\nBefore = ", trace.ray.p);
+			trace.ray.v = transform(data->camera->trans_inv, trace.ray.v, 0);
+			trace.ray.p = transform(data->camera->trans_inv, trace.ray.p, 1);
+			if (count.i == data->h / 2 && count.j == data->w / 2)
+				vector_print("After = ", trace.ray.p);
 			trace.color = trace_ray(trace.ray, data, 2);
 			data->img[count.i * WIDTH + count.j] = trace.color;
 		}

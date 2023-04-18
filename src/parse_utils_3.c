@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 20:17:23 by adinari           #+#    #+#             */
-/*   Updated: 2023/04/04 08:31:39 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/04/16 12:07:18 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,9 @@ t_parse_vectors	cam_up_and_dir(t_camera *obj)
 	t_parse_vectors	vectors;
 
 	obj->normal = vector_normalize(obj->normal);
-	obj->normal.y *= -1;
+	// obj->normal.y *= -1;
 	if (obj->normal.x == 0 && obj->normal.z == 0)
 	{
-		vector_print("Cam: ", obj->normal);
 		vectors.dir_x = create_vector(1, 0, 0);
 		vectors.dir_y = vector_cross_product(obj->normal, vectors.dir_x);
 		vectors.dir_y = vector_scale(vector_normalize(vectors.dir_y), -1);

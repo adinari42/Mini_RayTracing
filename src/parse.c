@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 04:06:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/04/04 08:32:45 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/04/12 13:54:00 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,10 @@ void	parse_camera(t_objects *obj_list, t_data *data, int i)
 	cam_point_and_normal(obj, data);
 	vectors = cam_up_and_dir(obj);
 	cam_transform(obj, vectors);
+	printf("Cam trans\n");
+	kc_matrix_print(obj->trans);
+	printf("\nCam trans inv\n");
+	kc_matrix_print(obj->trans_inv);
 	data->camera = obj;
 }
 

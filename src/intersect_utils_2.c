@@ -6,7 +6,7 @@
 /*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 16:55:16 by adinari           #+#    #+#             */
-/*   Updated: 2023/04/04 07:48:34 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/04/18 19:40:26 by miahmadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,18 @@ void	init_hit(t_cylindre *cylinder, t_hitpoint *hit_0)
 void	intersect_init(t_cylindre *cylinder,
 	t_ray *new_ray, t_intrsc_dbl *doubles, t_ray *ray)
 {
+	if (ray->v.x == 0 && ray->v.y == 0 && ray->v.z == 1)
+	{
+			vector_print("\nP Before = ", ray->p);
+			vector_print("V Before = ", ray->v);
+	}
 	new_ray->p = transform(cylinder->trans_inv, ray->p, 1);
 	new_ray->v = transform(cylinder->trans_inv, ray->v, 0);
+	if (ray->v.x == 0 && ray->v.y == 0 && ray->v.z == 1)
+	{
+			vector_print("\nP After = ", new_ray->p);
+			vector_print("V After = ", new_ray->v);
+	}
 	doubles->a = pow(new_ray->v.x, 2) + pow(new_ray->v.y, 2);
 	doubles->b = 2 * (new_ray->p.x * new_ray->v.x
 			+ new_ray->p.y * new_ray->v.y);
@@ -39,7 +49,6 @@ void	cond_1(t_cylindre *cylinder,
 {
 	if (point1->z <= cylinder->height / 2 && point1->z >= -cylinder->height / 2)
 	{
-		// vector_print("Poin1: ", *point1);
 		*point1 = transform(cylinder->trans, *point1, 1);
 		doubles->tmp_t = sqrt(pow(point1->x - ray->p.x, 2)
 				+ pow(point1->y - ray->p.y, 2) + pow(point1->z - ray->p.z, 2));
