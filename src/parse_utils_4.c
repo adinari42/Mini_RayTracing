@@ -17,21 +17,23 @@ t_parse_vectors	cyl_up_and_dir(t_cylindre *obj)
 	t_parse_vectors	vectors;
 
 	obj->normal = vector_normalize(obj->normal);
-	// obj->normal.y *= -1;
+	obj->normal.y *= -1;
 	if (obj->normal.x == 0 && obj->normal.z == 0)
-	{
 		vectors.dir_x = create_vector(1, 0, 0);
-		vectors.dir_y = vector_cross_product(obj->normal, vectors.dir_x);
-		vectors.dir_y = vector_scale(vector_normalize(vectors.dir_y), -1);
+	else if (obj->normal.x != 0 && obj->normal.y != 0 && obj->normal.z == 0)
+	{
+		vectors.up = create_vector(1, 0, 1);
+		vectors.dir_x = vector_cross_product(obj->normal, vectors.up);
+		vectors.dir_x = vector_normalize(vectors.dir_x);
 	}
 	else
 	{
 		vectors.up = create_vector(0, 1, 0);
 		vectors.dir_x = vector_cross_product(obj->normal, vectors.up);
 		vectors.dir_x = vector_normalize(vectors.dir_x);
-		vectors.dir_y = vector_cross_product(vectors.dir_x, obj->normal);
-		vectors.dir_y = vector_scale(vector_normalize(vectors.dir_y), 1);
 	}
+	vectors.dir_y = vector_cross_product(vectors.dir_x, obj->normal);
+	vectors.dir_y = vector_scale(vector_normalize(vectors.dir_y), -1);
 	return (vectors);
 }
 
@@ -55,10 +57,6 @@ void	cyl_transform(t_cylindre *obj, t_parse_vectors vectors)
 	obj->trans.elements[14] = 0;
 	obj->trans.elements[15] = 1;
 	obj->trans_inv = kc_matrix_inverse(obj->trans);
-	printf("\nCY trans:\n");
-	kc_matrix_print(obj->trans);
-	printf("\nCY trans inv:\n");
-	kc_matrix_print(obj->trans_inv);
 }
 
 void	create_plane_normal(t_plane *obj, t_data *data)

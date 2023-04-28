@@ -23,18 +23,8 @@ void	init_hit(t_cylindre *cylinder, t_hitpoint *hit_0)
 void	intersect_init(t_cylindre *cylinder,
 	t_ray *new_ray, t_intrsc_dbl *doubles, t_ray *ray)
 {
-	if (ray->v.x == 0 && ray->v.y == 0 && ray->v.z == 1)
-	{
-			vector_print("\nP Before = ", ray->p);
-			vector_print("V Before = ", ray->v);
-	}
 	new_ray->p = transform(cylinder->trans_inv, ray->p, 1);
 	new_ray->v = transform(cylinder->trans_inv, ray->v, 0);
-	if (ray->v.x == 0 && ray->v.y == 0 && ray->v.z == 1)
-	{
-			vector_print("\nP After = ", new_ray->p);
-			vector_print("V After = ", new_ray->v);
-	}
 	doubles->a = pow(new_ray->v.x, 2) + pow(new_ray->v.y, 2);
 	doubles->b = 2 * (new_ray->p.x * new_ray->v.x
 			+ new_ray->p.y * new_ray->v.y);

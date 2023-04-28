@@ -107,12 +107,8 @@ void	trace(t_data *data)
 			trace.d.z = data->camera->flen;
 			trace.d = vector_normalize(trace.d);
 			trace.ray = create_ray(create_vector(0, 0, 0), trace.d);
-			if (count.i == data->h / 2 && count.j == data->w / 2)
-				vector_print("\nBefore = ", trace.ray.p);
 			trace.ray.v = transform(data->camera->trans_inv, trace.ray.v, 0);
 			trace.ray.p = transform(data->camera->trans_inv, trace.ray.p, 1);
-			if (count.i == data->h / 2 && count.j == data->w / 2)
-				vector_print("After = ", trace.ray.p);
 			trace.color = trace_ray(trace.ray, data, 2);
 			data->img[count.i * WIDTH + count.j] = trace.color;
 		}

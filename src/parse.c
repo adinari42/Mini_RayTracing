@@ -31,10 +31,6 @@ void	parse_camera(t_objects *obj_list, t_data *data, int i)
 	cam_point_and_normal(obj, data);
 	vectors = cam_up_and_dir(obj);
 	cam_transform(obj, vectors);
-	printf("Cam trans\n");
-	kc_matrix_print(obj->trans);
-	printf("\nCam trans inv\n");
-	kc_matrix_print(obj->trans_inv);
 	data->camera = obj;
 }
 
@@ -85,12 +81,6 @@ void	parse_cylindre(t_objects *obj_list, t_data *data, int i)
 	vectors = cyl_up_and_dir(obj);
 	cyl_transform(obj, vectors);
 	create_cylinder_color(data, obj, i, obj_list);
-	// printf("***************\n");
-	// kc_matrix_print(obj->trans);
-	// printf("***************\n\n");
-	// printf("***************\n");
-	// kc_matrix_print(obj->trans_inv);
-	// printf("***************\n\n");
 	data->obj_size++;
 }
 
