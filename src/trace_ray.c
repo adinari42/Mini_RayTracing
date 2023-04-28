@@ -107,8 +107,8 @@ void	trace(t_data *data)
 			trace.d.z = data->camera->flen;
 			trace.d = vector_normalize(trace.d);
 			trace.ray = create_ray(create_vector(0, 0, 0), trace.d);
-			trace.ray.v = transform(data->camera->trans_inv, trace.ray.v, 0);
-			trace.ray.p = transform(data->camera->trans_inv, trace.ray.p, 1);
+			trace.ray.v = transform(data->camera->trans, trace.ray.v, 0);
+			trace.ray.p = transform(data->camera->trans, trace.ray.p, 1);
 			trace.color = trace_ray(trace.ray, data, 2);
 			data->img[count.i * WIDTH + count.j] = trace.color;
 		}
