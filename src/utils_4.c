@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_4.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 03:44:43 by adinari           #+#    #+#             */
-/*   Updated: 2023/04/04 09:30:52 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/04/28 21:08:56 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	create_sphere_color(t_data *data,
 		&& !ft_isfloat(colors[1]) && !ft_isfloat(colors[2]))
 	{
 		c = create_color(ft_atof(colors[0]),
-			ft_atof(colors[1]), ft_atof(colors[2]));
+				ft_atof(colors[1]), ft_atof(colors[2]));
 		if (c.red <= 255 && c.blue <= 255 && c.green <= 255
 			&& c.red >= 0 && c.blue >= 0 && c.green >= 0)
 		{
@@ -49,7 +49,7 @@ void	create_plane_color(t_data *data,
 		&& !ft_isfloat(colors[1]) && !ft_isfloat(colors[2]))
 	{
 		c = create_color(ft_atof(colors[0]),
-			ft_atof(colors[1]), ft_atof(colors[2]));
+				ft_atof(colors[1]), ft_atof(colors[2]));
 		if (c.red <= 255 && c.blue <= 255 && c.green <= 255
 			&& c.red >= 0 && c.blue >= 0 && c.green >= 0)
 		{

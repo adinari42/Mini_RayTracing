@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 01:06:54 by adinari           #+#    #+#             */
-/*   Updated: 2023/04/04 09:27:34 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/04/28 22:08:38 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ void	create_light_color(t_data *data,
 		&& !ft_isfloat(colors[1]) && !ft_isfloat(colors[2]))
 	{
 		c = create_color(ft_atof(colors[0]),
-			ft_atof(colors[1]), ft_atof(colors[2]));
-		if(c.red <= 255 && c.blue <= 255 && c.green <= 255
-		&& c.red >= 0 && c.blue >= 0 && c.green >= 0)
+				ft_atof(colors[1]), ft_atof(colors[2]));
+		if (c.red <= 255 && c.blue <= 255 && c.green <= 255
+			&& c.red >= 0 && c.blue >= 0 && c.green >= 0)
 		{
 			obj_list[i].color = c;
 			((t_light *)obj)->color = c;
@@ -64,7 +64,7 @@ void	create_amblight_color(t_data *data,
 		&& !ft_isfloat(colors[1]) && !ft_isfloat(colors[2]))
 	{
 		c = create_color(ft_atof(colors[0]),
-			ft_atof(colors[1]), ft_atof(colors[2]));
+				ft_atof(colors[1]), ft_atof(colors[2]));
 		if (c.red <= 255 && c.blue <= 255 && c.green <= 255
 			&& c.red >= 0 && c.blue >= 0 && c.green >= 0)
 		{
@@ -90,7 +90,7 @@ void	create_cylinder_color(t_data *data,
 		&& !ft_isfloat(colors[1]) && !ft_isfloat(colors[2]))
 	{
 		c = create_color(ft_atof(colors[0]),
-			ft_atof(colors[1]), ft_atof(colors[2]));
+				ft_atof(colors[1]), ft_atof(colors[2]));
 		if (c.red <= 255 && c.blue <= 255 && c.green <= 255
 			&& c.red >= 0 && c.blue >= 0 && c.green >= 0)
 		{
@@ -100,7 +100,7 @@ void	create_cylinder_color(t_data *data,
 			return ;
 		}
 	}
-		printf("CYLINDER COLORS INCORRECT!\n");
-		free_split(colors);
-		exit(22);
+	printf("CYLINDER COLORS INCORRECT!\n");
+	free_split(colors);
+	exit(22);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 21:39:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/04/04 09:24:41 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/04/29 00:13:36 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,22 +103,17 @@ int	main(int argc, char **argv)
 {
 	t_data		*data;
 	t_objects	*obj_list;
-	t_ray		ray;
-	t_vector	d;
 
 	if (argc != 2)
 		exit(exit_error("Error: no parameter found\nusage: ./MiniRT scene.rt\n",
 				52));
 	if (open(argv[1], O_RDONLY) == -1)
 		exit(exit_error("Error: file does not exists or is corrupted\n", 44));
-	d = create_vector(1, 1, 1);
 	data = malloc(sizeof(t_data));
 	init_data(data, argv);
 	obj_list = malloc((data->list_size) * sizeof(t_objects));
 	save_info(obj_list, data, argv[1]);
 	data->objs = obj_list;
-	ray = create_ray(data->camera->point, d);
-	ray.v = transform(data->camera->trans, ray.v, 0);
 	trace(data);
 	init_mlx_related(data);
 	return (0);

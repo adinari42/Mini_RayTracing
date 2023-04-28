@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cyl_parse_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 07:33:47 by adinari           #+#    #+#             */
-/*   Updated: 2023/04/04 08:30:24 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/04/28 21:06:42 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ void	cyl_dim_point_normal(t_data *data,
 	cyl_height_and_diameter(data, obj);
 	point = ft_split(data->infos[1], ',');
 	if (!ft_isfloat(point[0]) && !ft_isfloat(point[1]) && !ft_isfloat(point[2]))
-		obj->point = create_vector(ft_atof(point[0]), ft_atof(point[1]), ft_atof(point[2]));
+		obj->point = create_vector(ft_atof(point[0]),
+				ft_atof(point[1]), ft_atof(point[2]));
 	else
 	{
 		printf("CYLINDER POINT ERROR!\n");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 04:06:34 by adinari           #+#    #+#             */
-/*   Updated: 2023/04/12 13:54:00 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/04/28 22:08:50 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	parse_light(t_objects *obj_list, t_data *data, int i)
 			((t_light *)obj)->ratio = ft_atof(data->infos[2]);
 	else
 	{
-		printf("isfloat error light intensity\n");
+		printf("Error: light intensity\n");
 		exit(22);
 	}
 	set_light_point(obj, data);
@@ -64,7 +64,7 @@ void	parse_amb_light(t_objects *obj_list, t_data *data, int i)
 			((t_amb_light *)obj)->ratio = ft_atof(data->infos[1]);
 	else
 	{
-		printf("isfloat error amb light intensity\n");
+		printf("Error: amb light intensity\n");
 		exit(22);
 	}
 	create_amblight_color(data, obj, i, obj_list);
@@ -95,7 +95,8 @@ void	parse_sphere(t_objects *obj_list, t_data *data, int i)
 		((t_sphere *)obj)->diameter = ft_atof(data->infos[2]) / 2.0f;
 	point = ft_split(data->infos[1], ',');
 	if (!ft_isfloat(point[0]) && !ft_isfloat(point[1]) && !ft_isfloat(point[2]))
-		((t_sphere *)obj)->point = create_vector(ft_atof(point[0]), ft_atof(point[1]), ft_atof(point[2]));
+		((t_sphere *)obj)->point = create_vector(ft_atof(point[0]),
+				ft_atof(point[1]), ft_atof(point[2]));
 	else
 	{
 		printf("SPHERE POINT ERROR!\n");

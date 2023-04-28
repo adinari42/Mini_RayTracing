@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+         #
+#    By: adinari <adinari@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/06 21:40:31 by adinari           #+#    #+#              #
-#    Updated: 2023/03/31 22:07:57 by miahmadi         ###   ########.fr        #
+#    Updated: 2023/04/29 01:00:54 by adinari          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,20 +54,19 @@ all: $(NAME)
 	$(CC) $(FLAGS) -c $< -o $@
 
 LIBS =	src/libft/libft.a
-$(NAME): $(OBJECTS) mlx
+$(NAME): $(OBJECTS)
+	make -C $(MLX)
+	cp $(MLX)/libmlx.dylib .
+	mv libmlx.dylib libmlx.dylib
 	make -C src/libft
 	export LD_LIBRARY_PATH=/usr/lib/swift/
 	$(CC)  $(OBJECTS) $(LIBS)  -Lmlx -lmlx -framework OpenGL -framework AppKit -o $(NAME) 
 clean:
 	rm -rf $(OBJECTS)
 	make clean -C src/libft
-	@cd $(MLX) && $(MAKE) clean
+	cd $(MLX) && $(MAKE) clean
+	rm -rf libmlx.dylib
 
-mlx: 
-	@make -C $(MLX)
-	@cp $(MLX)/libmlx.dylib .
-	@mv libmlx.dylib libmlx.dylib
-	
 fclean: clean
 	rm -rf $(NAME) *.o
 	make fclean -C src/libft

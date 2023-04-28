@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 02:04:37 by adinari           #+#    #+#             */
-/*   Updated: 2023/04/04 09:24:24 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/04/28 21:08:28 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ void	init_data(t_data *data, char **argv)
 	while (str1)
 	{
 		str1 = get_next_line(data->fd);
-		if (str1 && first_occur(str1) && ft_strncmp("\n", str1, ft_strlen(str1)) != 0)
+		if (str1 && first_occur(str1)
+			&& ft_strncmp("\n", str1, ft_strlen(str1)) != 0)
 			data->list_size++;
 		free(str1);
 	}

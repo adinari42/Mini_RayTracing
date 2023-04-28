@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils_3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miahmadi <miahmadi@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: adinari <adinari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 20:17:23 by adinari           #+#    #+#             */
-/*   Updated: 2023/04/16 12:07:18 by miahmadi         ###   ########.fr       */
+/*   Updated: 2023/04/29 00:41:56 by adinari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_parse_vectors	cam_up_and_dir(t_camera *obj)
 	obj->normal.y *= -1;
 	if (obj->normal.x == 0 && obj->normal.z == 0)
 		vectors.dir_x = create_vector(1, 0, 0);
-	else if (obj->normal.x == 1 && obj->normal.y == 1 && obj->normal.z == 0)
+	else if (obj->normal.x != 0 && obj->normal.y != 0 && obj->normal.z == 0)
 	{
 		vectors.up = create_vector(0, 0, 1);
 		vectors.dir_x = vector_cross_product(obj->normal, vectors.up);
@@ -98,7 +98,8 @@ void	set_cam_point(t_camera *obj, t_data *data)
 
 	point = ft_split(data->infos[1], ',');
 	if (!ft_isfloat(point[0]) && !ft_isfloat(point[1]) && !ft_isfloat(point[2]))
-		((t_camera *)obj)->point = create_vector(ft_atof(point[0]), ft_atof(point[1]), ft_atof(point[2]));
+		((t_camera *)obj)->point = create_vector(ft_atof(point[0]),
+				ft_atof(point[1]), ft_atof(point[2]));
 	else
 	{
 		printf("CAMERA POINT ERROR!\n");
